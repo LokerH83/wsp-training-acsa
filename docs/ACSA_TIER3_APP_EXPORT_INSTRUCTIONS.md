@@ -14,11 +14,17 @@ Latest package created:
 
 Result: export succeeded, but unpack verification shows the solution still contains only the Dataverse entity model and relationships. It does not yet include the model-driven app component `The About WSP Training Management System`.
 
+Latest app-navigation package created:
+
+`exports/WSPTrainingManagementSystem_full_app_solution_with_app_nav_unmanaged.zip`
+
+Result: export succeeded and unpack verification shows `AppModuleSiteMaps/cr075_TheAboutWSPTrainingManagementSyste`. This confirms the app navigation/site map component was added. It still does not include a full `AppModules` model-driven app definition folder.
+
 Attempted CLI app add:
 
 `pac solution add-solution-component`
 
-Result: PAC could list the model-driven app, but the environment/CLI rejected the app component add operation. Add the app through Power Apps Maker UI, then export again.
+Result: PAC could list the model-driven app and add the site map component, but the environment/CLI rejected the full app module component add operation. Add the full app through Power Apps Maker UI if a complete app package is required, then export again.
 
 ### Option A: Export the app from a solution
 

@@ -9,6 +9,9 @@ Take the ACSA Tier 3 solution from current app export to a production-ready Powe
 - A fresh unmanaged export was created on 2026-07-06:
   - `exports/WSPTrainingManagementSystem_full_app_solution_unmanaged.zip`
 - Unpack verification confirms the package still does not include the model-driven app definition.
+- A second export was created after adding the app site map component:
+  - `exports/WSPTrainingManagementSystem_full_app_solution_with_app_nav_unmanaged.zip`
+- This second package includes the app navigation/site map folder, but not the complete model-driven app definition folder.
 - The exported package contains the core Dataverse tables for:
   - Training Provider (`ssa_dataprovider`)
   - Employee Profile (`ssa_employeerecord`)
@@ -118,7 +121,8 @@ Take the ACSA Tier 3 solution from current app export to a production-ready Powe
 ## Immediate action items
 
 - [x] Export the current Power Apps solution package
-- [ ] Add the model-driven app component to the solution in Power Apps Maker and export again
+- [x] Add the app navigation/site map component and export again
+- [ ] Add the full model-driven app component to the solution in Power Apps Maker and export again
 - [ ] Confirm whether evidence, review, and booking entities exist
 - [ ] Review current field mappings and missing relationships
 - [ ] Build the app UI and workflow gaps
