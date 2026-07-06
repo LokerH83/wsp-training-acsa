@@ -126,6 +126,8 @@ Take the ACSA Tier 3 solution from current app export to a production-ready Powe
 - [x] Export the current Power Apps solution package
 - [x] Add the app navigation/site map component and export again
 - [ ] Add the full model-driven app component to the solution in Power Apps Maker and export again
+- [ ] Save the final package as `exports/WSPTrainingManagementSystem_complete_solution.zip`
+- [ ] Verify the exported zip contains app-specific folders/files, not only `[Content_Types].xml`, `customizations.xml` and `solution.xml`
 - [ ] Confirm whether evidence, review, and booking entities exist
 - [ ] Review current field mappings and missing relationships
 - [ ] Build the app UI and workflow gaps

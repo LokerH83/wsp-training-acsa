@@ -21,12 +21,42 @@ This checklist supports the final steps needed to move the Tier 3 app toward pro
 - [ ] Deployment and go-live steps are defined
 - [ ] Handover and training materials are prepared
 
+## Codex finish-off definition
+
+Codex should only mark the Tier 3 package complete when a newly exported solution zip contains the actual app component, not only the Dataverse data model.
+
+The export fails this check if it only contains:
+
+- `[Content_Types].xml`
+- `customizations.xml`
+- `solution.xml`
+
+The export passes this check when unpacking shows additional app-specific content such as:
+
+- `AppModules`
+- `CanvasApps`
+- `AppModuleSiteMaps`
+- form/view XML files
+- business rules or workflow/process components
+- security roles, dashboards or charts where applicable
+
+Preferred final package name:
+
+`exports/WSPTrainingManagementSystem_complete_solution.zip`
+
 ## Checklist
 
 ### 1. Solution export and review
 
 - [x] Export the current Power Apps solution package
-- [ ] Add the model-driven app component to the solution in Power Apps Maker
+- [ ] Add `The About WSP Training Management System` app component to the solution in Power Apps Maker
+- [ ] Add dependent app components:
+  - custom tables/entities
+  - app module/component files
+  - forms and views
+  - business rules and workflows
+  - security roles, if applicable
+  - dashboards or charts, if needed
 - [ ] Export the full Power Apps solution containing the app component(s)
 - [ ] Confirm the solution includes:
   - Canvas or model-driven app definition
@@ -36,6 +66,8 @@ This checklist supports the final steps needed to move the Tier 3 app toward pro
   - Security roles/components
   - Dashboards or embedded reports
 - [x] Add the current exported package to `exports/`
+- [ ] Save the completed package as `exports/WSPTrainingManagementSystem_complete_solution.zip`
+- [ ] Unpack and verify the completed package includes app-specific folders/files
 - [ ] Review the solution metadata for required entities and missing app components
 
 ### 2. Data model validation

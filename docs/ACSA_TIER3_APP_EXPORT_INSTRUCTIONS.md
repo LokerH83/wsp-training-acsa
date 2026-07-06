@@ -71,6 +71,16 @@ Result: PAC could list the model-driven app and add the site map component, but 
 - Security role components (if used)
 - Dashboards or embedded Power BI components if part of the app
 
+## Verification rule
+
+The export is not complete if the zip only contains:
+
+- `[Content_Types].xml`
+- `customizations.xml`
+- `solution.xml`
+
+The export must contain app-specific content after unpacking, such as `AppModules`, `CanvasApps`, `AppModuleSiteMaps`, form/view XML, workflow/process files, security roles, dashboards or charts as applicable.
+
 ## What to do with the exported package
 
 1. Save the exported `.zip` file to the local machine.
@@ -78,6 +88,10 @@ Result: PAC could list the model-driven app and add the site map component, but 
    - `exports/full_app_solution.zip`
 3. If possible, include a short note with the export name and environment.
 4. Unpack or inspect the package and confirm it includes an app component, not only entity metadata.
+
+Preferred final package name:
+
+`exports/WSPTrainingManagementSystem_complete_solution.zip`
 
 ## Why this is important
 
