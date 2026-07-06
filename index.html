@@ -1,0 +1,202 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>ACSA SDF Demo</title>
+  <link rel="icon" href="data:,">
+  <link rel="stylesheet" href="./styles.css">
+</head>
+<body>
+  <div class="app">
+    <aside class="sidebar">
+      <div class="brand">
+        <div class="brand-mark acsa-mark"><img src="./assets/acsa-cropped.png" alt="ACSA demo"></div>
+        <div><strong>Prepared for ACSA</strong><span>Workforce Skills Planning</span></div>
+      </div>
+      <nav class="nav" aria-label="Main navigation">
+        <button class="nav-item active" data-view="overview"><span class="ico">H</span>Dashboard</button>
+        <button class="nav-item" data-view="workbook"><span class="ico">I</span>SDF Data Drop</button>
+        <button class="nav-item" data-view="training"><span class="ico">P</span>Training Planning</button>
+        <button class="nav-item" data-view="people"><span class="ico">E</span>Employee Profiles</button>
+        <button class="nav-item" data-view="reports"><span class="ico">R</span>Reports</button>
+      </nav>
+      <div class="sidebar-footer"><span class="dataverse-dot"></span><div><strong>Demo only</strong><span>No private records</span></div></div>
+    </aside>
+
+    <main class="main">
+      <header class="topbar">
+        <div><h1>ACSA Skills Planning &amp; ATR Platform</h1><p>Demo-safe workforce skills planning | Synthetic data only</p></div>
+        <div class="top-actions">
+          <div class="mode-badge"><strong>Demo data only</strong><span>This environment demonstrates the SDF process and does not contain private ACSA records.</span></div>
+          <button class="icon-button" id="resetDemoTop">Reset</button>
+        </div>
+      </header>
+
+      <section id="overview" class="view active">
+        <div class="toolbar dashboard-toolbar">
+          <div>
+            <h2>ACSA WSP / ATR Readiness Dashboard</h2>
+            <p>Workbook loading, training demand, WSP planning, ATR activity, employee profile links and reporting gaps in one controlled demo view.</p>
+          </div>
+          <div class="filters dashboard-filters">
+            <select aria-label="Demo quarter"><option>All quarters</option><option>Q1</option><option>Q2</option><option>Q3</option><option>Q4</option></select>
+            <select aria-label="Demo provider"><option>All providers</option></select>
+          </div>
+        </div>
+
+        <div class="sales-strip">
+          <article><strong>1. Receive ACSA Workbooks</strong><span>Keep current Excel processes while the system stages the data for review.</span></article>
+          <article><strong>2. Validate Profile Links</strong><span>Connect WSP and ATR rows to clean employee and demographic records.</span></article>
+          <article><strong>3. Prepare Management Outputs</strong><span>Show what is ready, what can be confirmed and what can be reported next.</span></article>
+        </div>
+
+        <div class="kpi-grid relationship-kpis executive-kpis" id="overviewOutcomes"></div>
+
+        <div class="kpi-grid relationship-kpis data-health-kpis overview-kpis" id="overviewKpis"></div>
+
+        <div class="dashboard-grid overview-dashboard">
+          <section class="panel financial-impact">
+            <div class="panel-head">
+              <div><h3>Financial / Grant Exposure</h3><p>This is a demo planning estimate, not a final grant, SETA or B-BBEE determination.</p></div>
+            </div>
+            <div class="kpi-grid relationship-kpis financial-kpis" id="financialExposure"></div>
+          </section>
+          <section class="panel">
+            <div class="panel-head"><h3>Training Operations</h3></div>
+            <div class="summary-tile-grid" id="bookingKpis"></div>
+          </section>
+        </div>
+
+        <div class="dashboard-grid overview-dashboard">
+          <section class="panel">
+            <div class="panel-head"><h3>Requested vs Planned vs Achieved</h3></div>
+            <div id="relationshipBars" class="bar-list"></div>
+          </section>
+          <section class="panel">
+            <div class="panel-head"><h3>Data Readiness Overview</h3></div>
+            <div id="readinessOverview" class="issue-list"></div>
+          </section>
+          <section class="panel">
+            <div class="panel-head"><h3>Training by Provider</h3></div>
+            <div id="providerSummary" class="bar-list"></div>
+          </section>
+          <section class="panel action-panel">
+            <div class="panel-head"><h3>Quick Actions</h3></div>
+            <div class="action-tile-grid">
+              <button data-view-target="workbook" id="overviewLoadSample"><strong>Load Sample Workbook</strong><span>Stage demo workbook data</span></button>
+              <button data-view-target="workbook"><strong>Upload Workbook</strong><span>Use a demo-safe CSV</span></button>
+              <button data-view-target="training" data-mode="plan"><strong>Manage Training</strong><span>Add request, WSP or ATR</span></button>
+              <button data-view-target="training" data-booking-focus="true"><strong>Book Training</strong><span>Schedule a planned item</span></button>
+              <button data-view-target="training" data-mode="actual"><strong>Record ATR Activity</strong><span>Prepare achievement capture</span></button>
+              <button data-view-target="people"><strong>Open People Profiles</strong><span>Drill into training history</span></button>
+              <button data-view-target="reports"><strong>Open Reports</strong><span>Filter management matrix</span></button>
+              <button id="copyExecutiveSummaryOverview"><strong>Copy Executive Summary</strong><span>Use in the walkthrough</span></button>
+              <button id="resetDemoOverview"><strong>Reset Demo Scenario</strong><span>Restore the baseline</span></button>
+            </div>
+          </section>
+        </div>
+
+        <section class="panel table-panel">
+          <div class="panel-head"><h3>Latest Activity</h3></div>
+          <div class="table-wrap"><table><thead><tr><th>Type</th><th>Employee</th><th>Course</th><th>Provider</th><th>Status</th></tr></thead><tbody id="latestActivityRows"></tbody></table></div>
+        </section>
+      </section>
+
+      <section id="workbook" class="view">
+        <div class="toolbar">
+          <div><h2>Load Workbook</h2><p>Stage a sample workbook or upload a CSV for demo validation.</p></div>
+        </div>
+        <div class="import-grid import-workbench">
+          <section class="panel import-drop">
+            <div><span class="eyebrow">Workbook bridge</span><h3>Bring the SDF workbook in</h3><p>Use the sample workbook or upload a CSV with the required columns.</p></div>
+            <div class="quick-actions">
+              <button class="primary" id="loadSampleWorkbook">Load Sample Workbook</button>
+              <label class="connector-row"><input id="csvUpload" type="file" accept=".csv"><span class="connector-icon">CSV</span><span><strong>Upload CSV</strong><small>Select a demo-safe workbook export</small></span></label>
+              <button id="applyStaging">Apply To Demo Staging</button>
+            </div>
+            <p class="security-note" id="workbookMessage">No workbook staged yet.</p>
+          </section>
+          <section class="panel"><div class="panel-head"><h3>Import Impact Summary</h3></div><div id="importImpact" class="issue-list"></div></section>
+        </div>
+        <div class="report-grid report-grid-2">
+          <section class="panel"><div class="panel-head"><h3>Detected Columns</h3></div><div id="detectedColumns" class="mapping-preview"></div></section>
+          <section class="panel"><div class="panel-head"><h3>Required Field Checklist</h3></div><div id="fieldChecklist" class="checklist"></div></section>
+        </div>
+        <section class="panel table-panel"><div class="panel-head"><h3>Clean Import Preview</h3></div><div class="table-wrap"><table><thead><tr><th>Employee</th><th>Course</th><th>Requested</th><th>Planned</th><th>Achieved</th><th>Review</th></tr></thead><tbody id="importPreview"></tbody></table></div></section>
+      </section>
+
+      <section id="training" class="view">
+        <div class="toolbar"><div><h2>Manage Training</h2><p>Add requested training, planned WSP and achieved ATR activity.</p></div></div>
+        <div class="form-layout">
+          <form id="trainingForm" class="panel form-panel">
+            <label>Action<select name="recordType"><option value="request">Add Requested / Suggested Training</option><option value="plan">Add Planned WSP Intervention</option><option value="actual">Record Achieved ATR Activity</option></select></label>
+            <label>Employee<select name="employeeNumber" required></select></label>
+            <div class="inherited-fields"><strong>Profile-linked fields inherited from employee record.</strong><span id="inheritedFields">Select an employee.</span></div>
+            <label>Provider<select name="provider" required></select></label>
+            <label>Course<select name="course" required></select></label>
+            <label>Quarter / Date<input name="period" value="Q3"></label>
+            <label>Cost<input name="cost" type="number" min="0" value="1500"></label>
+            <label>Hours<input name="hours" type="number" min="0" value="8"></label>
+            <button class="primary" type="submit">Save Record</button>
+          </form>
+          <section class="panel">
+            <div class="panel-head"><h3>Find Provider / Course</h3></div>
+            <div class="filters provider-search">
+              <input id="providerSearch" placeholder="Provider search">
+              <select id="providerFilter"></select>
+              <input id="courseSearch" placeholder="Course search">
+              <select id="categoryFilter"><option value="All">All categories</option></select>
+            </div>
+            <div class="table-wrap"><table><thead><tr><th>Provider</th><th>Course</th><th>Category</th><th>Duration</th><th>Delivery Mode</th><th>Estimated Cost</th><th>Evidence Required</th><th>SETA / B-BBEE Relevance</th><th>Action</th></tr></thead><tbody id="courseResults"></tbody></table></div>
+          </section>
+        </div>
+        <section class="panel booking-panel">
+          <div class="panel-head">
+            <div><h3>Book Training</h3><p>Select a planned WSP intervention and simulate a booking. No Outlook or Graph calls are made.</p></div>
+          </div>
+          <form id="bookingForm" class="booking-form">
+            <label>Planned WSP Intervention<select name="planId" required></select></label>
+            <label>Employee / Group<select name="employeeNumber" required></select></label>
+            <label>Provider<input name="provider" readonly></label>
+            <label>Course / Intervention<input name="course" readonly></label>
+            <label>Training Date<input name="date" type="date" required></label>
+            <label>Start Time<input name="startTime" type="time" value="09:00"></label>
+            <label>End Time<input name="endTime" type="time" value="12:00"></label>
+            <label>Delivery Mode<select name="deliveryMode"><option>Classroom</option><option>Online</option><option>Blended</option></select></label>
+            <label>Location / Meeting Link<input name="location" placeholder="Training room or meeting link"></label>
+            <label>Reminder Status<select name="reminderStatus"><option>Not sent</option><option>Reminder scheduled</option><option>Reminder sent</option></select></label>
+            <label>Booking Status<select name="bookingStatus"><option>Draft</option><option>Booked</option><option>Completed</option><option>Attendance To Confirm</option><option>Cancelled</option></select></label>
+            <button class="primary" type="submit">Book Training</button>
+          </form>
+          <p class="security-note" id="bookingMessage">No booking action taken yet.</p>
+        </section>
+        <section class="panel table-panel">
+          <div class="panel-head"><h3>Training Bookings</h3></div>
+          <div class="table-wrap"><table><thead><tr><th>Booking Status</th><th>Employee / Group</th><th>Provider</th><th>Course / Intervention</th><th>Date</th><th>Time</th><th>Delivery Mode</th><th>Location / Link</th><th>Reminder Status</th><th>ATR Status</th><th>Action</th></tr></thead><tbody id="bookingRows"></tbody></table></div>
+        </section>
+        <section class="panel table-panel"><div class="panel-head"><h3>Demo Training Records</h3></div><div class="table-wrap"><table><thead><tr><th>Type</th><th>Employee</th><th>Course</th><th>Provider</th><th>Period</th><th>Status</th></tr></thead><tbody id="trainingRows"></tbody></table></div></section>
+      </section>
+
+      <section id="people" class="view">
+        <div class="toolbar"><div><h2>People Profiles</h2><p>Search a person and see requested, planned and achieved training.</p></div><label class="search"><span>Search</span><input id="peopleSearch" type="search" placeholder="name or employee number"></label></div>
+        <div class="employee-layout"><section class="panel list-panel"><div id="peopleList" class="employee-list"></div></section><section class="panel profile-panel" id="personProfile"></section></div>
+      </section>
+
+      <section id="reports" class="view">
+        <div class="toolbar">
+          <div><h2>Reports</h2><p>Requested / Suggested vs Planned WSP vs Achieved ATR.</p></div>
+        </div>
+        <div class="filters cluster-filters" id="reportFilters"></div>
+        <div class="kpi-grid relationship-kpis" id="reportKpis"></div>
+        <section class="panel table-panel">
+          <div class="panel-head"><h3>Management Matrix</h3><div class="report-actions"><button id="resetReportFilters">Reset Filters</button><button id="copyExecutiveSummaryReports">Copy Executive Summary</button></div></div>
+          <div class="table-wrap"><table><thead><tr><th>Region / Cluster</th><th>Division</th><th>Department</th><th>Provider</th><th>Course / Intervention</th><th>Sex / Gender</th><th>Race</th><th>Age Band</th><th>Disability</th><th>Requested / Suggested</th><th>Planned WSP</th><th>Achieved ATR</th><th>Requested Not Planned</th><th>Planned Not Achieved</th><th>Achieved Not Planned</th><th>Completion %</th><th>Items To Confirm</th><th>Status</th><th>Booking Status</th></tr></thead><tbody id="reportRows"></tbody></table></div>
+        </section>
+      </section>
+    </main>
+  </div>
+  <script src="./data/demo-snapshot.js"></script>
+  <script src="./app.js"></script>
+</body>
+</html>
