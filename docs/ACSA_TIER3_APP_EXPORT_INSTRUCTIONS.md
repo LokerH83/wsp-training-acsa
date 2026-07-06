@@ -26,6 +26,12 @@ Maker downloaded package checked:
 
 Result: unpack verification shows entities and relationships only. It does not include `AppModules` or `AppModuleSiteMaps`.
 
+Completed package created:
+
+`exports/WSPTrainingManagementSystem_complete_solution.zip`
+
+Result: export succeeded and unpack verification shows `AppModules`, `AppModuleSiteMaps`, `dvtablesearchs`, `dvtablesearchentities`, `mcpservers`, `Entities` and `Other`. This package includes the model-driven app definition for `The About WSP Training Management System`.
+
 Attempted CLI app add:
 
 `pac solution add-solution-component`

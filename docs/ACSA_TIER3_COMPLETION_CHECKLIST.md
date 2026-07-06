@@ -7,7 +7,7 @@ This checklist supports the final steps needed to move the Tier 3 app toward pro
 ## Completion criteria
 
 - [x] Current Power Apps solution export is available in `exports/`
-- [ ] App definition(s) are included in the exported solution
+- [x] App definition(s) are included in the exported solution
 - [ ] All required Dataverse tables are present
 - [ ] Core entity relationships are defined and validated
 - [ ] Forms and views exist for employee profile, training plan, ATR actuals, provider/course and review workflows
@@ -49,16 +49,16 @@ Preferred final package name:
 ### 1. Solution export and review
 
 - [x] Export the current Power Apps solution package
-- [ ] Add `The About WSP Training Management System` app component to the solution in Power Apps Maker
-- [ ] Add dependent app components:
+- [x] Add `The About WSP Training Management System` app component to the solution in Power Apps Maker
+- [x] Add dependent app components:
   - custom tables/entities
   - app module/component files
   - forms and views
   - business rules and workflows
   - security roles, if applicable
   - dashboards or charts, if needed
-- [ ] Export the full Power Apps solution containing the app component(s)
-- [ ] Confirm the solution includes:
+- [x] Export the full Power Apps solution containing the app component(s)
+- [x] Confirm the solution includes:
   - Canvas or model-driven app definition
   - Tables/entities
   - Forms/views
@@ -66,8 +66,8 @@ Preferred final package name:
   - Security roles/components
   - Dashboards or embedded reports
 - [x] Add the current exported package to `exports/`
-- [ ] Save the completed package as `exports/WSPTrainingManagementSystem_complete_solution.zip`
-- [ ] Unpack and verify the completed package includes app-specific folders/files
+- [x] Save the completed package as `exports/WSPTrainingManagementSystem_complete_solution.zip`
+- [x] Unpack and verify the completed package includes app-specific folders/files
 - [ ] Review the solution metadata for required entities and missing app components
 
 ### 2. Data model validation

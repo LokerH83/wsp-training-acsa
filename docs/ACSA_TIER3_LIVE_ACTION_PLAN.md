@@ -15,6 +15,9 @@ Take the ACSA Tier 3 solution from current app export to a production-ready Powe
 - The Power Apps Maker downloaded export was also copied and inspected:
   - `exports/WSPTrainingManagementSystem_1_0_0_1_managed_from_maker.zip`
 - That package still contains entities and relationships only.
+- The completed unmanaged solution package was exported and verified:
+  - `exports/WSPTrainingManagementSystem_complete_solution.zip`
+- The completed package includes `AppModules`, `AppModuleSiteMaps`, app search components, MCP server metadata, Dataverse entities and solution metadata.
 - The exported package contains the core Dataverse tables for:
   - Training Provider (`ssa_dataprovider`)
   - Employee Profile (`ssa_employeerecord`)
@@ -125,9 +128,9 @@ Take the ACSA Tier 3 solution from current app export to a production-ready Powe
 
 - [x] Export the current Power Apps solution package
 - [x] Add the app navigation/site map component and export again
-- [ ] Add the full model-driven app component to the solution in Power Apps Maker and export again
-- [ ] Save the final package as `exports/WSPTrainingManagementSystem_complete_solution.zip`
-- [ ] Verify the exported zip contains app-specific folders/files, not only `[Content_Types].xml`, `customizations.xml` and `solution.xml`
+- [x] Add the full model-driven app component to the solution in Power Apps Maker and export again
+- [x] Save the final package as `exports/WSPTrainingManagementSystem_complete_solution.zip`
+- [x] Verify the exported zip contains app-specific folders/files, not only `[Content_Types].xml`, `customizations.xml` and `solution.xml`
 - [ ] Confirm whether evidence, review, and booking entities exist
 - [ ] Review current field mappings and missing relationships
 - [ ] Build the app UI and workflow gaps
