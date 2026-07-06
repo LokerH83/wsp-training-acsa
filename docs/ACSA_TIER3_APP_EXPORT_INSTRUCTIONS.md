@@ -20,6 +20,12 @@ Latest app-navigation package created:
 
 Result: export succeeded and unpack verification shows `AppModuleSiteMaps/cr075_TheAboutWSPTrainingManagementSyste`. This confirms the app navigation/site map component was added. It still does not include a full `AppModules` model-driven app definition folder.
 
+Maker downloaded package checked:
+
+`exports/WSPTrainingManagementSystem_1_0_0_1_managed_from_maker.zip`
+
+Result: unpack verification shows entities and relationships only. It does not include `AppModules` or `AppModuleSiteMaps`.
+
 Attempted CLI app add:
 
 `pac solution add-solution-component`
