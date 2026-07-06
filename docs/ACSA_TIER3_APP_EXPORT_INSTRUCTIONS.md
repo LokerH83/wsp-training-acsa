@@ -6,6 +6,20 @@ This document explains how to export the full Power Apps/Dataverse solution for 
 
 ## Export instructions
 
+## Current export status
+
+Latest package created:
+
+`exports/WSPTrainingManagementSystem_full_app_solution_unmanaged.zip`
+
+Result: export succeeded, but unpack verification shows the solution still contains only the Dataverse entity model and relationships. It does not yet include the model-driven app component `The About WSP Training Management System`.
+
+Attempted CLI app add:
+
+`pac solution add-solution-component`
+
+Result: PAC could list the model-driven app, but the environment/CLI rejected the app component add operation. Add the app through Power Apps Maker UI, then export again.
+
 ### Option A: Export the app from a solution
 
 1. Open `https://make.powerapps.com`.
@@ -13,12 +27,14 @@ This document explains how to export the full Power Apps/Dataverse solution for 
 3. Open `Solutions` in the left menu.
 4. Locate the solution that contains the ACSA app.
 5. Click the solution name.
-6. Click `Export`.
-7. Follow the export wizard:
+6. Confirm `The About WSP Training Management System` is listed under solution objects.
+7. If it is missing, click `Add existing` and add the model-driven app.
+8. Click `Export`.
+9. Follow the export wizard:
    - Set a package version.
    - Review components.
    - Export as unmanaged if you want to continue editing after import.
-8. Download the `.zip` package.
+10. Download the `.zip` package.
 
 ### Option B: Export the app when it is not already in a solution
 
@@ -49,6 +65,7 @@ This document explains how to export the full Power Apps/Dataverse solution for 
 2. Copy the package into the repo under a new folder, for example:
    - `exports/full_app_solution.zip`
 3. If possible, include a short note with the export name and environment.
+4. Unpack or inspect the package and confirm it includes an app component, not only entity metadata.
 
 ## Why this is important
 
