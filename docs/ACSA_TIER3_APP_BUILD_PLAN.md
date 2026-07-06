@@ -175,7 +175,9 @@ This document defines the Tier 3 app build for ACSA: a Microsoft Power Apps + Da
 
 ## Next Steps
 
-- Confirm detailed requirements for the app tables and workflows
-- Review existing workbook data and reporting logic
-- Agree pilot scope and phase planning
-- Start the Dataverse model and Power Apps design
+- Use `exports/WSPTrainingManagementSystem_complete_solution.zip` as the verified app baseline.
+- Build the missing workflow entities for evidence, review items and booking/approval.
+- Add business rules or cloud flows for status changes and handoffs.
+- Add security roles and validate access for SDF, HR/reporting, managers and admins.
+- Connect Power BI reporting for requested vs planned vs achieved, evidence readiness and review status.
+- Agree pilot scope and phase planning.

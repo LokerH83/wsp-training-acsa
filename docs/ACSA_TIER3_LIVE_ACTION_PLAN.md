@@ -24,22 +24,22 @@ Take the ACSA Tier 3 solution from current app export to a production-ready Powe
   - Training Actual (`ssa_employeetrainingrecord`)
   - Training Plan (`ssa_employeetrainingrecord1`)
   - Course Catalogue (`ssa_trainingcourse`)
-- The current export does not include a Canvas App or Model-driven App definition.
-- The current export also does not include evidence, review item, or booking workflow entities.
-- This means the current package is a strong data model foundation, but not the finished app.
+- The completed export includes the model-driven app definition.
+- The completed export does not include evidence, review item, or booking workflow entities.
+- This means the current package is a strong model-driven app foundation, but not the finished production workflow solution.
 
 ## Live action summary
 
-### Step 1: Capture the full app solution
+### Step 1: Use the verified full app solution
 
-- Export the complete Power Apps solution containing the app itself.
-- If the app is not in a solution, add the app and its dependent tables/components to a new solution, then export.
-- Confirm the export contains:
+- Use `exports/WSPTrainingManagementSystem_complete_solution.zip` as the verified baseline.
+- The export contains:
   - app definition(s)
   - entity forms and views
-  - workflows/business rules
-  - security roles if used
-  - Dashboards / embedded Power BI if part of the solution
+  - app navigation
+  - core Dataverse entities
+  - key relationships
+- Do not treat the earlier entity-only exports as the final app package.
 
 ### Step 2: Validate the current data model
 

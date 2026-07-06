@@ -2,9 +2,13 @@
 
 ## Summary
 
-This document captures the current exported Power Apps solution package contents and maps them to the Tier 3 app build plan.
+This document captures the verified complete Power Apps solution package contents and maps them to the Tier 3 app build plan.
 
-The current export package in `exports/WSPTrainingManagementSystem_after_successful_import.zip` contains the Dataverse entity model for the following tables:
+The completed export package is:
+
+`exports/WSPTrainingManagementSystem_complete_solution.zip`
+
+The package now includes the model-driven app definition, site map/navigation, app search/MCP metadata, forms, views, relationships and the Dataverse entity model for the following tables:
 
 - Training Provider (`ssa_dataprovider`)
 - Employee Profile (`ssa_employeerecord`)
@@ -12,7 +16,15 @@ The current export package in `exports/WSPTrainingManagementSystem_after_success
 - Training Plan (`ssa_employeetrainingrecord1`)
 - Course Catalogue (`ssa_trainingcourse`)
 
-The package does not include app UI components such as a Canvas App or Model-driven App definition, and it appears to be a data model-only solution export.
+Verified app package folders include:
+
+- `AppModules`
+- `AppModuleSiteMaps`
+- `dvtablesearchs`
+- `dvtablesearchentities`
+- `mcpservers`
+- `Entities`
+- `Other`
 
 ## Current Entities
 
@@ -97,38 +109,38 @@ The package does not include app UI components such as a Canvas App or Model-dri
 
 ## What is present today
 
-- Core training data model is in place for employee profiles, providers, courses, planned training, and actual ATR records.
-- Employee demographic and reporting fields exist for geography, division, gender, age, disability, and course details.
-- The core data model supports requested/planned/achieved reporting if the app UI and relationships are completed.
+- Model-driven app: `The About WSP Training Management System`.
+- App unique name: `cr075_TheAboutWSPTrainingManagementSyste`.
+- App navigation includes Employee Profiles, Training Plans, Training Actuals, Course Catalogue and Training Providers.
+- Core training data model is in place for employee profiles, providers, courses, planned training and actual ATR records.
+- Each included entity has forms and saved views in the complete export.
+- Employee demographic and reporting fields exist for business unit, division, gender, race, age, disability and course/training details.
+- Relationships exist from Training Plan and Training Actual to Employee Profile and Course Catalogue, and from Training Plan to Training Provider.
+- The model supports requested/planned/achieved reporting once reporting datasets and business rules are completed.
 
 ## What is missing for the finished Tier 3 app
 
-- No app component export found in the current package.
-  - There is no Canvas App or Model-driven App definition present.
 - No evidence capture entity or evidence tracking table is included.
 - No review item or audit workflow entity is included.
 - No explicit booking entity or workflow entity is included.
-- No app forms, views, or relationship metadata appears in the extracted package.
+- No business process flows or workflows are included in the export.
+- No security role definitions are included, although the app module references role IDs.
+- No Power BI dashboard or embedded reporting component is included.
+- No formal approval flow is included for booking, evidence sign-off or ATR confirmation.
 
 ## Recommended next actions
 
-1. Export the full solution containing the app itself.
-   - If the app is in a solution, export that solution.
-   - If the app is not in a solution, add the app and its dependencies to a new solution and export it.
-2. Confirm whether evidence and review entities exist in the environment but were not part of this export.
-3. Capture the app screen config and form/view definitions for:
-   - Employee search/profile
-   - Training plan entry
-   - ATR capture
-   - Provider/course catalogue
-   - Dashboard or reporting pages
-4. Use this current entity model as the base for the Tier 3 app build, then add missing tables and UI:
+1. Confirm whether evidence, review, booking and approval entities exist elsewhere in the environment.
+2. Add missing workflow entities if they do not already exist:
    - Evidence capture
    - Review items
    - Booking workflow
    - Role-based forms and dashboards
-5. If needed, align the actual entity fields with the Tier 3 plan and fill gaps in the missing app workflow.
+3. Add business rules or cloud flows for status transitions across planning, booking, ATR, evidence and review.
+4. Add security roles and validate user access for SDF, HR/reporting, manager and admin users.
+5. Connect Power BI reporting for requested vs planned vs achieved, evidence readiness and review status.
+6. Pilot the model-driven app with demo-safe or approved sample data before production rollout.
 
 ## Notes
 
-The current export is a strong starting point because it already defines the key business records. The next step is to bring the UI layer and missing workflow entities into the exported solution so the app can be completed.
+The current export is now a complete app package for the existing model-driven app foundation. It is not yet production-ready because the workflow layer, evidence/review/booking entities, security model and reporting layer still need to be completed.
