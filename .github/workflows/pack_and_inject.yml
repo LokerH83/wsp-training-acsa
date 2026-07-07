@@ -43,6 +43,14 @@ jobs:
           $ErrorActionPreference = "Continue"
           $log = "${{ github.workspace }}\exports\powerplatform-import.log"
           $solution = "${{ github.workspace }}\exports\WSPTrainingManagementSystem_complete_solution.zip"
+          $pac = (Get-Command pac -ErrorAction SilentlyContinue)
+          if(-not $pac) {
+            "PAC CLI was not found on PATH after actions-install." | Tee-Object -FilePath $log -Append
+            throw "PAC CLI was not found on PATH after actions-install."
+          }
+          "PAC path=$($pac.Source)" | Tee-Object -FilePath $log -Append
+          & pac --version *> "${{ github.workspace }}\exports\pac-version.log"
+          Get-Content "${{ github.workspace }}\exports\pac-version.log" | Tee-Object -FilePath $log -Append
 
           function Format-PacArgs {
             param([string[]]$Arguments)
@@ -63,8 +71,17 @@ jobs:
 
           function Invoke-Pac {
             param([string[]]$Arguments)
-            & pac @Arguments 2>&1 | Tee-Object -FilePath $log -Append
-            return $LASTEXITCODE
+            $tmp = "${{ github.workspace }}\exports\pac-step-output.log"
+            if(Test-Path $tmp) { Remove-Item $tmp -Force }
+            & pac @Arguments *> $tmp
+            $exitCode = $LASTEXITCODE
+            if(Test-Path $tmp) {
+              Get-Content $tmp | Tee-Object -FilePath $log -Append
+            }
+            if($null -eq $exitCode) {
+              if($?) { $exitCode = 0 } else { $exitCode = 1 }
+            }
+            return [int]$exitCode
           }
 
           function Run-Pac {
