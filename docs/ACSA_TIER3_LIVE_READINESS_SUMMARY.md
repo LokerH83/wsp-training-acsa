@@ -58,6 +58,10 @@ Each table includes forms and saved views in the complete export.
 - Power BI reporting layer for requested vs planned vs achieved, evidence readiness and review status
 - Pilot testing with approved sample data
 
+Detailed build backlog:
+
+`docs/ACSA_TIER3_NEXT_BUILD_BACKLOG.md`
+
 ## Readiness position
 
 The solution is now ready for app-level review and build planning. It is not yet production-live ready, but it is a valid Tier 3 app foundation with the actual model-driven app included.

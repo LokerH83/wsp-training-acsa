@@ -181,3 +181,7 @@ This document defines the Tier 3 app build for ACSA: a Microsoft Power Apps + Da
 - Add security roles and validate access for SDF, HR/reporting, managers and admins.
 - Connect Power BI reporting for requested vs planned vs achieved, evidence readiness and review status.
 - Agree pilot scope and phase planning.
+
+Detailed next-build backlog:
+
+`docs/ACSA_TIER3_NEXT_BUILD_BACKLOG.md`
