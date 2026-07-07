@@ -520,6 +520,11 @@ select, input {
   margin: 0 auto;
 }
 .table-panel { margin-top: 14px; }
+.preview-pulse {
+  border-color: #7cc8e8;
+  box-shadow: 0 0 0 3px rgba(0, 120, 166, .16), 0 10px 24px rgba(16, 42, 58, .08);
+  transition: border-color .2s ease, box-shadow .2s ease;
+}
 .table-wrap { overflow: auto; }
 table {
   width: 100%;

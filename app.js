@@ -627,12 +627,23 @@ function stageSampleWorkbook() {
   stagedRows = sampleWorkbookRows();
   renderWorkbook();
   document.getElementById("workbookMessage").textContent = "Sample workbook loaded: 12 demo rows are staged. Review the preview below, then click Apply To Demo Staging.";
+  revealImportPreview();
 }
 
 function stageUploadedWorkbook(rows) {
   stagedRows = rows;
   renderWorkbook();
   document.getElementById("workbookMessage").textContent = `${stagedRows.length.toLocaleString("en-ZA")} uploaded demo rows are staged. Review the preview below, then click Apply To Demo Staging.`;
+  revealImportPreview();
+}
+
+function revealImportPreview() {
+  const preview = document.getElementById("importPreviewPanel");
+  if (!preview) return;
+  preview.scrollIntoView({ behavior: "smooth", block: "start" });
+  preview.classList.remove("preview-pulse");
+  void preview.offsetWidth;
+  preview.classList.add("preview-pulse");
 }
 
 function copyText(text, successMessage) {
