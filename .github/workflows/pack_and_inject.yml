@@ -1,4 +1,4 @@
-name: Pack and Inject Entities
+name: Pack Power Apps Solution
 
 on:
   workflow_dispatch:
@@ -12,17 +12,6 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-
-      - name: Copy generated entity artifacts into solution
-        shell: pwsh
-        run: |
-          $src = "${{ github.workspace }}\artifacts\entities"
-          $dst = "${{ github.workspace }}\src\solution\Entities"
-          if(Test-Path $src) {
-            New-Item -ItemType Directory -Path $dst -Force | Out-Null
-            Copy-Item -Path (Join-Path $src '*') -Destination $dst -Recurse -Force
-            Write-Output "Copied entity artifacts to solution Entities folder"
-          } else { Write-Output "No artifacts/entities folder found; skipping copy" }
 
       - name: Install Power Platform tools
         uses: microsoft/powerplatform-actions/actions-install@v1
