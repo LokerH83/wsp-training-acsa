@@ -13,6 +13,13 @@ const filterDefs = [
   ["course", "Course / Intervention"], ["sexGender", "Sex / Gender"], ["race", "Race"], ["ageBand", "Age Band"],
   ["disability", "Disability"], ["status", "Status"], ["bookingStatus", "Booking Status"]
 ];
+const reportColumns = [
+  ["regionCluster", "Region / Cluster"], ["division", "Division"], ["department", "Department"], ["provider", "Provider"],
+  ["course", "Course / Intervention"], ["sexGender", "Sex / Gender"], ["race", "Race"], ["ageBand", "Age Band"],
+  ["disability", "Disability"], ["requested", "Requested / Suggested"], ["planned", "Planned WSP"], ["achieved", "Achieved ATR"],
+  ["requestedNotPlanned", "Requested Not Planned"], ["plannedNotAchieved", "Planned Not Achieved"], ["achievedNotPlanned", "Achieved Not Planned"],
+  ["completion", "Completion %"], ["reviewItems", "Review Items"], ["status", "Status"], ["bookingStatus", "Booking Status"]
+];
 
 function cloneData() {
   return JSON.parse(JSON.stringify(DEMO_DATA));
@@ -341,15 +348,37 @@ function renderPeople() {
 
 function renderReports() {
   state.reportRows = buildRequestedPlannedAchievedReport(state);
-  const filters = currentFilters();
   hydrateReportFilters();
-  const rows = state.reportRows.filter(row => Object.entries(filters).every(([field,value]) => value === "All" || String(row[field] || "").split(", ").includes(value)));
+  const rows = filteredReportRows();
+  renderReportFilterSummary(rows);
   document.getElementById("reportKpis").innerHTML = kpiHtml(summary(rows));
-  document.getElementById("reportRows").innerHTML = rows.map(row => `<tr><td>${row.regionCluster}</td><td>${row.division}</td><td>${row.department}</td><td>${row.provider}</td><td>${row.course}</td><td>${row.sexGender}</td><td>${row.race}</td><td>${row.ageBand}</td><td>${row.disability}</td><td>${row.requested}</td><td>${row.planned}</td><td>${row.achieved}</td><td>${row.requestedNotPlanned}</td><td>${row.plannedNotAchieved}</td><td>${row.achievedNotPlanned}</td><td>${row.completion}%</td><td>${row.reviewItems}</td><td>${row.status}</td><td>${row.bookingStatus || "No booking"}</td></tr>`).join("") || `<tr><td colspan="19">No records match the selected filters.</td></tr>`;
+  document.getElementById("reportRows").innerHTML = rows.map(row => `<tr>${reportColumns.map(([field]) => `<td>${reportCellValue(row, field)}</td>`).join("")}</tr>`).join("") || `<tr><td colspan="19">No records match the selected filters.</td></tr>`;
 }
 
 function currentFilters() {
   return Object.fromEntries(filterDefs.map(([field]) => [field, reportFilterState[field] || "All"]));
+}
+
+function activeFilters() {
+  return filterDefs
+    .map(([field, label]) => [label, currentFilters()[field]])
+    .filter(([, value]) => value && value !== "All");
+}
+
+function filteredReportRows() {
+  const filters = currentFilters();
+  return state.reportRows.filter(row => Object.entries(filters).every(([field, value]) => value === "All" || String(row[field] || "").split(", ").includes(value)));
+}
+
+function reportCellValue(row, field) {
+  if (field === "completion") return `${row.completion}%`;
+  if (field === "bookingStatus") return row.bookingStatus || "No booking";
+  return row[field] ?? "";
+}
+
+function renderReportFilterSummary(rows) {
+  const active = activeFilters();
+  document.getElementById("reportFilterSummary").innerHTML = `<strong>Records shown: ${rows.length.toLocaleString("en-ZA")}</strong><span>Active filters: ${active.length ? active.map(([label, value]) => `${label} = ${value}`).join(", ") : "None"}</span>`;
 }
 
 function resetReportFiltersState() {
@@ -369,12 +398,66 @@ function hydrateReportFilters() {
 }
 
 function executiveSummaryText() {
+  if (document.getElementById("reports")?.classList.contains("active")) {
+    state.reportRows = buildRequestedPlannedAchievedReport(state);
+    const rows = filteredReportRows();
+    const hasFilters = activeFilters().length > 0;
+    return hasFilters
+      ? `Demo summary: the current filtered view shows ${rows.length.toLocaleString("en-ZA")} report rows covering requested training, planned WSP activity, achieved ATR activity, reporting gaps and review items. This is demo data only and is intended to support management review.`
+      : "Demo summary: the full demo report shows requested training, planned WSP activity, achieved ATR activity, reporting gaps and review items. This is demo data only and is intended to support management review.";
+  }
   return "Demo summary: the dashboard shows requested training, planned WSP activity, achieved ATR activity, reporting gaps and records needing review. The current focus areas are workbook demand, planned WSP activity, achieved ATR activity and records that need review before management reporting.";
 }
 
 function copyExecutiveSummary() {
   navigator.clipboard?.writeText(executiveSummaryText());
   alert("Executive summary copied.");
+}
+
+function reportRowsAsDelimited(rows, delimiter) {
+  const header = reportColumns.map(([, label]) => label).join(delimiter);
+  const body = rows.map(row => reportColumns.map(([field]) => String(reportCellValue(row, field)).replace(/\r?\n/g, " ")).join(delimiter));
+  return [header, ...body].join("\r\n");
+}
+
+function csvEscape(value) {
+  const text = String(value ?? "");
+  return /[",\r\n]/.test(text) ? `"${text.replace(/"/g, '""')}"` : text;
+}
+
+function reportRowsAsCsv(rows) {
+  const header = reportColumns.map(([, label]) => csvEscape(label)).join(",");
+  const body = rows.map(row => reportColumns.map(([field]) => csvEscape(reportCellValue(row, field))).join(","));
+  return `\uFEFF${[header, ...body].join("\r\n")}`;
+}
+
+function copyFilteredReport() {
+  state.reportRows = buildRequestedPlannedAchievedReport(state);
+  const rows = filteredReportRows();
+  if (!rows.length) {
+    alert("No filtered rows to copy.");
+    return;
+  }
+  navigator.clipboard?.writeText(reportRowsAsDelimited(rows, "\t"));
+  alert("Filtered report copied. Paste into Excel or email.");
+}
+
+function exportFilteredReport() {
+  state.reportRows = buildRequestedPlannedAchievedReport(state);
+  const rows = filteredReportRows();
+  if (!rows.length) {
+    alert("No records match the selected filters. Adjust filters before exporting.");
+    return;
+  }
+  const date = new Date().toISOString().slice(0, 10);
+  const blob = new Blob([reportRowsAsCsv(rows)], { type: "text/csv;charset=utf-8" });
+  const link = document.createElement("a");
+  link.href = URL.createObjectURL(blob);
+  link.download = `acsa-wsp-atr-filtered-report-${date}.csv`;
+  document.body.appendChild(link);
+  link.click();
+  URL.revokeObjectURL(link.href);
+  link.remove();
 }
 
 function sampleWorkbookRows() {
@@ -523,5 +606,7 @@ document.getElementById("resetReportFilters").addEventListener("click", () => {
 });
 document.getElementById("copyExecutiveSummaryOverview").addEventListener("click", copyExecutiveSummary);
 document.getElementById("copyExecutiveSummaryReports").addEventListener("click", copyExecutiveSummary);
+document.getElementById("copyFilteredReport").addEventListener("click", copyFilteredReport);
+document.getElementById("exportFilteredReport").addEventListener("click", exportFilteredReport);
 
 renderAll();

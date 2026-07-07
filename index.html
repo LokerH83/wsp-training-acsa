@@ -213,9 +213,10 @@
           <div><h2>Reports</h2><p>Requested / Suggested vs Planned WSP vs Achieved ATR.</p></div>
         </div>
         <div class="filters cluster-filters" id="reportFilters"></div>
+        <div class="report-export-summary" id="reportFilterSummary"></div>
         <div class="kpi-grid relationship-kpis" id="reportKpis"></div>
         <section class="panel table-panel">
-          <div class="panel-head"><h3>Management Matrix</h3><div class="report-actions"><button id="resetReportFilters">Reset Filters</button><button id="copyExecutiveSummaryReports">Copy Executive Summary</button></div></div>
+          <div class="panel-head"><div><h3>Management Matrix</h3><p>Exports use demo data only and reflect the currently selected filters.</p></div><div class="report-actions"><button id="resetReportFilters">Reset Filters</button><button id="copyExecutiveSummaryReports">Copy Executive Summary</button><button id="copyFilteredReport">Copy Filtered Table</button><button id="exportFilteredReport">Export Filtered Report</button></div></div>
           <div class="table-wrap"><table><thead><tr><th>Region / Cluster</th><th>Division</th><th>Department</th><th>Provider</th><th>Course / Intervention</th><th>Sex / Gender</th><th>Race</th><th>Age Band</th><th>Disability</th><th>Requested / Suggested</th><th>Planned WSP</th><th>Achieved ATR</th><th>Requested Not Planned</th><th>Planned Not Achieved</th><th>Achieved Not Planned</th><th>Completion %</th><th>Review Items</th><th>Status</th><th>Booking Status</th></tr></thead><tbody id="reportRows"></tbody></table></div>
         </section>
       </section>

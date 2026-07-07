@@ -16,6 +16,7 @@ Use `demo/README.md` as the clean demo pack. It contains the live links, Power A
 - Search people profiles
 - Search providers/courses
 - Filter reports
+- Export filtered report as Excel-ready CSV
 - Copy executive summary
 - Reset demo
 

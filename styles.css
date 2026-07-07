@@ -2558,6 +2558,35 @@ td {
   gap: 8px;
 }
 
+.report-export-summary {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px 18px;
+  margin: 0 0 12px;
+  padding: 10px 12px;
+  border: 1px solid #cfe4ec;
+  border-radius: 8px;
+  background: #f8fcff;
+  color: #34576a;
+  font-size: 12px;
+}
+
+.report-export-summary strong {
+  color: #07364d;
+  font-size: 13px;
+}
+
+.report-export-summary span {
+  min-width: 0;
+}
+
+.report-actions button {
+  min-height: 34px;
+  padding: 8px 10px;
+  font-size: 12px;
+}
+
 .filters select,
 .filters input,
 .search,

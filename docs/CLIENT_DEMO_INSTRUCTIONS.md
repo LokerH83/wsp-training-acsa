@@ -44,7 +44,10 @@ http://localhost:8092
 13. Open People Profiles and search for a demo employee.
 14. Open Reports.
 15. Filter by region, division, provider, race, sex/gender, age band or status.
-16. Copy the executive summary.
+16. Confirm the row count and active filter summary.
+17. Export the filtered report and open the CSV in Excel.
+18. Or copy the filtered table and paste it into Excel.
+19. Copy the executive summary.
 
 ## Safety Reminder
 

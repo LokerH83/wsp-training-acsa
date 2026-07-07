@@ -84,11 +84,15 @@ Show:
 - Filter by sex/gender.
 - Filter by age band.
 - Filter by disability.
+- Confirm the row count and active filters.
+- Export the filtered report as an Excel-ready CSV.
+- Open the exported CSV in Excel.
+- Or copy the filtered table and paste it into Excel.
 - Copy executive summary.
 
 Key message:
 
-“This is the management view. It supports quicker review of requested vs planned vs achieved training.”
+“This is the management view. It supports quicker review of requested vs planned vs achieved training, and it gives the SDF user a filtered extract for Excel or email.”
 
 ## 7. Close
 
