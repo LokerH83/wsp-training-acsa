@@ -2,7 +2,6 @@
 
 [![Power Platform Import](https://github.com/LokerH83/wsp-training-acsa/actions/workflows/pack_and_inject.yml/badge.svg)](https://github.com/LokerH83/wsp-training-acsa/actions/workflows/pack_and_inject.yml)
 [![Validation Workflow](https://github.com/LokerH83/wsp-training-acsa/actions/workflows/validate_powerplatform_export.yml/badge.svg)](https://github.com/LokerH83/wsp-training-acsa/actions/workflows/validate_powerplatform_export.yml)
-[![CI Lint](https://github.com/LokerH83/wsp-training-acsa/actions/workflows/ci-lint.yml/badge.svg)](https://github.com/LokerH83/wsp-training-acsa/actions/workflows/ci-lint.yml)
 [![Static Smoke Test](https://github.com/LokerH83/wsp-training-acsa/actions/workflows/static-site-smoke-test.yml/badge.svg)](https://github.com/LokerH83/wsp-training-acsa/actions/workflows/static-site-smoke-test.yml)
 
 Demo-safe ACSA WSP / ATR reporting dashboard showing workbook loading, provider/course search, training booking, people profiles and requested vs planned vs achieved reporting.

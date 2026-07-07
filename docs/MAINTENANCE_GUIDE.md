@@ -16,7 +16,6 @@ This guide helps keep the demo repo healthy and reliable.
 - `.github/workflows/preview-pages-build.yml`
 - `.github/workflows/validate_powerplatform_export.yml`
 - `.github/workflows/pack_and_inject.yml`
-- `.github/workflows/ci-lint.yml`
 - `docs/RELEASE_CHECKLIST.md`
 - `docs/WORKFLOW_OVERVIEW.md`
 - `docs/MAINTENANCE_GUIDE.md`

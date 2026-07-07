@@ -27,7 +27,7 @@ This repository uses GitHub Actions to support the demo and deployment process.
 
 - Validates the required Power Platform secrets.
 - Confirms the export artifact `exports/WSPTrainingManagementSystem_complete_solution.zip` exists.
-- Triggers on `push` to `main` and manual dispatch.
+- Triggers on manual dispatch and the scheduled daily check.
 
 ### `.github/workflows/preflight-export-validation.yml`
 
@@ -47,7 +47,7 @@ This repository uses GitHub Actions to support the demo and deployment process.
 - Authenticates to Power Platform using secrets.
 - Imports the verified solution artifact to the configured environment.
 - Retries the import up to three times.
-- Triggers on `push` to `main`, manual dispatch, and every day at 03:00 UTC.
+- Triggers on manual dispatch and every day at 03:00 UTC.
 
 ## Required Secrets
 
@@ -61,7 +61,7 @@ The following repository secrets must be configured for the import workflows:
 ## Demo status
 
 - Public static demo: https://lokerh83.github.io/wsp-training-acsa/
-- Workflow status badges are displayed on the repository `README.md`.
+- Workflow status badges for import, validation and smoke testing are displayed on the repository `README.md`.
 - The live workflow runs can be viewed under `Actions`.
 
 ## Handoff notes
