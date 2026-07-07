@@ -13,8 +13,16 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Install Power Platform tools
-        uses: microsoft/powerplatform-actions/actions-install@v1
+      - name: Install PAC CLI
+        shell: pwsh
+        run: |
+          dotnet tool update --global Microsoft.PowerApps.CLI.Tool
+          if($LASTEXITCODE -ne 0) {
+            dotnet tool install --global Microsoft.PowerApps.CLI.Tool
+          }
+          "$env:USERPROFILE\.dotnet\tools" | Out-File -FilePath $env:GITHUB_PATH -Append
+          $env:Path = "$env:USERPROFILE\.dotnet\tools;$env:Path"
+          pac --version
 
       - name: Confirm solution export exists
         shell: pwsh
