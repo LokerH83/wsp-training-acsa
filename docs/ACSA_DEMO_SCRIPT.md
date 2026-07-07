@@ -51,6 +51,7 @@ Show:
 - Add planned WSP item.
 - Search provider/course.
 - Use selected course.
+- Add booking details such as preferred training window, training date, delivery mode, booking status and evidence requirement.
 - Book training.
 - Record ATR.
 
@@ -85,6 +86,7 @@ Show:
 - Filter by age band.
 - Filter by disability.
 - Confirm the row count and active filters.
+- Confirm the report coverage. If exact dates are not available, explain that the demo shows available quarter/period coverage instead.
 - Export the filtered report as an Excel-ready CSV.
 - Open the exported CSV in Excel.
 - Or copy the filtered table and paste it into Excel.
@@ -92,7 +94,7 @@ Show:
 
 Key message:
 
-“This is the management view. It supports quicker review of requested vs planned vs achieved training, and it gives the SDF user a filtered extract for Excel or email.”
+“This is the management view. It supports quicker review of requested vs planned vs achieved training, shows what period the current view covers, and gives the SDF user a filtered extract for Excel or email.”
 
 ## 7. Close
 

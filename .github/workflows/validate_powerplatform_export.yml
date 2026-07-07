@@ -1,0 +1,59 @@
+name: Validate Power Platform export artifact
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+
+jobs:
+  validate:
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Validate export artifact and secrets
+        shell: pwsh
+        env:
+          PP_ENVIRONMENT: ${{ secrets.PP_ENVIRONMENT }}
+          PP_CLIENT_ID: ${{ secrets.PP_CLIENT_ID }}
+          PP_CLIENT_SECRET: ${{ secrets.PP_CLIENT_SECRET }}
+          PP_TENANT_ID: ${{ secrets.PP_TENANT_ID }}
+        run: |
+          $ErrorActionPreference = 'Stop'
+
+          $missing = @()
+          if(-not $env:PP_ENVIRONMENT) { $missing += 'PP_ENVIRONMENT' }
+          if(-not $env:PP_CLIENT_ID) { $missing += 'PP_CLIENT_ID' }
+          if(-not $env:PP_CLIENT_SECRET) { $missing += 'PP_CLIENT_SECRET' }
+          if(-not $env:PP_TENANT_ID) { $missing += 'PP_TENANT_ID' }
+          if($missing.Count -gt 0) {
+            throw "Missing required Power Platform secrets: $($missing -join ', ')"
+          }
+
+          $solution = Join-Path $env:GITHUB_WORKSPACE 'exports\WSPTrainingManagementSystem_complete_solution.zip'
+          if(-not (Test-Path $solution)) {
+            throw "Expected solution export not found at: $solution"
+          }
+
+          $item = Get-Item $solution
+          Write-Host "Validated solution export found: $solution"
+          Write-Host "solution_size_bytes=$($item.Length)"
+
+          $environmentTarget = $env:PP_ENVIRONMENT.Trim()
+          $guidValue = [Guid]::Empty
+          if([Guid]::TryParse($environmentTarget, [ref]$guidValue)) {
+            Write-Host 'PP_ENVIRONMENT is a valid GUID environment ID.'
+          } else {
+            try {
+              $environmentUri = [Uri]$environmentTarget
+              if(-not $environmentUri.Host) {
+                throw 'PP_ENVIRONMENT must be an absolute URL or environment ID.'
+              }
+              Write-Host "PP_ENVIRONMENT is a valid URL: $environmentTarget"
+            } catch {
+              throw 'PP_ENVIRONMENT must be a valid environment ID or URL.'
+            }
+          }

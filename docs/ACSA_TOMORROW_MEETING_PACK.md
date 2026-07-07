@@ -12,6 +12,8 @@ The demo is a proof of concept showing how workbook-based SDF data can be moved 
 - training booking
 - employee profiles
 - requested vs planned vs achieved reporting
+- report coverage / period review
+- filtered Excel-ready report export
 - executive summary output
 
 The demo uses synthetic data only and is not a production system.
@@ -80,6 +82,14 @@ docs/DEPLOYMENT_NOTES.md
 
 Purpose:
 Explains local/static/GitHub Pages setup status and production boundaries.
+
+## 8. Product Planning Pack
+
+File:
+docs/product-planning/ONE_NOTE_MASTER_GUIDE.md
+
+Purpose:
+OneNote-friendly product planning guide covering what has been done, what still needs to be done, and the next pilot step.
 
 ## Recommended Meeting Flow
 

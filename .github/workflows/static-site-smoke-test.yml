@@ -1,0 +1,38 @@
+name: Static Site Smoke Test
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  smoke-test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Start local static site
+        run: |
+          python3 -m http.server 8092 &
+          echo $! > server.pid
+          sleep 3
+
+      - name: Verify index page responds
+        run: |
+          HTTP_CODE=$(curl -s -o /dev/null -w "%{http_code}" http://127.0.0.1:8092/index.html)
+          if [ "$HTTP_CODE" != "200" ]; then
+            echo "Expected HTTP 200, got $HTTP_CODE"
+            exit 1
+          fi
+          curl -s http://127.0.0.1:8092/index.html | grep -q "WSP Training"
+
+      - name: Stop local server
+        if: always()
+        run: |
+          if [ -f server.pid ]; then
+            kill "$(cat server.pid)" || true
+          fi

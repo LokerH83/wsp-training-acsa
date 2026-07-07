@@ -1,0 +1,32 @@
+name: Preview Pages build
+
+on:
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  build-preview:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Build preview artifact
+        run: |
+          rm -rf public
+          mkdir -p public/data public/assets public/sample-workbooks
+          cp index.html public/
+          cp styles.css public/
+          cp app.js public/
+          cp -r data/* public/data/
+          cp -r assets/* public/assets/
+          cp -r sample-workbooks/* public/sample-workbooks/
+
+      - name: Upload preview artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: pages-preview-artifact
+          path: public

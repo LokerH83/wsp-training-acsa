@@ -1,0 +1,28 @@
+name: Workflow failure notification
+
+on:
+  workflow_run:
+    workflows:
+      - pages build and deployment
+      - Validate Power Platform export artifact
+      - Import Verified Power Apps Export
+      - Preview Pages build
+      - CI Lint
+    types:
+      - completed
+
+jobs:
+  notify:
+    if: ${{ github.event.workflow_run.conclusion == 'failure' }}
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Send Slack notification
+        if: ${{ secrets.SLACK_WEBHOOK_URL != '' }}
+        run: |
+          payload=$(jq -n --arg repo "${{ github.repository }}" \
+            --arg workflow "${{ github.event.workflow_run.name }}" \
+            --arg conclusion "${{ github.event.workflow_run.conclusion }}" \
+            --arg url "${{ github.event.workflow_run.html_url }}" \
+            '{"text": "Workflow failure: *' + $workflow + '*\nRepository: ' + $repo + '\nConclusion: ' + $conclusion + '\nRun: ' + $url + '"}')
+          curl -X POST -H 'Content-Type: application/json' --data "$payload" "${{ secrets.SLACK_WEBHOOK_URL }}"
