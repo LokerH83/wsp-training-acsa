@@ -357,6 +357,50 @@ h3 { font-size: 16px; }
   align-self: end;
   min-height: 39px;
 }
+.booking-detail-fields {
+  grid-column: 1 / -1;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px 12px;
+  margin: 4px 0 2px;
+  padding: 12px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: #f8fcff;
+}
+.booking-detail-fields legend {
+  padding: 0 6px;
+  color: var(--navy);
+  font-weight: 800;
+}
+.booking-detail-fields p {
+  grid-column: 1 / -1;
+  margin: 0;
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.5;
+}
+.form-panel .booking-detail-fields {
+  grid-template-columns: 1fr;
+}
+.form-panel .planning-options {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+.form-panel .scheduling-options {
+  grid-template-columns: 1fr;
+}
+.booking-notes {
+  grid-column: 1 / -1;
+}
+textarea {
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  min-height: 72px;
+  padding: 8px 10px;
+  resize: vertical;
+  font: inherit;
+  color: var(--ink);
+}
 select, input {
   border: 1px solid var(--line);
   border-radius: 6px;
@@ -525,6 +569,17 @@ th { background: #f7f9fd; color: #25304c; font-weight: 700; }
 }
 .form-panel { display: grid; gap: 13px; align-content: start; }
 label { display: grid; gap: 6px; font-weight: 600; font-size: 13px; }
+#trainingForm.form-panel {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+#trainingForm .inherited-fields,
+#trainingForm .booking-detail-fields,
+#trainingForm .primary {
+  grid-column: 1 / -1;
+}
+#trainingForm > label:nth-of-type(5) {
+  grid-column: 1 / -1;
+}
 .primary {
   border: 0;
   background: linear-gradient(135deg, var(--blue), var(--navy));
@@ -2579,6 +2634,28 @@ td {
 
 .report-export-summary span {
   min-width: 0;
+}
+
+.report-coverage {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px 14px;
+  margin: 0 0 14px;
+  padding: 12px;
+  border: 1px solid #cfe4ec;
+  border-radius: 8px;
+  background: #ffffff;
+  color: #34576a;
+  font-size: 12px;
+}
+
+.report-coverage div,
+.report-coverage span {
+  min-width: 0;
+}
+
+.report-coverage strong {
+  color: #07364d;
 }
 
 .report-actions button {

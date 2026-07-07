@@ -9,6 +9,7 @@ let overviewFilterState = { quarter: "All", provider: "All" };
 const currency = new Intl.NumberFormat("en-ZA", { style: "currency", currency: "ZAR", maximumFractionDigits: 0 });
 const requiredColumns = ["Employee Number","Employee Name","ID Number","Region / Cluster","Division","Department","Sex / Gender","Race","Age","Age Band","Disability","Course / Intervention","Requested / Suggested","Planned WSP","Achieved ATR","Provider","Quarter / Date","Planned Cost","Actual Cost","Evidence Status","Review Status"];
 const filterDefs = [
+  ["period", "Quarter / Period"],
   ["regionCluster", "Region / Cluster"], ["division", "Division"], ["department", "Department"], ["provider", "Provider"],
   ["course", "Course / Intervention"], ["sexGender", "Sex / Gender"], ["race", "Race"], ["ageBand", "Age Band"],
   ["disability", "Disability"], ["status", "Status"], ["bookingStatus", "Booking Status"]
@@ -77,6 +78,10 @@ function mask(value) {
   return text.length <= 4 ? text : `${"*".repeat(text.length - 4)}${text.slice(-4)}`;
 }
 
+function friendly(value, placeholder = "Not specified") {
+  return value === undefined || value === null || value === "" || Number.isNaN(value) ? placeholder : value;
+}
+
 function recordKey(row) {
   return [row.employeeNumber, row.course, row.provider, String(row.period || "").slice(0, 7)].join("|").toLowerCase();
 }
@@ -90,8 +95,8 @@ function buildRequestedPlannedAchievedReport(source) {
   const planKeys = new Set(source.plans.map(recordKey));
   const actualKeys = new Set(source.actuals.map(recordKey));
   const people = new Map(source.employees.map(person => [person.employeeNumber, person]));
-  const bookingStatuses = new Map((source.bookings || []).map(booking => [recordKey(booking), booking.bookingStatus]));
-  const planBookingStatuses = new Map((source.bookings || []).filter(booking => booking.planId).map(booking => [booking.planId, booking.bookingStatus]));
+  const bookingStatuses = new Map((source.bookings || []).map(booking => [recordKey(booking), normalizeBookingStatus(booking.bookingStatus)]));
+  const planBookingStatuses = new Map((source.bookings || []).filter(booking => booking.planId).map(booking => [booking.planId, normalizeBookingStatus(booking.bookingStatus)]));
   const groups = new Map();
   const add = (record, type) => {
     const person = people.get(record.employeeNumber) || {};
@@ -100,8 +105,9 @@ function buildRequestedPlannedAchievedReport(source) {
     const current = groups.get(key) || {
       regionCluster: row.regionCluster, division: row.division, department: row.department, provider: row.provider, course: row.course,
       sexGender: row.sexGender, race: row.race, ageBand: row.ageBand, disability: row.disability,
-      requested: 0, planned: 0, achieved: 0, requestedNotPlanned: 0, plannedNotAchieved: 0, achievedNotPlanned: 0, reviewItems: 0, bookingStatus: ""
+      requested: 0, planned: 0, achieved: 0, requestedNotPlanned: 0, plannedNotAchieved: 0, achievedNotPlanned: 0, reviewItems: 0, bookingStatus: "", period: ""
     };
+    if (row.period && !String(current.period).split(", ").includes(row.period)) current.period = current.period ? `${current.period}, ${row.period}` : row.period;
     const keyValue = recordKey(record);
     if (type === "request") {
       current.requested += 1;
@@ -143,11 +149,17 @@ function summary(rows = state.reportRows) {
 function bookingSummary(bookings = state.bookings || []) {
   const today = new Date().toISOString().slice(0, 10);
   return {
-    booked: bookings.filter(b => b.bookingStatus === "Booked").length,
-    upcoming: bookings.filter(b => ["Draft","Booked"].includes(b.bookingStatus) && b.date >= today).length,
-    completed: bookings.filter(b => b.bookingStatus === "Completed").length,
-    missed: bookings.filter(b => b.bookingStatus === "Attendance To Confirm").length
+    booked: bookings.filter(b => normalizeBookingStatus(b.bookingStatus) === "Booked").length,
+    upcoming: bookings.filter(b => ["Proposed","Booked"].includes(normalizeBookingStatus(b.bookingStatus)) && (b.date || "") >= today).length,
+    completed: bookings.filter(b => normalizeBookingStatus(b.bookingStatus) === "Completed").length,
+    missed: bookings.filter(b => normalizeBookingStatus(b.bookingStatus) === "Missed / Needs Justification").length
   };
+}
+
+function normalizeBookingStatus(status) {
+  if (status === "Draft") return "Proposed";
+  if (status === "Attendance To Confirm") return "Missed / Needs Justification";
+  return status || "Not booked";
 }
 
 function quarterFromPeriod(value) {
@@ -244,7 +256,7 @@ function renderOverview() {
     ["Review status", "Needs Review"]
   ].map(([label, value]) => `<article class="kpi"><span>${label}</span><strong>${value}</strong><small>demo planning estimate</small></article>`).join("");
   document.getElementById("bookingKpis").innerHTML = [
-    ["Booked Training", b.booked], ["Upcoming Sessions", b.upcoming], ["Completed Bookings", b.completed], ["Attendance To Confirm", b.missed]
+    ["Booked Training", b.booked], ["Upcoming Sessions", b.upcoming], ["Completed Bookings", b.completed], ["Missed / Needs Justification", b.missed]
   ].map(([label, value]) => `<article class="summary-tile"><span>${label}</span><strong>${value}</strong><small>demo bookings</small></article>`).join("");
   document.getElementById("relationshipBars").innerHTML = [
     ["Requested / Suggested", s.requested, "#0067a0"], ["Planned WSP", s.planned, "#0b7f46"], ["Achieved ATR", s.achieved, "#6f4bb7"]
@@ -274,12 +286,13 @@ function renderTraining() {
   if (selectedEmployeeNumber) form.employeeNumber.value = selectedEmployeeNumber;
   form.provider.innerHTML = state.providers.map(p => `<option>${p.provider}</option>`).join("");
   form.course.innerHTML = state.courses.map(c => `<option>${c.course}</option>`).join("");
+  updateTrainingBookingDefaults(true);
   updateInheritedFields();
   hydrateProviderFilters();
   renderCourseResults();
   renderBookingForm();
   renderBookingRows();
-  document.getElementById("trainingRows").innerHTML = [...state.requests.map(r => ["Request", r]), ...state.plans.map(r => ["Plan", r]), ...state.actuals.map(r => ["ATR", r])].slice(-12).reverse().map(([type,row]) => `<tr><td>${type}</td><td>${employee(row.employeeNumber).employeeName}</td><td>${row.course}</td><td>${row.provider}</td><td>${row.period}</td><td>${row.status || row.evidenceStatus || "Clean"}</td></tr>`).join("");
+  document.getElementById("trainingRows").innerHTML = [...state.requests.map(r => ["Request", r]), ...state.plans.map(r => ["Plan", r]), ...state.actuals.map(r => ["ATR", r])].slice(-12).reverse().map(([type,row]) => `<tr><td>${type}</td><td>${friendly(employee(row.employeeNumber).employeeName, "Demo employee")}</td><td>${friendly(row.course)}</td><td>${friendly(row.provider)}</td><td>${friendly(row.period, "Date to be confirmed")}</td><td>${friendly(row.status || row.evidenceStatus, "Clean")}</td></tr>`).join("");
 }
 
 function renderBookingForm() {
@@ -297,8 +310,23 @@ function updateBookingFields() {
   form.provider.value = plan.provider || "";
   form.course.value = plan.course || "";
   if (plan.employeeNumber && (!form.employeeNumber.value || form.employeeNumber.value.startsWith("COHORT:"))) form.employeeNumber.value = plan.employeeNumber;
-  if (!form.date.value) form.date.value = "2026-08-18";
+  if (!form.preferredWindow.value) form.preferredWindow.value = "Next month";
+  if (!form.bookingStatus.value || form.bookingStatus.value === "Not booked") form.bookingStatus.value = "Proposed";
   if (!form.location.value) form.location.value = plan.provider?.includes("Digital") ? "Online meeting link" : "Demo Training Room 1";
+}
+
+function updateTrainingBookingDefaults(force = false) {
+  const form = document.getElementById("trainingForm");
+  const type = form.recordType.value;
+  const defaults = {
+    request: { preferredWindow: "Date to be confirmed", bookingStatus: "Not booked", evidenceRequired: "Not confirmed" },
+    plan: { preferredWindow: "Next month", bookingStatus: "Proposed", evidenceRequired: "Attendance register" },
+    actual: { preferredWindow: "Date to be confirmed", bookingStatus: "Completed", evidenceRequired: "Certificate" }
+  }[type];
+  if (!defaults) return;
+  if (force || !form.preferredWindow.dataset.touched) form.preferredWindow.value = defaults.preferredWindow;
+  if (force || !form.bookingStatus.dataset.touched) form.bookingStatus.value = defaults.bookingStatus;
+  if (force || !form.evidenceRequired.dataset.touched) form.evidenceRequired.value = defaults.evidenceRequired;
 }
 
 function renderBookingRows() {
@@ -306,7 +334,9 @@ function renderBookingRows() {
     const person = employee(booking.employeeNumber);
     const name = booking.groupName || person.employeeName || "Demo cohort";
     const atr = state.actuals.some(row => row.employeeNumber === booking.employeeNumber && row.provider === booking.provider && row.course === booking.course) ? "ATR captured" : "Pending ATR";
-    return `<tr><td>${booking.bookingStatus}</td><td>${name}</td><td>${booking.provider}</td><td>${booking.course}</td><td>${booking.date}</td><td>${booking.startTime} - ${booking.endTime}</td><td>${booking.deliveryMode}</td><td>${booking.location}</td><td>${booking.reminderStatus}</td><td>${atr}</td><td><button class="table-action" data-booking-complete="${booking.id}">Mark Completed</button> <button class="table-action" data-booking-atr="${booking.id}">Record ATR</button> <button class="table-action" data-booking-missed="${booking.id}">Mark Missed</button></td></tr>`;
+    const dateOrWindow = booking.date || booking.preferredWindow || "Date to be confirmed";
+    const time = booking.startTime || booking.endTime ? `${friendly(booking.startTime, "09:00")} - ${friendly(booking.endTime, "12:00")}` : "Not specified";
+    return `<tr><td>${normalizeBookingStatus(booking.bookingStatus)}</td><td>${friendly(name, "Demo cohort")}</td><td>${friendly(booking.provider)}</td><td>${friendly(booking.course)}</td><td>${friendly(booking.preferredWindow, "Date to be confirmed")}</td><td>${friendly(dateOrWindow, "Date to be confirmed")}</td><td>${time}</td><td>${friendly(booking.deliveryMode)}</td><td>${friendly(booking.location || booking.venueLink)}</td><td>${friendly(booking.reminderStatus, "Not sent")}</td><td>${friendly(booking.evidenceRequired, "Not confirmed")}</td><td>${atr}</td><td><button class="table-action" data-booking-complete="${booking.id}">Mark Completed</button> <button class="table-action" data-booking-atr="${booking.id}">Record ATR</button> <button class="table-action" data-booking-missed="${booking.id}">Mark Missed</button></td></tr>`;
   }).join("");
 }
 
@@ -343,7 +373,7 @@ function renderPeople() {
   const plans = state.plans.filter(r => r.employeeNumber === p.employeeNumber);
   const bookings = (state.bookings || []).filter(r => r.employeeNumber === p.employeeNumber);
   const actuals = state.actuals.filter(r => r.employeeNumber === p.employeeNumber);
-  document.getElementById("personProfile").innerHTML = `<h2>${p.employeeName}</h2><p>${p.department} - ${p.regionCluster}</p><dl class="info-list"><div><dt>Employee Number</dt><dd>${mask(p.employeeNumber)}</dd></div><div><dt>ID Number</dt><dd>${mask(p.idNumber)}</dd></div><div><dt>Region / Cluster</dt><dd>${p.regionCluster}</dd></div><div><dt>Division</dt><dd>${p.division}</dd></div><div><dt>Department</dt><dd>${p.department}</dd></div><div><dt>Sex / Gender</dt><dd>${p.sexGender}</dd></div><div><dt>Race</dt><dd>${p.race}</dd></div><div><dt>Age</dt><dd>${p.age}</dd></div><div><dt>Age Band</dt><dd>${p.ageBand}</dd></div><div><dt>Disability</dt><dd>${p.disability}</dd></div></dl><div class="profile-note">Requested: ${req.length} | Planned: ${plans.length} | Bookings: ${bookings.length} | Achieved: ${actuals.length}</div><div class="table-wrap"><table><thead><tr><th>Type</th><th>Course</th><th>Provider</th><th>Evidence / Review Status</th></tr></thead><tbody>${[...req.map(r=>["Requested / Suggested",r]),...plans.map(r=>["Planned WSP",r]),...actuals.map(r=>["Achieved ATR",r])].map(([type,row])=>`<tr><td>${type}</td><td>${row.course}</td><td>${row.provider}</td><td>${row.evidenceStatus || row.status || "Clean"}</td></tr>`).join("")}</tbody></table></div><section class="profile-card"><div class="compact-head"><h3>Training Bookings</h3></div><div class="table-wrap"><table><thead><tr><th>Course</th><th>Provider</th><th>Date</th><th>Status</th><th>Reminder Status</th></tr></thead><tbody>${bookings.map(row => `<tr><td>${row.course}</td><td>${row.provider}</td><td>${row.date}</td><td>${row.bookingStatus}</td><td>${row.reminderStatus}</td></tr>`).join("") || `<tr><td colspan="5">No bookings for this demo profile.</td></tr>`}</tbody></table></div></section>`;
+  document.getElementById("personProfile").innerHTML = `<h2>${p.employeeName}</h2><p>${p.department} - ${p.regionCluster}</p><dl class="info-list"><div><dt>Employee Number</dt><dd>${mask(p.employeeNumber)}</dd></div><div><dt>ID Number</dt><dd>${mask(p.idNumber)}</dd></div><div><dt>Region / Cluster</dt><dd>${p.regionCluster}</dd></div><div><dt>Division</dt><dd>${p.division}</dd></div><div><dt>Department</dt><dd>${p.department}</dd></div><div><dt>Sex / Gender</dt><dd>${p.sexGender}</dd></div><div><dt>Race</dt><dd>${p.race}</dd></div><div><dt>Age</dt><dd>${p.age}</dd></div><div><dt>Age Band</dt><dd>${p.ageBand}</dd></div><div><dt>Disability</dt><dd>${p.disability}</dd></div></dl><div class="profile-note">Requested: ${req.length} | Planned: ${plans.length} | Bookings: ${bookings.length} | Achieved: ${actuals.length}</div><div class="table-wrap"><table><thead><tr><th>Type</th><th>Course</th><th>Provider</th><th>Evidence / Review Status</th></tr></thead><tbody>${[...req.map(r=>["Requested / Suggested",r]),...plans.map(r=>["Planned WSP",r]),...actuals.map(r=>["Achieved ATR",r])].map(([type,row])=>`<tr><td>${type}</td><td>${friendly(row.course)}</td><td>${friendly(row.provider)}</td><td>${friendly(row.evidenceStatus || row.status, "Clean")}</td></tr>`).join("")}</tbody></table></div><section class="profile-card"><div class="compact-head"><h3>Training Bookings</h3></div><div class="table-wrap"><table><thead><tr><th>Course</th><th>Provider</th><th>Preferred Window</th><th>Training Date</th><th>Booking Status</th><th>Delivery Mode</th><th>Evidence Required</th></tr></thead><tbody>${bookings.map(row => `<tr><td>${friendly(row.course)}</td><td>${friendly(row.provider)}</td><td>${friendly(row.preferredWindow, "Date to be confirmed")}</td><td>${friendly(row.date, "Date to be confirmed")}</td><td>${normalizeBookingStatus(row.bookingStatus)}</td><td>${friendly(row.deliveryMode)}</td><td>${friendly(row.evidenceRequired, "Not confirmed")}</td></tr>`).join("") || `<tr><td colspan="7">No bookings for this demo profile.</td></tr>`}</tbody></table></div></section>`;
 }
 
 function renderReports() {
@@ -351,6 +381,7 @@ function renderReports() {
   hydrateReportFilters();
   const rows = filteredReportRows();
   renderReportFilterSummary(rows);
+  renderReportCoverage(rows);
   document.getElementById("reportKpis").innerHTML = kpiHtml(summary(rows));
   document.getElementById("reportRows").innerHTML = rows.map(row => `<tr>${reportColumns.map(([field]) => `<td>${reportCellValue(row, field)}</td>`).join("")}</tr>`).join("") || `<tr><td colspan="19">No records match the selected filters.</td></tr>`;
 }
@@ -379,6 +410,82 @@ function reportCellValue(row, field) {
 function renderReportFilterSummary(rows) {
   const active = activeFilters();
   document.getElementById("reportFilterSummary").innerHTML = `<strong>Records shown: ${rows.length.toLocaleString("en-ZA")}</strong><span>Active filters: ${active.length ? active.map(([label, value]) => `${label} = ${value}`).join(", ") : "None"}</span>`;
+}
+
+function uniqueSorted(values) {
+  return Array.from(new Set(values.filter(Boolean))).sort();
+}
+
+function rowPeriods(row) {
+  return String(row.period || "").split(", ").map(value => value.trim()).filter(Boolean);
+}
+
+function parseReportDate(value) {
+  const text = String(value || "").trim();
+  if (!/^\d{4}-\d{2}(-\d{2})?$/.test(text)) return null;
+  const date = new Date(text.length === 7 ? `${text}-01T00:00:00` : `${text}T00:00:00`);
+  return Number.isNaN(date.getTime()) ? null : date;
+}
+
+function monthKey(date) {
+  return date.toISOString().slice(0, 7);
+}
+
+function monthLabel(key) {
+  const date = new Date(`${key}-01T00:00:00`);
+  return date.toLocaleDateString("en-ZA", { month: "short", year: "numeric" });
+}
+
+function monthsBetween(startKey, endKey) {
+  const months = [];
+  const cursor = new Date(`${startKey}-01T00:00:00`);
+  const end = new Date(`${endKey}-01T00:00:00`);
+  while (cursor <= end) {
+    months.push(monthKey(cursor));
+    cursor.setMonth(cursor.getMonth() + 1);
+  }
+  return months;
+}
+
+function reportCoverage(rows) {
+  const dates = rows.flatMap(row => rowPeriods(row).map(parseReportDate)).filter(Boolean).sort((a, b) => a - b);
+  const periods = uniqueSorted(rows.flatMap(rowPeriods));
+  const quarters = uniqueSorted(periods.map(quarterFromPeriod).filter(value => /^Q[1-4]$/.test(value)));
+  if (!dates.length) {
+    return {
+      hasDateRange: false,
+      rows: rows.length,
+      quarters,
+      exportDate: new Date().toISOString().slice(0, 10)
+    };
+  }
+  const first = dates[0];
+  const last = dates[dates.length - 1];
+  const includedMonths = uniqueSorted(dates.map(monthKey));
+  const expectedMonths = monthsBetween(monthKey(first), monthKey(last));
+  const missingMonths = expectedMonths.filter(key => !includedMonths.includes(key));
+  return {
+    hasDateRange: true,
+    rows: rows.length,
+    earliest: monthKey(first),
+    latest: monthKey(last),
+    includedMonths,
+    missingMonths,
+    quarters,
+    years: uniqueSorted(dates.map(date => String(date.getFullYear()))),
+    exportDate: new Date().toISOString().slice(0, 10)
+  };
+}
+
+function renderReportCoverage(rows) {
+  const coverage = reportCoverage(rows);
+  const dateText = coverage.hasDateRange
+    ? `${monthLabel(coverage.earliest)} to ${monthLabel(coverage.latest)}`
+    : "Date coverage not available from current demo fields.";
+  const monthText = coverage.hasDateRange
+    ? `<span><strong>Months included:</strong> ${coverage.includedMonths.map(monthLabel).join(", ")}</span><span><strong>Missing months:</strong> ${coverage.missingMonths.length ? coverage.missingMonths.map(monthLabel).join(", ") : "None"}</span>`
+    : "";
+  document.getElementById("reportCoverage").innerHTML = `<div><strong>Report coverage:</strong> ${dateText}</div>${monthText}<span><strong>Quarter coverage:</strong> ${coverage.quarters.length ? coverage.quarters.join(", ") : "Not available"}</span>${coverage.years?.length ? `<span><strong>Year coverage:</strong> ${coverage.years.join(", ")}</span>` : ""}<span><strong>Rows included:</strong> ${coverage.rows.toLocaleString("en-ZA")}</span><span><strong>Export date:</strong> ${coverage.exportDate}</span>`;
 }
 
 function resetReportFiltersState() {
@@ -449,11 +556,12 @@ function exportFilteredReport() {
     alert("No records match the selected filters. Adjust filters before exporting.");
     return;
   }
-  const date = new Date().toISOString().slice(0, 10);
+  const coverage = reportCoverage(rows);
+  const date = coverage.hasDateRange ? `${coverage.earliest}-to-${coverage.latest}` : coverage.exportDate;
   const blob = new Blob([reportRowsAsCsv(rows)], { type: "text/csv;charset=utf-8" });
   const link = document.createElement("a");
   link.href = URL.createObjectURL(blob);
-  link.download = `acsa-wsp-atr-filtered-report-${date}.csv`;
+  link.download = `acsa-wsp-atr-report-${date}.csv`;
   document.body.appendChild(link);
   link.click();
   URL.revokeObjectURL(link.href);
@@ -503,9 +611,15 @@ document.addEventListener("click", event => {
   const courseButton = event.target.closest("[data-use-course]");
   if (courseButton) {
     const course = state.courses.find(c => c.id === courseButton.dataset.useCourse);
-    document.getElementById("trainingForm").provider.value = course.provider;
-    document.getElementById("trainingForm").course.value = course.course;
-    document.getElementById("trainingForm").recordType.value = "plan";
+    const form = document.getElementById("trainingForm");
+    form.provider.value = course.provider;
+    form.course.value = course.course;
+    form.recordType.value = "plan";
+    if (course.deliveryMode) form.deliveryMode.value = course.deliveryMode;
+    if (course.evidenceRequired) form.evidenceRequired.value = course.evidenceRequired;
+    form.deliveryMode.dataset.touched = "true";
+    form.evidenceRequired.dataset.touched = "true";
+    updateTrainingBookingDefaults();
     setView("training");
   }
   const completeButton = event.target.closest("[data-booking-complete]");
@@ -518,7 +632,7 @@ document.addEventListener("click", event => {
   const missedButton = event.target.closest("[data-booking-missed]");
   if (missedButton) {
     const booking = state.bookings.find(item => item.id === missedButton.dataset.bookingMissed);
-    if (booking) booking.bookingStatus = "Attendance To Confirm";
+    if (booking) booking.bookingStatus = "Missed / Needs Justification";
     saveState();
     renderAll();
   }
@@ -532,6 +646,9 @@ document.addEventListener("click", event => {
       form.provider.value = booking.provider;
       form.course.value = booking.course;
       form.period.value = booking.date;
+      form.trainingDate.value = booking.date || "";
+      form.bookingStatus.value = "Completed";
+      form.evidenceRequired.value = booking.evidenceRequired || "Certificate";
       updateInheritedFields();
       setView("training");
     }
@@ -539,18 +656,74 @@ document.addEventListener("click", event => {
   const person = event.target.closest("[data-person]");
   if (person) { selectedEmployeeNumber = person.dataset.person; renderPeople(); }
 });
-document.getElementById("trainingForm").addEventListener("change", event => { if (event.target.name === "employeeNumber") updateInheritedFields(); });
+document.getElementById("trainingForm").addEventListener("change", event => {
+  if (event.target.name === "employeeNumber") updateInheritedFields();
+  if (["preferredWindow","bookingStatus","evidenceRequired"].includes(event.target.name)) event.target.dataset.touched = "true";
+  if (event.target.name === "recordType") updateTrainingBookingDefaults();
+});
 document.getElementById("bookingForm").addEventListener("change", event => {
   if (event.target.name === "planId") updateBookingFields();
 });
 document.getElementById("trainingForm").addEventListener("submit", event => {
   event.preventDefault();
   const data = Object.fromEntries(new FormData(event.currentTarget));
-  const record = { id: crypto.randomUUID(), employeeNumber: data.employeeNumber, provider: data.provider, course: data.course, period: data.period, cost: Number(data.cost || 0), hours: Number(data.hours || 0), status: "Clean", evidenceStatus: "Evidence ready" };
+  const recordPeriod = data.recordType === "actual" && data.trainingDate ? data.trainingDate : data.period;
+  const record = {
+    id: crypto.randomUUID(),
+    employeeNumber: data.employeeNumber,
+    provider: data.provider,
+    course: data.course,
+    period: recordPeriod,
+    cost: Number(data.cost || 0),
+    hours: Number(data.hours || 0),
+    status: "Clean",
+    evidenceStatus: data.evidenceRequired || "Evidence ready",
+    preferredWindow: data.preferredWindow,
+    bookingStatus: data.bookingStatus,
+    deliveryMode: data.deliveryMode,
+    evidenceRequired: data.evidenceRequired,
+    trainingDate: data.trainingDate,
+    startTime: data.startTime,
+    endTime: data.endTime,
+    venueLink: data.venueLink,
+    reminderStatus: data.reminderStatus,
+    bookingNotes: data.bookingNotes
+  };
   if (data.recordType === "request") state.requests.push(record);
   if (data.recordType === "plan") state.plans.push(record);
   if (data.recordType === "actual") state.actuals.push(record);
+  const hasBookingDetails = data.bookingStatus !== "Not booked" || data.trainingDate || data.venueLink || data.bookingNotes || data.preferredWindow !== "Date to be confirmed";
+  if (hasBookingDetails) {
+    const booking = {
+      id: crypto.randomUUID(),
+      planId: data.recordType === "plan" ? record.id : "",
+      employeeNumber: data.employeeNumber,
+      groupName: "",
+      provider: data.provider,
+      course: data.course,
+      period: data.trainingDate || data.period,
+      preferredWindow: data.preferredWindow,
+      date: data.trainingDate,
+      startTime: data.startTime,
+      endTime: data.endTime,
+      deliveryMode: data.deliveryMode,
+      location: data.venueLink,
+      venueLink: data.venueLink,
+      reminderStatus: data.reminderStatus,
+      evidenceRequired: data.evidenceRequired,
+      bookingNotes: data.bookingNotes,
+      bookingStatus: data.bookingStatus,
+      status: data.bookingStatus
+    };
+    state.bookings.push(booking);
+  }
   saveState();
+  const message = data.recordType === "request"
+    ? "Requested training saved. Booking details can be added once the item is planned."
+    : data.recordType === "plan"
+      ? "Planned WSP intervention saved with booking details."
+      : "ATR activity saved with completion and evidence details.";
+  document.getElementById("bookingMessage").textContent = message;
   renderAll();
 });
 document.getElementById("bookingForm").addEventListener("submit", event => {
@@ -566,19 +739,22 @@ document.getElementById("bookingForm").addEventListener("submit", event => {
     provider: data.provider,
     course: data.course,
     period: data.date,
+    preferredWindow: data.preferredWindow,
     date: data.date,
     startTime: data.startTime,
     endTime: data.endTime,
     deliveryMode: data.deliveryMode,
     location: data.location,
     reminderStatus: data.reminderStatus,
+    evidenceRequired: data.evidenceRequired,
+    bookingNotes: data.bookingNotes,
     bookingStatus: data.bookingStatus,
     status: data.bookingStatus
   };
   state.bookings.push(booking);
   if (plan.id) plan.status = "Booked";
   saveState();
-  document.getElementById("bookingMessage").textContent = "Training booking added to demo schedule. Production version would create the booking through Microsoft 365 / Outlook integration.";
+  document.getElementById("bookingMessage").textContent = "Demo booking details captured for planning visibility. No calendar invite is sent.";
   renderAll();
 });
 ["providerSearch","providerFilter","courseSearch","categoryFilter"].forEach(id => {
