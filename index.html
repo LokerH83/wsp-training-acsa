@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>ACSA WSP / ATR Reporting Concept Demo</title>
   <link rel="icon" href="data:,">
-  <link rel="stylesheet" href="./styles.css?v=20260707-qdate-polish">
+  <link rel="stylesheet" href="./styles.css?v=20260707-training-panel-polish">
 </head>
 <body>
   <div class="app">
@@ -157,7 +157,7 @@
           <form id="trainingForm" class="panel form-panel">
             <label>Action<select name="recordType"><option value="request">Add Requested / Suggested Training</option><option value="plan">Add Planned WSP Intervention</option><option value="actual">Record Achieved ATR Activity</option></select></label>
             <label>Employee<select name="employeeNumber" required></select></label>
-            <div class="inherited-fields"><strong>Profile-linked fields inherited from employee record.</strong><span id="inheritedFields">Select an employee.</span></div>
+            <div class="inherited-fields"><strong>Employee profile context</strong><div id="inheritedFields" class="profile-context-grid">Select an employee.</div></div>
             <label>Provider<select name="provider" required></select></label>
             <label>Course<select name="course" required></select></label>
             <label>Quarter / Date<input name="period" placeholder="Date to be confirmed"></label>
@@ -244,6 +244,6 @@
     </main>
   </div>
   <script src="./data/demo-snapshot.js"></script>
-  <script src="./app.js?v=20260707-qdate-polish"></script>
+  <script src="./app.js?v=20260707-training-panel-polish"></script>
 </body>
 </html>

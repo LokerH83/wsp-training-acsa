@@ -82,6 +82,16 @@ function friendly(value, placeholder = "Not specified") {
   return value === undefined || value === null || value === "" || Number.isNaN(value) ? placeholder : value;
 }
 
+function escapeHtml(value) {
+  return String(value ?? "").replace(/[&<>"']/g, char => ({
+    "&": "&amp;",
+    "<": "&lt;",
+    ">": "&gt;",
+    '"': "&quot;",
+    "'": "&#39;"
+  }[char]));
+}
+
 function recordKey(row) {
   return [row.employeeNumber, row.course, row.provider, String(row.period || "").slice(0, 7)].join("|").toLowerCase();
 }
@@ -344,7 +354,16 @@ function updateInheritedFields() {
   const form = document.getElementById("trainingForm");
   const person = employee(form.employeeNumber.value);
   selectedEmployeeNumber = form.employeeNumber.value;
-  document.getElementById("inheritedFields").textContent = `${person.regionCluster} | ${person.division} | ${person.department} | ${person.sexGender} | ${person.race} | ${person.age} | ${person.ageBand} | ${person.disability}`;
+  const fields = [
+    ["Region", person.regionCluster],
+    ["Division", person.division],
+    ["Department", person.department],
+    ["Gender", person.sexGender],
+    ["Race", person.race],
+    ["Age", `${person.age} (${person.ageBand})`],
+    ["Disability", person.disability]
+  ];
+  document.getElementById("inheritedFields").innerHTML = fields.map(([label, value]) => `<span><small>${escapeHtml(label)}</small>${escapeHtml(friendly(value))}</span>`).join("");
 }
 
 function hydrateProviderFilters() {
@@ -360,7 +379,7 @@ function renderCourseResults() {
   const provider = document.getElementById("providerFilter").value;
   const category = document.getElementById("categoryFilter").value;
   const rows = state.courses.filter(c => (provider === "All" || c.provider === provider) && (category === "All" || c.category === category) && c.provider.toLowerCase().includes(providerText) && c.course.toLowerCase().includes(courseText));
-  document.getElementById("courseResults").innerHTML = rows.map(c => `<tr><td>${c.provider}</td><td>${c.course}</td><td>${c.category}</td><td>${c.duration}</td><td>${c.deliveryMode}</td><td>${currency.format(c.estimatedCost)}</td><td>${c.evidenceRequired}</td><td>${c.setaBbbeeRelevance}</td><td><button data-use-course="${c.id}">Use In Training Plan</button></td></tr>`).join("");
+  document.getElementById("courseResults").innerHTML = rows.map(c => `<tr><td>${c.provider}</td><td>${c.course}</td><td>${c.category}</td><td>${c.duration}</td><td>${c.deliveryMode}</td><td>${currency.format(c.estimatedCost)}</td><td>${c.evidenceRequired}</td><td>${c.setaBbbeeRelevance}</td><td><button data-use-course="${c.id}">Select</button></td></tr>`).join("");
 }
 
 function renderPeople() {

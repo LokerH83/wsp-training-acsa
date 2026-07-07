@@ -2039,23 +2039,51 @@ select {
 }
 
 #trainingForm .inherited-fields {
-  padding: 10px 12px;
+  padding: 11px 12px 12px;
   border: 1px solid #d9e8ef;
   border-radius: 8px;
-  background: #f8fcff;
+  background: linear-gradient(180deg, #f8fcff 0%, #f3f9fc 100%);
   color: #244659;
-  line-height: 1.55;
+  line-height: 1.35;
 }
 
 #trainingForm .inherited-fields strong {
   display: block;
-  margin-bottom: 4px;
+  margin-bottom: 8px;
   color: #062f47;
 }
 
-#trainingForm .inherited-fields span {
-  display: block;
-  overflow-wrap: anywhere;
+.profile-context-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 7px 8px;
+}
+
+.profile-context-grid span {
+  display: grid;
+  gap: 2px;
+  min-width: 0;
+  padding: 7px 8px;
+  border: 1px solid #e0edf2;
+  border-radius: 7px;
+  background: rgba(255, 255, 255, .72);
+  color: #062f47;
+  font-weight: 700;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.profile-context-grid span:nth-child(3) {
+  grid-column: 1 / -1;
+}
+
+.profile-context-grid small {
+  color: #5f7582;
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0;
 }
 
 #trainingForm select,
@@ -2102,12 +2130,12 @@ select {
 
 .provider-panel th:nth-child(1),
 .provider-panel td:nth-child(1) {
-  width: 18%;
+  width: 17%;
 }
 
 .provider-panel th:nth-child(2),
 .provider-panel td:nth-child(2) {
-  width: 21%;
+  width: 23%;
 }
 
 .provider-panel th:nth-child(3),
@@ -2132,26 +2160,40 @@ select {
 
 .provider-panel th:nth-child(7),
 .provider-panel td:nth-child(7) {
-  width: 12%;
+  width: 13%;
 }
 
 .provider-panel th:nth-child(8),
 .provider-panel td:nth-child(8) {
-  width: 8%;
+  width: 7%;
 }
 
 .provider-panel th:nth-child(9),
 .provider-panel td:nth-child(9) {
-  width: 104px;
+  width: 72px;
 }
 
 .provider-panel [data-use-course] {
   width: 100%;
-  min-height: 28px;
-  padding: 5px 6px;
+  min-height: 26px;
+  padding: 5px 8px;
   font-size: 11px;
-  white-space: normal;
+  white-space: nowrap;
   line-height: 1.15;
+  border-color: #9eb8c6;
+  border-radius: 6px;
+  background: #ffffff;
+  color: #06344d;
+}
+
+@media (max-width: 1380px) {
+  .form-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .provider-panel table {
+    font-size: 12px;
+  }
 }
 
 input:focus,
