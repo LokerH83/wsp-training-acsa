@@ -42,15 +42,21 @@ Prove the reporting logic and data structure before investing in the full workfl
 
 ## Power Apps Export
 
-Latest verified export:
+Latest verified app baseline:
 
-`exports/WSPTrainingManagementSystem_after_successful_import.zip`
+`exports/WSPTrainingManagementSystem_complete_solution.zip`
 
-Power Apps view update applied:
+Latest entity-merge candidate for sandbox validation:
+
+`exports/WSPTrainingManagementSystem_with_entities_20260707075243.zip`
+
+Power Apps client-demo view update applied:
 
 `Client Demo - Employee Profiles`
 
 ID Number was removed from the visible Employee Profile grid.
+
+Use the live Power Apps app only as the governed future-state example. Use the public static demo for the main sales walkthrough.
 
 ## Do Not Show
 

@@ -42,7 +42,8 @@ Final QA pass completed on the demo-safe ACSA SDF dashboard, including Overview 
 - Planned WSP: 28
 - Achieved ATR: 21
 - Bookings: 8
-- Confirmation items: 5
+- Reporting gaps: 19
+- Review items: 0
 
 ## Demo scope
 
