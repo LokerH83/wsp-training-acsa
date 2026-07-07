@@ -44,9 +44,8 @@ jobs:
           $log = "${{ github.workspace }}\exports\powerplatform-import.log"
           $solution = "${{ github.workspace }}\exports\WSPTrainingManagementSystem_complete_solution.zip"
 
-          function Run-Pac {
-            param([string]$Label, [string[]]$Arguments)
-            "===== $Label =====" | Tee-Object -FilePath $log -Append
+          function Format-PacArgs {
+            param([string[]]$Arguments)
             $safeArguments = @()
             for($i = 0; $i -lt $Arguments.Count; $i++) {
               if($Arguments[$i] -eq "--clientSecret") {
@@ -59,16 +58,41 @@ jobs:
                 $safeArguments += $Arguments[$i]
               }
             }
-            "pac $($safeArguments -join ' ')" | Tee-Object -FilePath $log -Append
+            return "pac $($safeArguments -join ' ')"
+          }
+
+          function Invoke-Pac {
+            param([string[]]$Arguments)
             & pac @Arguments 2>&1 | Tee-Object -FilePath $log -Append
-            $exitCode = $LASTEXITCODE
+            return $LASTEXITCODE
+          }
+
+          function Run-Pac {
+            param([string]$Label, [string[]]$Arguments)
+            "===== $Label =====" | Tee-Object -FilePath $log -Append
+            Format-PacArgs $Arguments | Tee-Object -FilePath $log -Append
+            $exitCode = Invoke-Pac $Arguments
             "exit_code=$exitCode" | Tee-Object -FilePath $log -Append
             if($exitCode -ne 0) {
               throw "$Label failed with exit code $exitCode. See powerplatform-import.log artifact."
             }
           }
 
-          Run-Pac "auth create" @(
+          function Try-Pac {
+            param([string]$Label, [string[]]$Arguments)
+            "===== $Label =====" | Tee-Object -FilePath $log -Append
+            Format-PacArgs $Arguments | Tee-Object -FilePath $log -Append
+            $exitCode = Invoke-Pac $Arguments
+            "exit_code=$exitCode" | Tee-Object -FilePath $log -Append
+            return $exitCode
+          }
+
+          "PP_ENVIRONMENT=$env:PP_ENVIRONMENT" | Tee-Object -FilePath $log -Append
+          "PP_CLIENT_ID present=$([bool]$env:PP_CLIENT_ID)" | Tee-Object -FilePath $log -Append
+          "PP_TENANT_ID present=$([bool]$env:PP_TENANT_ID)" | Tee-Object -FilePath $log -Append
+          "PP_CLIENT_SECRET present=$([bool]$env:PP_CLIENT_SECRET)" | Tee-Object -FilePath $log -Append
+
+          $authExit = Try-Pac "auth create with environment" @(
             "auth", "create",
             "--name", "github-actions-acsa",
             "--environment", $env:PP_ENVIRONMENT,
@@ -76,6 +100,22 @@ jobs:
             "--clientSecret", $env:PP_CLIENT_SECRET,
             "--tenant", $env:PP_TENANT_ID
           )
+
+          if($authExit -ne 0) {
+            "Environment auth failed; retrying with --url." | Tee-Object -FilePath $log -Append
+            $authExit = Try-Pac "auth create with url" @(
+              "auth", "create",
+              "--name", "github-actions-acsa-url",
+              "--url", $env:PP_ENVIRONMENT,
+              "--applicationId", $env:PP_CLIENT_ID,
+              "--clientSecret", $env:PP_CLIENT_SECRET,
+              "--tenant", $env:PP_TENANT_ID
+            )
+          }
+
+          if($authExit -ne 0) {
+            throw "Power Platform authentication failed with exit code $authExit. See powerplatform-import.log artifact."
+          }
 
           Run-Pac "auth who" @("auth", "who")
 
