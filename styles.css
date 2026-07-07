@@ -2002,8 +2002,8 @@ tbody tr:hover {
 }
 
 .form-layout {
-  grid-template-columns: 350px minmax(0, 1fr);
-  gap: 14px;
+  grid-template-columns: minmax(430px, 460px) minmax(0, 1fr);
+  gap: 16px;
 }
 
 .form-panel,
@@ -2025,6 +2025,60 @@ select {
   padding: 8px 10px;
   color: #14384b;
   background: #fbfdff;
+}
+
+#trainingForm.form-panel {
+  gap: 10px 12px;
+  padding: 16px;
+}
+
+#trainingForm > label:nth-of-type(1),
+#trainingForm > label:nth-of-type(2),
+#trainingForm > label:nth-of-type(5) {
+  grid-column: 1 / -1;
+}
+
+#trainingForm .inherited-fields {
+  padding: 10px 12px;
+  border: 1px solid #d9e8ef;
+  border-radius: 8px;
+  background: #f8fcff;
+  color: #244659;
+  line-height: 1.55;
+}
+
+#trainingForm .inherited-fields strong {
+  display: block;
+  margin-bottom: 4px;
+  color: #062f47;
+}
+
+#trainingForm .inherited-fields span {
+  display: block;
+  overflow-wrap: anywhere;
+}
+
+#trainingForm select,
+#trainingForm input {
+  width: 100%;
+}
+
+#trainingForm .planning-options {
+  gap: 8px 10px;
+  padding: 10px 12px 12px;
+}
+
+#trainingForm .planning-options legend,
+#trainingForm .scheduling-options legend {
+  font-size: 13px;
+}
+
+#trainingForm .scheduling-options {
+  padding: 10px 12px 12px;
+}
+
+#trainingForm .primary {
+  min-height: 42px;
 }
 
 input:focus,
