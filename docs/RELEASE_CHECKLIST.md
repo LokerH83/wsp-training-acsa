@@ -28,7 +28,7 @@ Use this checklist before publishing or presenting the demo.
 ## 3. Deploy the public demo
 
 - Run the Pages deployment workflow:
-  - `.github/workflows/pages-build-deployment.yml`
+  - GitHub Pages is configured to serve from the `main` branch/root folder.
 - Confirm the live site publishes successfully.
 - Confirm the public URL works:
   - `https://lokerh83.github.io/wsp-training-acsa/`

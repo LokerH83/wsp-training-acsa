@@ -13,12 +13,10 @@ This guide helps keep the demo repo healthy and reliable.
 
 ## Key files
 
-- `.github/workflows/pages-build-deployment.yml`
 - `.github/workflows/preview-pages-build.yml`
 - `.github/workflows/validate_powerplatform_export.yml`
 - `.github/workflows/pack_and_inject.yml`
 - `.github/workflows/ci-lint.yml`
-- `.github/workflows/workflow-failure-notification.yml`
 - `docs/RELEASE_CHECKLIST.md`
 - `docs/WORKFLOW_OVERVIEW.md`
 - `docs/MAINTENANCE_GUIDE.md`
@@ -45,7 +43,7 @@ These repository secrets must be configured for Power Platform automation:
 1. Replace `exports/WSPTrainingManagementSystem_complete_solution.zip` with the new verified export.
 2. Run `.github/workflows/validate_powerplatform_export.yml`.
 3. If validation passes, run `.github/workflows/pack_and_inject.yml` if you want to refresh the target environment.
-4. Run `.github/workflows/pages-build-deployment.yml` to publish updates to the live demo.
+4. Push static app updates to `main` and allow GitHub Pages to refresh from the root folder.
 
 ## Notification setup
 

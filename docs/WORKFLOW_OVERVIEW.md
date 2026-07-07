@@ -4,11 +4,11 @@ This repository uses GitHub Actions to support the demo and deployment process.
 
 ## Workflows
 
-### `.github/workflows/pages-build-deployment.yml`
+### GitHub Pages
 
-- Builds the static demo site into a `public` folder.
-- Uploads the artifact and deploys it to GitHub Pages.
-- Triggers on `push` to `main` and manual dispatch.
+- The public static demo is served from the `main` branch/root folder.
+- No custom Pages deployment workflow is required for the current demo.
+- The live URL is https://lokerh83.github.io/wsp-training-acsa/
 
 ### `.github/workflows/preview-pages-build.yml`
 
@@ -49,12 +49,6 @@ This repository uses GitHub Actions to support the demo and deployment process.
 - Retries the import up to three times.
 - Triggers on `push` to `main`, manual dispatch, and every day at 03:00 UTC.
 
-### `.github/workflows/workflow-failure-notification.yml`
-
-- Sends a Slack notification when a key repo workflow fails.
-- Triggers only when a workflow run completes with a failure.
-- Uses the `SLACK_WEBHOOK_URL` secret if it is configured.
-
 ## Required Secrets
 
 The following repository secrets must be configured for the import workflows:
@@ -73,6 +67,6 @@ The following repository secrets must be configured for the import workflows:
 ## Handoff notes
 
 1. Use the validation workflow before releasing a new export.
-2. Use the Pages deployment workflow to publish changes to the live demo.
+2. Push static app changes to `main` and allow GitHub Pages to refresh the live demo.
 3. Use the Power Platform import workflow only if the verified export is ready and secrets are set.
 4. Keep `exports/WSPTrainingManagementSystem_complete_solution.zip` as the production/demo artifact.

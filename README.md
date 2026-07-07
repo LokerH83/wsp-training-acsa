@@ -1,10 +1,8 @@
 # ACSA WSP / ATR Reporting Concept Demo
 
-[![Pages Deployment](https://github.com/LokerH83/wsp-training-acsa/actions/workflows/pages-build-deployment.yml/badge.svg)](https://github.com/LokerH83/wsp-training-acsa/actions/workflows/pages-build-deployment.yml)
 [![Power Platform Import](https://github.com/LokerH83/wsp-training-acsa/actions/workflows/pack_and_inject.yml/badge.svg)](https://github.com/LokerH83/wsp-training-acsa/actions/workflows/pack_and_inject.yml)
 [![Validation Workflow](https://github.com/LokerH83/wsp-training-acsa/actions/workflows/validate_powerplatform_export.yml/badge.svg)](https://github.com/LokerH83/wsp-training-acsa/actions/workflows/validate_powerplatform_export.yml)
 [![CI Lint](https://github.com/LokerH83/wsp-training-acsa/actions/workflows/ci-lint.yml/badge.svg)](https://github.com/LokerH83/wsp-training-acsa/actions/workflows/ci-lint.yml)
-[![Failure Notification](https://github.com/LokerH83/wsp-training-acsa/actions/workflows/workflow-failure-notification.yml/badge.svg)](https://github.com/LokerH83/wsp-training-acsa/actions/workflows/workflow-failure-notification.yml)
 [![Static Smoke Test](https://github.com/LokerH83/wsp-training-acsa/actions/workflows/static-site-smoke-test.yml/badge.svg)](https://github.com/LokerH83/wsp-training-acsa/actions/workflows/static-site-smoke-test.yml)
 
 Demo-safe ACSA WSP / ATR reporting dashboard showing workbook loading, provider/course search, training booking, people profiles and requested vs planned vs achieved reporting.
@@ -142,7 +140,7 @@ Live demo: https://lokerh83.github.io/wsp-training-acsa/
 
 ## Workflow status
 
-- GitHub Pages build and deployment: `.github/workflows/pages-build-deployment.yml`
+- GitHub Pages: served from the `main` branch/root folder.
 - Power Platform import: `.github/workflows/pack_and_inject.yml`
 - Validation workflow: `.github/workflows/validate_powerplatform_export.yml`
 
