@@ -47,7 +47,19 @@ jobs:
           function Run-Pac {
             param([string]$Label, [string[]]$Arguments)
             "===== $Label =====" | Tee-Object -FilePath $log -Append
-            "pac $($Arguments -join ' ')" | Tee-Object -FilePath $log -Append
+            $safeArguments = @()
+            for($i = 0; $i -lt $Arguments.Count; $i++) {
+              if($Arguments[$i] -eq "--clientSecret") {
+                $safeArguments += $Arguments[$i]
+                if($i + 1 -lt $Arguments.Count) {
+                  $safeArguments += "***"
+                  $i++
+                }
+              } else {
+                $safeArguments += $Arguments[$i]
+              }
+            }
+            "pac $($safeArguments -join ' ')" | Tee-Object -FilePath $log -Append
             & pac @Arguments 2>&1 | Tee-Object -FilePath $log -Append
             $exitCode = $LASTEXITCODE
             "exit_code=$exitCode" | Tee-Object -FilePath $log -Append
