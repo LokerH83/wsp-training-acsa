@@ -4,6 +4,7 @@ let state = loadState();
 let stagedRows = [];
 let selectedEmployeeNumber = state.employees[0]?.employeeNumber || "";
 let reportFilterState = {};
+let overviewFilterState = { quarter: "All", provider: "All" };
 
 const currency = new Intl.NumberFormat("en-ZA", { style: "currency", currency: "ZAR", maximumFractionDigits: 0 });
 const requiredColumns = ["Employee Number","Employee Name","ID Number","Region / Cluster","Division","Department","Sex / Gender","Race","Age","Age Band","Disability","Course / Intervention","Requested / Suggested","Planned WSP","Achieved ATR","Provider","Quarter / Date","Planned Cost","Actual Cost","Evidence Status","Review Status"];
@@ -54,7 +55,9 @@ function resetDemo() {
   state = initialiseState(cloneData());
   stagedRows = [];
   selectedEmployeeNumber = state.employees[0]?.employeeNumber || "";
+  overviewFilterState = { quarter: "All", provider: "All" };
   resetReportFiltersState();
+  setView("overview");
   renderAll();
 }
 
@@ -130,15 +133,54 @@ function summary(rows = state.reportRows) {
   return s;
 }
 
-function bookingSummary() {
+function bookingSummary(bookings = state.bookings || []) {
   const today = new Date().toISOString().slice(0, 10);
-  const bookings = state.bookings || [];
   return {
     booked: bookings.filter(b => b.bookingStatus === "Booked").length,
     upcoming: bookings.filter(b => ["Draft","Booked"].includes(b.bookingStatus) && b.date >= today).length,
     completed: bookings.filter(b => b.bookingStatus === "Completed").length,
     missed: bookings.filter(b => b.bookingStatus === "Attendance To Confirm").length
   };
+}
+
+function quarterFromPeriod(value) {
+  const text = String(value || "").trim();
+  const direct = text.match(/^Q[1-4]$/i);
+  if (direct) return direct[0].toUpperCase();
+  const date = new Date(text);
+  if (!Number.isNaN(date.getTime())) return `Q${Math.floor(date.getMonth() / 3) + 1}`;
+  return text.toUpperCase();
+}
+
+function matchesOverviewFilters(row) {
+  const quarter = overviewFilterState.quarter;
+  const provider = overviewFilterState.provider;
+  const quarterOk = quarter === "All" || quarterFromPeriod(row.period || row.date) === quarter;
+  const providerOk = provider === "All" || row.provider === provider;
+  return quarterOk && providerOk;
+}
+
+function overviewSource() {
+  const requests = state.requests.filter(matchesOverviewFilters);
+  const plans = state.plans.filter(matchesOverviewFilters);
+  const actuals = state.actuals.filter(matchesOverviewFilters);
+  const bookings = (state.bookings || []).filter(matchesOverviewFilters);
+  return { ...state, requests, plans, actuals, bookings };
+}
+
+function overviewEmployeeCount(source) {
+  if (overviewFilterState.quarter === "All" && overviewFilterState.provider === "All") return state.employees.length;
+  const numbers = new Set([...source.requests, ...source.plans, ...source.actuals, ...source.bookings].map(row => row.employeeNumber).filter(Boolean));
+  return numbers.size;
+}
+
+function hydrateOverviewFilters() {
+  const quarterSelect = document.getElementById("overviewQuarterFilter");
+  const providerSelect = document.getElementById("overviewProviderFilter");
+  if (!quarterSelect || !providerSelect) return;
+  quarterSelect.value = overviewFilterState.quarter === "All" ? "All quarters" : overviewFilterState.quarter;
+  const providers = Array.from(new Set([...state.requests, ...state.plans, ...state.actuals, ...(state.bookings || [])].map(row => row.provider).filter(Boolean))).sort();
+  providerSelect.innerHTML = `<option>All providers</option>${providers.map(provider => `<option ${overviewFilterState.provider === provider ? "selected" : ""}>${provider}</option>`).join("")}`;
 }
 
 function setView(id) {
@@ -154,12 +196,12 @@ function kpiHtml(s) {
   ].map(([label, value]) => `<article class="kpi"><span>${label}</span><strong>${typeof value === "number" ? value.toLocaleString("en-ZA") : value}</strong><small>demo value</small></article>`).join("");
 }
 
-function outcomeHtml(s) {
+function outcomeHtml(s, employeeCount = state.employees.length) {
   return [
     ["Training Demand", s.requested, "Requested / Suggested training records from the workbook."],
     ["WSP Planned", s.planned, "Interventions visible for planning and booking."],
     ["ATR Achieved", s.achieved, "Completed activity ready for achievement reporting."],
-    ["Employees In Scope", state.employees.length, "Synthetic active profiles linked to demo training data."]
+    ["Employees In Scope", employeeCount, "Synthetic active profiles linked to demo training data."]
   ].map(([label, value, note]) => `<article class="kpi executive outcome-card"><span>${label}</span><strong>${value.toLocaleString("en-ZA")}</strong><small>${note}</small></article>`).join("");
 }
 
@@ -173,15 +215,19 @@ function riskHtml(s) {
 }
 
 function renderOverview() {
-  const s = summary();
-  const b = bookingSummary();
-  const annualPayroll = state.employees.length * 420000;
+  hydrateOverviewFilters();
+  const source = overviewSource();
+  const rows = buildRequestedPlannedAchievedReport(source);
+  const s = summary(rows);
+  const b = bookingSummary(source.bookings);
+  const employeeCount = overviewEmployeeCount(source);
+  const annualPayroll = employeeCount * 420000;
   const estimatedSdl = annualPayroll * 0.01;
   const mandatoryGrant = estimatedSdl * 0.2;
   const grantAtRisk = mandatoryGrant * Math.min(1, (s.reviewItems + s.plannedNotAchieved + s.achievedNotPlanned) / Math.max(1, s.planned + s.achieved));
   const max = Math.max(s.requested, s.planned, s.achieved, 1);
   const outcomeTarget = document.getElementById("overviewOutcomes");
-  if (outcomeTarget) outcomeTarget.innerHTML = outcomeHtml(s);
+  if (outcomeTarget) outcomeTarget.innerHTML = outcomeHtml(s, employeeCount);
   document.getElementById("overviewKpis").innerHTML = riskHtml(s);
   document.getElementById("financialExposure").innerHTML = [
     ["Annual payroll estimate", currency.format(annualPayroll)],
@@ -203,10 +249,10 @@ function renderOverview() {
     ["Achieved not planned", s.achievedNotPlanned, s.achievedNotPlanned ? "risk" : "good"],
     ["Review items", s.reviewItems, s.reviewItems ? "warn" : "good"]
   ].map(([label, value, tone]) => `<div class="issue ${tone}"><strong>${label}</strong><span>${value} demo records</span></div>`).join("");
-  const providerCounts = state.plans.reduce((acc, row) => ((acc[row.provider] = (acc[row.provider] || 0) + 1), acc), {});
+  const providerCounts = source.plans.reduce((acc, row) => ((acc[row.provider] = (acc[row.provider] || 0) + 1), acc), {});
   const providerMax = Math.max(...Object.values(providerCounts), 1);
   document.getElementById("providerSummary").innerHTML = Object.entries(providerCounts).slice(0, 6).map(([label, value]) => `<div class="bar-row"><div><strong>${label}</strong><span>${value} planned WSP records</span></div><div class="bar-track"><span style="width:${Math.max(8, Math.round((value / providerMax) * 100))}%"></span></div></div>`).join("");
-  document.getElementById("latestActivityRows").innerHTML = [...state.actuals.slice(-4), ...state.plans.slice(-4)].slice(-6).reverse().map(row => `<tr><td>${row.evidenceStatus ? "ATR" : "WSP"}</td><td>${employee(row.employeeNumber).employeeName}</td><td>${row.course}</td><td>${row.provider}</td><td>${row.status || row.evidenceStatus || "Clean"}</td></tr>`).join("");
+  document.getElementById("latestActivityRows").innerHTML = [...source.actuals.slice(-4), ...source.plans.slice(-4)].slice(-6).reverse().map(row => `<tr><td>${row.evidenceStatus ? "ATR" : "WSP"}</td><td>${employee(row.employeeNumber).employeeName}</td><td>${row.course}</td><td>${row.provider}</td><td>${row.status || row.evidenceStatus || "Clean"}</td></tr>`).join("") || `<tr><td colspan="5">No demo records match the selected filters.</td></tr>`;
 }
 
 function renderWorkbook() {
@@ -457,6 +503,14 @@ document.getElementById("bookingForm").addEventListener("submit", event => {
 ["providerSearch","providerFilter","courseSearch","categoryFilter"].forEach(id => {
   document.getElementById(id).addEventListener("input", renderCourseResults);
   document.getElementById(id).addEventListener("change", renderCourseResults);
+});
+document.getElementById("overviewQuarterFilter").addEventListener("change", event => {
+  overviewFilterState.quarter = event.target.value === "All quarters" ? "All" : event.target.value;
+  renderOverview();
+});
+document.getElementById("overviewProviderFilter").addEventListener("change", event => {
+  overviewFilterState.provider = event.target.value === "All providers" ? "All" : event.target.value;
+  renderOverview();
 });
 document.getElementById("peopleSearch").addEventListener("input", renderPeople);
 document.getElementById("loadSampleWorkbook").addEventListener("click", () => { stagedRows = sampleWorkbookRows(); renderWorkbook(); });
