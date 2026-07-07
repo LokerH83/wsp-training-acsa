@@ -127,7 +127,8 @@ jobs:
 
           function Write-Log {
             param([string]$Message)
-            $Message | Tee-Object -FilePath $log -Append
+            Add-Content -Path $log -Value $Message
+            Write-Host $Message
           }
 
           function Format-PacArgs {
@@ -156,7 +157,7 @@ jobs:
             $exitCode = $LASTEXITCODE
 
             if(Test-Path $tmp) {
-              Get-Content $tmp | Tee-Object -FilePath $log -Append
+              Get-Content $tmp | ForEach-Object { Write-Log $_ }
             }
 
             if($null -eq $exitCode) {
@@ -207,6 +208,25 @@ jobs:
           if($missingSecrets.Count -gt 0) {
             Write-Log "Missing required secrets: $($missingSecrets -join ', ')"
             throw "One or more required Power Platform secrets are missing."
+          }
+
+          try {
+            $environmentUri = [Uri]$env:PP_ENVIRONMENT
+            if(-not $environmentUri.Host) {
+              throw "PP_ENVIRONMENT must be an absolute URL."
+            }
+
+            Write-Log "environment_host=$($environmentUri.Host)"
+            $dnsRecords = Resolve-DnsName -Name $environmentUri.Host -ErrorAction Stop
+            $dnsRecords |
+              Select-Object -First 5 |
+              ForEach-Object {
+                $target = if($_.IPAddress) { $_.IPAddress } elseif($_.NameHost) { $_.NameHost } else { "" }
+                Write-Log "dns_record=$($_.Name) type=$($_.Type) target=$target"
+              }
+          } catch {
+            Write-Log "environment_dns_check_failed=$($_.Exception.Message)"
+            throw "Power Platform environment host could not be resolved before authentication."
           }
 
           $authExit = Try-Pac "auth create with environment" @(
