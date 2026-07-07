@@ -3242,6 +3242,66 @@ body {
   box-shadow: inset 0 0 0 1px rgba(0, 120, 166, .18), 0 6px 16px rgba(0, 120, 166, .08);
 }
 
+.focus-areas-panel {
+  background:
+    linear-gradient(135deg, rgba(0, 109, 143, .07), rgba(11, 127, 70, .05)),
+    #ffffff;
+  border-color: #b9dfe9;
+  box-shadow: 0 8px 20px rgba(0, 55, 78, .055);
+}
+
+.focus-areas-panel .panel-head {
+  margin-bottom: 12px;
+}
+
+.focus-areas-panel .panel-head p {
+  margin-top: 4px;
+  color: #4d6573;
+  font-size: 12px;
+}
+
+.focus-card-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.focus-card-grid article {
+  min-height: 78px;
+  padding: 13px 14px;
+  border: 1px solid #d5e8ef;
+  border-left: 4px solid #0078a6;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, .84);
+}
+
+.focus-card-grid article:nth-child(2) {
+  border-left-color: #0b7f46;
+}
+
+.focus-card-grid article:nth-child(3) {
+  border-left-color: #c77a00;
+}
+
+.focus-card-grid article:nth-child(4) {
+  border-left-color: #d48a00;
+}
+
+.focus-card-grid span {
+  display: block;
+  margin-bottom: 6px;
+  color: #07364d;
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.focus-card-grid strong {
+  color: #4d6573;
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 1.45;
+}
+
 .workflow-strip {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));

@@ -369,7 +369,7 @@ function hydrateReportFilters() {
 }
 
 function executiveSummaryText() {
-  return "Demo summary: the dashboard shows requested training, planned WSP activity, achieved ATR activity, reporting gaps and records needing review. The recommended next step is to confirm the Excel data structure and prove the Power BI reporting layer before investing in the full workflow app.";
+  return "Demo summary: the dashboard shows requested training, planned WSP activity, achieved ATR activity, reporting gaps and records needing review. The current focus areas are workbook demand, planned WSP activity, achieved ATR activity and records that need review before management reporting.";
 }
 
 function copyExecutiveSummary() {
