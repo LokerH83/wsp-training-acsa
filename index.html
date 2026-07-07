@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>ACSA WSP / ATR Reporting Concept Demo</title>
   <link rel="icon" href="data:,">
-  <link rel="stylesheet" href="./styles.css?v=20260707-journey-polish">
+  <link rel="stylesheet" href="./styles.css?v=20260707-final-layout">
 </head>
 <body>
   <div class="app">
@@ -26,7 +26,7 @@
 
     <main class="main">
       <header class="topbar">
-        <div><h1>ACSA WSP / ATR Reporting Concept Demo</h1><p>Demo-safe workforce skills planning view using synthetic data only.</p></div>
+        <div><h1>ACSA WSP / ATR Concept Demo</h1><p>Synthetic data only. Not production. Not official SETA or B-BBEE output.</p></div>
         <div class="top-actions">
           <div class="mode-badge"><strong>Demo data only</strong><span>This environment demonstrates the SDF process and does not contain private ACSA records.</span></div>
           <button class="icon-button" id="resetDemoTop">Reset</button>
@@ -34,10 +34,12 @@
       </header>
 
       <section id="overview" class="view active">
-        <div class="toolbar dashboard-toolbar">
-          <div>
-            <h2>ACSA WSP / ATR Reporting Dashboard</h2>
-            <p>Workbook loading, training demand, WSP planning, ATR activity, employee profile links and reporting gaps in one controlled demo view.</p>
+        <div class="executive-hero">
+          <div class="hero-copy">
+            <span class="demo-badge">Demo data only</span>
+            <h2>ACSA WSP / ATR Reporting Concept Demo</h2>
+            <p>A demo-safe view of how workbook-based training data can support WSP planning, ATR tracking and management reporting.</p>
+            <small>Synthetic records only. No private ACSA employee data is used.</small>
           </div>
           <div class="filters dashboard-filters">
             <select id="overviewQuarterFilter" aria-label="Demo quarter"><option>All quarters</option><option>Q1</option><option>Q2</option><option>Q3</option><option>Q4</option></select>
@@ -45,22 +47,21 @@
           </div>
         </div>
 
-        <div class="sales-strip">
-          <article><em>1</em><strong>Receive workbook data</strong><span>Stage ACSA's current Excel process without disrupting the way teams work today.</span></article>
-          <article><em>2</em><strong>Validate employee links</strong><span>Connect WSP and ATR activity to clean employee, demographic and provider records.</span></article>
-          <article><em>3</em><strong>Produce management outputs</strong><span>Highlight reporting gaps, review items and the next decisions leadership needs.</span></article>
-        </div>
-
         <div class="kpi-grid relationship-kpis executive-kpis" id="overviewOutcomes"></div>
 
-        <div class="kpi-grid relationship-kpis data-health-kpis overview-kpis" id="overviewKpis"></div>
-
-        <div class="dashboard-grid overview-dashboard priority-dashboard">
+        <div class="executive-priority-grid">
+          <section class="panel reporting-gaps-panel">
+            <div class="panel-head">
+              <div><h3>Reporting Gaps Summary</h3><p>Records needing review before WSP / ATR reporting is trusted.</p></div>
+              <span class="status-pill">Review Status: Needs Review</span>
+            </div>
+            <div class="kpi-grid relationship-kpis data-health-kpis overview-kpis" id="overviewKpis"></div>
+          </section>
           <section class="panel next-step-panel">
             <div class="panel-head">
               <div>
                 <h3>Recommended Next Step</h3>
-                <p><strong>Recommended starting point:</strong> Excel + Power BI Reporting</p>
+                <p><strong>Recommended starting point:</strong> Tier 2 - Excel + Power BI Reporting</p>
                 <p><strong>Reason:</strong> Prove the reporting logic and data structure before investing in the full workflow app.</p>
               </div>
             </div>
@@ -70,6 +71,16 @@
               <article><span>Tier 3</span><strong>Full Microsoft App Build</strong></article>
             </div>
           </section>
+        </div>
+
+        <div class="workflow-strip" aria-label="Demo workflow">
+          <span>Load Workbook</span>
+          <span>Manage Training</span>
+          <span>Book / Record ATR</span>
+          <span>Report WSP vs ATR</span>
+        </div>
+
+        <div class="dashboard-grid overview-dashboard priority-dashboard">
           <section class="panel financial-impact">
             <div class="panel-head">
               <div><h3>Financial / Grant Exposure</h3><p>This is a demo planning estimate, not a final grant, SETA or B-BBEE determination.</p></div>
@@ -96,16 +107,16 @@
             <div id="providerSummary" class="bar-list"></div>
           </section>
           <section class="panel action-panel">
-            <div class="panel-head"><h3>Quick Actions</h3></div>
+            <div class="panel-head"><h3>Demo Actions</h3></div>
             <div class="action-tile-grid">
-              <button data-view-target="workbook" id="overviewLoadSample"><strong>Start Demo With Sample Data</strong><span>Stage the workbook story</span></button>
+              <button data-view-target="workbook" id="overviewLoadSample"><strong>Load Sample Workbook</strong><span>Stage the workbook story</span></button>
               <button data-view-target="workbook"><strong>Upload Demo CSV</strong><span>Show the CSV bridge</span></button>
-              <button data-view-target="training" data-mode="plan"><strong>Capture WSP / ATR</strong><span>Add request, plan or actual</span></button>
-              <button data-view-target="training" data-booking-focus="true"><strong>Schedule Training</strong><span>Book a planned intervention</span></button>
+              <button data-view-target="training" data-mode="plan"><strong>Manage Training</strong><span>Add request, plan or actual</span></button>
+              <button data-view-target="training" data-booking-focus="true"><strong>Book Training</strong><span>Book a planned intervention</span></button>
               <button data-view-target="training" data-mode="actual"><strong>Record Completed Training</strong><span>Prepare ATR capture</span></button>
               <button data-view-target="people"><strong>Show Employee History</strong><span>Open profile-linked records</span></button>
-              <button data-view-target="reports"><strong>Show Management Reports</strong><span>Open filterable reporting</span></button>
-              <button id="copyExecutiveSummaryOverview"><strong>Copy Client Summary</strong><span>Use in the sales follow-up</span></button>
+              <button data-view-target="reports"><strong>Open Reports</strong><span>Open filterable reporting</span></button>
+              <button id="copyExecutiveSummaryOverview"><strong>Copy Executive Summary</strong><span>Use in the sales follow-up</span></button>
               <button id="resetDemoOverview"><strong>Reset Demo</strong><span>Restore the baseline</span></button>
             </div>
           </section>

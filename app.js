@@ -196,12 +196,11 @@ function kpiHtml(s) {
   ].map(([label, value]) => `<article class="kpi"><span>${label}</span><strong>${typeof value === "number" ? value.toLocaleString("en-ZA") : value}</strong><small>demo value</small></article>`).join("");
 }
 
-function outcomeHtml(s, employeeCount = state.employees.length) {
+function outcomeHtml(s) {
   return [
     ["Training Demand", s.requested, "Requested / Suggested training records from the workbook."],
-    ["WSP Planned", s.planned, "Interventions visible for planning and booking."],
-    ["ATR Achieved", s.achieved, "Completed activity ready for achievement reporting."],
-    ["Employees In Scope", employeeCount, "Synthetic active profiles linked to demo training data."]
+    ["Planned WSP", s.planned, "Interventions visible for planning and booking."],
+    ["Achieved ATR", s.achieved, "Completed activity ready for achievement reporting."]
   ].map(([label, value, note]) => `<article class="kpi executive outcome-card"><span>${label}</span><strong>${value.toLocaleString("en-ZA")}</strong><small>${note}</small></article>`).join("");
 }
 
@@ -235,7 +234,7 @@ function renderOverview() {
     ["Potential mandatory grant", currency.format(mandatoryGrant)],
     ["Grant value at risk", currency.format(grantAtRisk)],
     ["Evidence / review gap", s.reviewItems],
-    ["B-BBEE skills review status", s.reviewItems || s.plannedNotAchieved ? "Monitor" : "Low"]
+    ["Review status", "Needs Review"]
   ].map(([label, value]) => `<article class="kpi"><span>${label}</span><strong>${value}</strong><small>demo planning estimate</small></article>`).join("");
   document.getElementById("bookingKpis").innerHTML = [
     ["Booked Training", b.booked], ["Upcoming Sessions", b.upcoming], ["Completed Bookings", b.completed], ["Attendance To Confirm", b.missed]
@@ -370,8 +369,7 @@ function hydrateReportFilters() {
 }
 
 function executiveSummaryText() {
-  const s = summary();
-  return `Demo summary: the dashboard shows ${s.requested} requested training records, ${s.planned} planned WSP records, ${s.achieved} achieved ATR records, ${s.reportingGaps} reporting gaps and ${s.reviewItems} records needing review. The recommended next step is to confirm the Excel data structure and prove the Power BI reporting layer before investing in the full workflow app.`;
+  return "Demo summary: the dashboard shows requested training, planned WSP activity, achieved ATR activity, reporting gaps and records needing review. The recommended next step is to confirm the Excel data structure and prove the Power BI reporting layer before investing in the full workflow app.";
 }
 
 function copyExecutiveSummary() {
