@@ -623,6 +623,18 @@ function sampleWorkbookRows() {
   return state.employees.slice(0, 12).map((e, i) => ({ "Employee Number": e.employeeNumber, "Employee Name": e.employeeName, "ID Number": e.idNumber, "Region / Cluster": e.regionCluster, "Division": e.division, "Department": e.department, "Sex / Gender": e.sexGender, "Race": e.race, "Age": e.age, "Age Band": e.ageBand, "Disability": e.disability, "Course / Intervention": state.courses[i].course, "Requested / Suggested": "Yes", "Planned WSP": i < 9 ? "Yes" : "No", "Achieved ATR": i < 6 ? "Yes" : "No", "Provider": state.courses[i].provider, "Quarter / Date": "Q3", "Planned Cost": state.courses[i].estimatedCost, "Actual Cost": i < 6 ? state.courses[i].estimatedCost : 0, "Evidence Status": i < 6 ? "Evidence ready" : "Pending", "Review Status": i === 11 ? "Confirmation Required" : "Clean" }));
 }
 
+function stageSampleWorkbook() {
+  stagedRows = sampleWorkbookRows();
+  renderWorkbook();
+  document.getElementById("workbookMessage").textContent = "Sample workbook loaded: 12 demo rows are staged. Review the preview below, then click Apply To Demo Staging.";
+}
+
+function stageUploadedWorkbook(rows) {
+  stagedRows = rows;
+  renderWorkbook();
+  document.getElementById("workbookMessage").textContent = `${stagedRows.length.toLocaleString("en-ZA")} uploaded demo rows are staged. Review the preview below, then click Apply To Demo Staging.`;
+}
+
 function copyText(text, successMessage) {
   if (navigator.clipboard?.writeText) {
     navigator.clipboard.writeText(text).then(() => alert(successMessage)).catch(() => fallbackCopyText(text, successMessage));
@@ -870,9 +882,9 @@ document.getElementById("overviewProviderFilter").addEventListener("change", eve
   renderOverview();
 });
 document.getElementById("peopleSearch").addEventListener("input", renderPeople);
-document.getElementById("loadSampleWorkbook").addEventListener("click", () => { stagedRows = sampleWorkbookRows(); renderWorkbook(); });
-document.getElementById("overviewLoadSample").addEventListener("click", () => { stagedRows = sampleWorkbookRows(); renderWorkbook(); });
-document.getElementById("csvUpload").addEventListener("change", async event => { const file = event.target.files[0]; if (file) { stagedRows = parseCsv(await file.text()); renderWorkbook(); } });
+document.getElementById("loadSampleWorkbook").addEventListener("click", stageSampleWorkbook);
+document.getElementById("overviewLoadSample").addEventListener("click", stageSampleWorkbook);
+document.getElementById("csvUpload").addEventListener("change", async event => { const file = event.target.files[0]; if (file) stageUploadedWorkbook(parseCsv(await file.text())); });
 document.getElementById("applyStaging").addEventListener("click", applyWorkbookRows);
 document.getElementById("resetDemoTop").addEventListener("click", resetDemo);
 document.getElementById("resetDemoOverview").addEventListener("click", resetDemo);
