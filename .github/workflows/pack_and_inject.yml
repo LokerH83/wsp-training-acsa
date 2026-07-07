@@ -26,6 +26,20 @@ jobs:
           }
           Write-Output "Using verified Power Apps export: $solution"
 
+      - name: Upload verified solution artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: verified-power-apps-export
+          path: exports/WSPTrainingManagementSystem_complete_solution.zip
+
+      - name: Verify Power Platform connection
+        uses: microsoft/powerplatform-actions/who-am-i@v1
+        with:
+          environment-url: ${{ secrets.PP_ENVIRONMENT }}
+          app-id: ${{ secrets.PP_CLIENT_ID }}
+          client-secret: ${{ secrets.PP_CLIENT_SECRET }}
+          tenant-id: ${{ secrets.PP_TENANT_ID }}
+
       - name: Import verified solution into sandbox
         uses: microsoft/powerplatform-actions/import-solution@v1
         with:
@@ -36,9 +50,3 @@ jobs:
           solution-file: exports/WSPTrainingManagementSystem_complete_solution.zip
           force-overwrite: true
           publish-changes: true
-
-      - name: Upload imported solution artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: verified-power-apps-export
-          path: exports/WSPTrainingManagementSystem_complete_solution.zip
