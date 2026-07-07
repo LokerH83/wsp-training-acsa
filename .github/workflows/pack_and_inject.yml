@@ -87,7 +87,7 @@ jobs:
 
           "PAC_EXE=$pac" | Out-File -FilePath $env:GITHUB_ENV -Append -Encoding utf8
           "pac_path=$pac" | Tee-Object -FilePath $log -Append
-          & $pac --version 2>&1 | Tee-Object -FilePath $log -Append
+          & $pac help 2>&1 | Tee-Object -FilePath $log -Append
 
       - name: Confirm solution export exists
         shell: pwsh
@@ -193,7 +193,7 @@ jobs:
           }
 
           Write-Log "pac_path=$pac"
-          & $pac --version 2>&1 | Tee-Object -FilePath $log -Append
+          & $pac help 2>&1 | Tee-Object -FilePath $log -Append
           Write-Log "PP_ENVIRONMENT=$env:PP_ENVIRONMENT"
           Write-Log "PP_CLIENT_ID present=$([bool]$env:PP_CLIENT_ID)"
           Write-Log "PP_TENANT_ID present=$([bool]$env:PP_TENANT_ID)"
