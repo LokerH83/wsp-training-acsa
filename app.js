@@ -201,7 +201,7 @@ function renderOverview() {
     ["Requested not planned", s.requestedNotPlanned, s.requestedNotPlanned ? "risk" : "good"],
     ["Planned not achieved", s.plannedNotAchieved, s.plannedNotAchieved ? "risk" : "good"],
     ["Achieved not planned", s.achievedNotPlanned, s.achievedNotPlanned ? "risk" : "good"],
-    ["Items to confirm", s.reviewItems, s.reviewItems ? "warn" : "good"]
+    ["Review items", s.reviewItems, s.reviewItems ? "warn" : "good"]
   ].map(([label, value, tone]) => `<div class="issue ${tone}"><strong>${label}</strong><span>${value} demo records</span></div>`).join("");
   const providerCounts = state.plans.reduce((acc, row) => ((acc[row.provider] = (acc[row.provider] || 0) + 1), acc), {});
   const providerMax = Math.max(...Object.values(providerCounts), 1);
