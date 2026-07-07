@@ -667,7 +667,8 @@ document.getElementById("bookingForm").addEventListener("change", event => {
 document.getElementById("trainingForm").addEventListener("submit", event => {
   event.preventDefault();
   const data = Object.fromEntries(new FormData(event.currentTarget));
-  const recordPeriod = data.recordType === "actual" && data.trainingDate ? data.trainingDate : data.period;
+  const chosenPeriod = data.period || data.trainingDate || data.preferredWindow || "Date to be confirmed";
+  const recordPeriod = data.recordType === "actual" && data.trainingDate ? data.trainingDate : chosenPeriod;
   const record = {
     id: crypto.randomUUID(),
     employeeNumber: data.employeeNumber,
@@ -701,7 +702,7 @@ document.getElementById("trainingForm").addEventListener("submit", event => {
       groupName: "",
       provider: data.provider,
       course: data.course,
-      period: data.trainingDate || data.period,
+      period: data.trainingDate || chosenPeriod,
       preferredWindow: data.preferredWindow,
       date: data.trainingDate,
       startTime: data.startTime,

@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>ACSA WSP / ATR Reporting Concept Demo</title>
   <link rel="icon" href="data:,">
-  <link rel="stylesheet" href="./styles.css?v=20260707-tighten-training">
+  <link rel="stylesheet" href="./styles.css?v=20260707-qdate-polish">
 </head>
 <body>
   <div class="app">
@@ -160,7 +160,7 @@
             <div class="inherited-fields"><strong>Profile-linked fields inherited from employee record.</strong><span id="inheritedFields">Select an employee.</span></div>
             <label>Provider<select name="provider" required></select></label>
             <label>Course<select name="course" required></select></label>
-            <label>Quarter / Date<input name="period" value="Q3"></label>
+            <label>Quarter / Date<input name="period" placeholder="Date to be confirmed"></label>
             <fieldset class="booking-detail-fields planning-options">
               <legend>Planning / Booking Options</legend>
               <label>Preferred Training Window<select name="preferredWindow"><option>Date to be confirmed</option><option>This month</option><option>Next month</option><option>Q1</option><option>Q2</option><option>Q3</option><option>Q4</option></select></label>
@@ -182,7 +182,7 @@
             </fieldset>
             <button class="primary" type="submit">Save Record</button>
           </form>
-          <section class="panel">
+          <section class="panel provider-panel">
             <div class="panel-head"><h3>Find Provider / Course</h3></div>
             <div class="filters provider-search">
               <input id="providerSearch" placeholder="Provider search">
@@ -190,7 +190,7 @@
               <input id="courseSearch" placeholder="Course search">
               <select id="categoryFilter"><option value="All">All categories</option></select>
             </div>
-            <div class="table-wrap"><table><thead><tr><th>Provider</th><th>Course</th><th>Category</th><th>Duration</th><th>Delivery Mode</th><th>Estimated Cost</th><th>Evidence Required</th><th>SETA / B-BBEE Relevance</th><th>Action</th></tr></thead><tbody id="courseResults"></tbody></table></div>
+            <div class="table-wrap"><table><thead><tr><th>Provider</th><th>Course</th><th>Category</th><th>Duration</th><th>Mode</th><th>Est. Cost</th><th>Evidence</th><th>Relevance</th><th>Action</th></tr></thead><tbody id="courseResults"></tbody></table></div>
           </section>
         </div>
         <section class="panel booking-panel">
@@ -244,6 +244,6 @@
     </main>
   </div>
   <script src="./data/demo-snapshot.js"></script>
-  <script src="./app.js?v=20260707-functional-realign"></script>
+  <script src="./app.js?v=20260707-qdate-polish"></script>
 </body>
 </html>

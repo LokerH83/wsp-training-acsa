@@ -2081,6 +2081,79 @@ select {
   min-height: 42px;
 }
 
+.provider-panel .table-wrap {
+  overflow-x: auto;
+}
+
+.provider-panel table {
+  width: 100%;
+  min-width: 0;
+  table-layout: fixed;
+  font-size: 11px;
+}
+
+.provider-panel th,
+.provider-panel td {
+  padding: 7px 8px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.provider-panel th:nth-child(1),
+.provider-panel td:nth-child(1) {
+  width: 18%;
+}
+
+.provider-panel th:nth-child(2),
+.provider-panel td:nth-child(2) {
+  width: 21%;
+}
+
+.provider-panel th:nth-child(3),
+.provider-panel td:nth-child(3) {
+  width: 10%;
+}
+
+.provider-panel th:nth-child(4),
+.provider-panel td:nth-child(4) {
+  width: 7%;
+}
+
+.provider-panel th:nth-child(5),
+.provider-panel td:nth-child(5) {
+  width: 9%;
+}
+
+.provider-panel th:nth-child(6),
+.provider-panel td:nth-child(6) {
+  width: 9%;
+}
+
+.provider-panel th:nth-child(7),
+.provider-panel td:nth-child(7) {
+  width: 12%;
+}
+
+.provider-panel th:nth-child(8),
+.provider-panel td:nth-child(8) {
+  width: 8%;
+}
+
+.provider-panel th:nth-child(9),
+.provider-panel td:nth-child(9) {
+  width: 104px;
+}
+
+.provider-panel [data-use-course] {
+  width: 100%;
+  min-height: 28px;
+  padding: 5px 6px;
+  font-size: 11px;
+  white-space: normal;
+  line-height: 1.15;
+}
+
 input:focus,
 select:focus {
   outline: 2px solid rgba(0, 120, 166, .18);
