@@ -210,40 +210,49 @@ jobs:
             throw "One or more required Power Platform secrets are missing."
           }
 
-          try {
-            $environmentUri = [Uri]$env:PP_ENVIRONMENT
-            if(-not $environmentUri.Host) {
-              throw "PP_ENVIRONMENT must be an absolute URL."
-            }
-
-            Write-Log "environment_host=$($environmentUri.Host)"
-            $dnsRecords = Resolve-DnsName -Name $environmentUri.Host -ErrorAction Stop
-            $dnsRecords |
-              Select-Object -First 5 |
-              ForEach-Object {
-                $target = if($_.IPAddress) { $_.IPAddress } elseif($_.NameHost) { $_.NameHost } else { "" }
-                Write-Log "dns_record=$($_.Name) type=$($_.Type) target=$target"
+          $environmentTarget = $env:PP_ENVIRONMENT.Trim()
+          $guidValue = [Guid]::Empty
+          $isEnvironmentId = [Guid]::TryParse($environmentTarget, [ref]$guidValue)
+          if($isEnvironmentId) {
+            Write-Log "environment_target_type=id"
+            Write-Log "environment_id=$environmentTarget"
+          } else {
+            try {
+              $environmentUri = [Uri]$environmentTarget
+              if(-not $environmentUri.Host) {
+                throw "PP_ENVIRONMENT must be an absolute URL or environment ID."
               }
-          } catch {
-            Write-Log "environment_dns_check_failed=$($_.Exception.Message)"
-            throw "Power Platform environment host could not be resolved before authentication."
+
+              Write-Log "environment_target_type=url"
+              Write-Log "environment_host=$($environmentUri.Host)"
+              $dnsRecords = Resolve-DnsName -Name $environmentUri.Host -ErrorAction Stop
+              $dnsRecords |
+                Select-Object -First 5 |
+                ForEach-Object {
+                  $target = if($_.IPAddress) { $_.IPAddress } elseif($_.NameHost) { $_.NameHost } else { "" }
+                  Write-Log "dns_record=$($_.Name) type=$($_.Type) target=$target"
+                }
+            } catch {
+              Write-Log "environment_dns_check_failed=$($_.Exception.Message)"
+              throw "Power Platform environment URL could not be resolved. Set PP_ENVIRONMENT to the environment ID instead."
+            }
           }
 
           $authExit = Try-Pac "auth create with environment" @(
             "auth", "create",
             "--name", "github-actions-acsa",
-            "--environment", $env:PP_ENVIRONMENT,
+            "--environment", $environmentTarget,
             "--applicationId", $env:PP_CLIENT_ID,
             "--clientSecret", $env:PP_CLIENT_SECRET,
             "--tenant", $env:PP_TENANT_ID
           )
 
-          if($authExit -ne 0) {
+          if($authExit -ne 0 -and -not $isEnvironmentId) {
             Write-Log "Environment auth failed; retrying with --url."
             $authExit = Try-Pac "auth create with url" @(
               "auth", "create",
               "--name", "github-actions-acsa-url",
-              "--url", $env:PP_ENVIRONMENT,
+              "--url", $environmentTarget,
               "--applicationId", $env:PP_CLIENT_ID,
               "--clientSecret", $env:PP_CLIENT_SECRET,
               "--tenant", $env:PP_TENANT_ID
@@ -259,7 +268,7 @@ jobs:
           Run-Pac "solution import" @(
             "solution", "import",
             "--path", $solution,
-            "--environment", $env:PP_ENVIRONMENT,
+            "--environment", $environmentTarget,
             "--force-overwrite",
             "--publish-changes",
             "--max-async-wait-time", "30"
