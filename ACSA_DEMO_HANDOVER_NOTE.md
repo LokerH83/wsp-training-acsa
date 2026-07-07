@@ -23,11 +23,11 @@ Final QA pass completed on the demo-safe ACSA SDF dashboard, including Overview 
 - People profile drill-down, including Training Bookings.
 - Reports page filtering and drill-down by demographics, training dimensions and booking status.
 - Reset restores the synthetic baseline, including 8 bookings.
-- Executive summary copy includes requested, planned, achieved, gap counts, confirmation items, readiness signal and next action.
+- Executive summary copy includes requested, planned, achieved, reporting gaps, review items and next action.
 
 ## QA fixes
 
-- Fixed confirmation item binding so the dashboard and Reports show a non-zero readiness signal.
+- Fixed confirmation item binding so the dashboard and Reports show non-zero review items.
 - Added Reports Reset Filters action.
 - Fixed Reports Reset Filters so selected filter options return to All and the full matrix is restored.
 - Added missing profile demographics: Region / Cluster, Division, Department and Age.

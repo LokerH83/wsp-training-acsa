@@ -126,7 +126,7 @@ function summary(rows = state.reportRows) {
     return acc;
   }, { requested: 0, planned: 0, achieved: 0, requestedNotPlanned: 0, plannedNotAchieved: 0, achievedNotPlanned: 0, reviewItems: 0 });
   s.completion = s.planned ? Math.round((Math.min(s.achieved, s.planned) / s.planned) * 100) : 0;
-  s.readiness = s.reviewItems || s.plannedNotAchieved || s.achievedNotPlanned ? "Demo Ready" : "Ready";
+  s.reportingGaps = s.requestedNotPlanned + s.plannedNotAchieved + s.achievedNotPlanned;
   return s;
 }
 
@@ -150,7 +150,7 @@ function kpiHtml(s) {
   return [
     ["Employees", state.employees.length], ["Requested / Suggested", s.requested], ["Planned WSP", s.planned], ["Achieved ATR", s.achieved],
     ["Requested Not Planned", s.requestedNotPlanned], ["Planned Not Achieved", s.plannedNotAchieved], ["Achieved Not Planned", s.achievedNotPlanned],
-    ["Items To Confirm", s.reviewItems], ["Readiness Signal", s.readiness]
+    ["Review Items", s.reviewItems], ["Reporting Gaps", s.reportingGaps]
   ].map(([label, value]) => `<article class="kpi"><span>${label}</span><strong>${typeof value === "number" ? value.toLocaleString("en-ZA") : value}</strong><small>demo value</small></article>`).join("");
 }
 
@@ -168,9 +168,8 @@ function riskHtml(s) {
     ["Requested Not Planned", s.requestedNotPlanned],
     ["Planned Not Achieved", s.plannedNotAchieved],
     ["Achieved Not Planned", s.achievedNotPlanned],
-    ["Items To Confirm", s.reviewItems],
-    ["Readiness Signal", "Demo Ready"]
-  ].map(([label, value]) => `<article class="kpi review-kpi"><span>${label}</span><strong>${typeof value === "number" ? value.toLocaleString("en-ZA") : value}</strong><small>${label === "Readiness Signal" ? "demo readiness status" : "demo records"}</small></article>`).join("");
+    ["Review Items", s.reviewItems]
+  ].map(([label, value]) => `<article class="kpi review-kpi"><span>${label}</span><strong>${typeof value === "number" ? value.toLocaleString("en-ZA") : value}</strong><small>demo records</small></article>`).join("");
 }
 
 function renderOverview() {
@@ -326,7 +325,7 @@ function hydrateReportFilters() {
 
 function executiveSummaryText() {
   const s = summary();
-  return `ACSA SDF Demo Summary:\nThe demo data shows ${s.requested} requested/suggested records, ${s.planned} planned WSP records and ${s.achieved} achieved ATR records.\nCurrent confirmation points are requested not planned (${s.requestedNotPlanned}), planned not achieved (${s.plannedNotAchieved}), achieved not planned (${s.achievedNotPlanned}) and items to confirm (${s.reviewItems}).\nReadiness signal: ${s.readiness}.\nThis is a planning estimate for the demo. Production would validate approved records through a secured API and Dataverse layer.\nNext action: confirm evidence, align the reporting view and approve clean records for governed submission preparation.`;
+  return `ACSA SDF Demo Summary:\nThe demo data shows ${s.requested} requested/suggested records, ${s.planned} planned WSP records and ${s.achieved} achieved ATR records.\nThe dashboard highlights reporting gaps: requested not planned (${s.requestedNotPlanned}), planned not achieved (${s.plannedNotAchieved}) and achieved not planned (${s.achievedNotPlanned}).\nRecords needing review: ${s.reviewItems}.\nThis is a planning estimate for the demo. Production would validate approved records through a secured API and Dataverse layer.\nNext action: confirm the Excel data structure and prove the Power BI reporting layer before investing in the full workflow app.`;
 }
 
 function copyExecutiveSummary() {
