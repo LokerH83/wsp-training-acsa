@@ -107,17 +107,17 @@
             <div id="providerSummary" class="bar-list"></div>
           </section>
           <section class="panel action-panel">
-            <div class="panel-head"><h3>Demo Actions</h3></div>
+            <div class="panel-head"><h3>Workflow Actions</h3></div>
             <div class="action-tile-grid">
               <button data-view-target="workbook" id="overviewLoadSample"><strong>Load Sample Workbook</strong><span>Stage the workbook story</span></button>
-              <button data-view-target="workbook"><strong>Upload Demo CSV</strong><span>Show the CSV bridge</span></button>
+              <button data-view-target="workbook"><strong>Upload CSV</strong><span>Show the CSV bridge</span></button>
               <button data-view-target="training" data-mode="plan"><strong>Manage Training</strong><span>Add request, plan or actual</span></button>
               <button data-view-target="training" data-booking-focus="true"><strong>Book / Schedule Training</strong><span>Capture proposed training details</span></button>
               <button data-view-target="training" data-mode="actual"><strong>Record Completed Training</strong><span>Prepare ATR capture</span></button>
               <button data-view-target="people"><strong>Show Employee History</strong><span>Open profile-linked records</span></button>
               <button data-view-target="reports"><strong>Open Reports</strong><span>Open filterable reporting</span></button>
               <button id="copyExecutiveSummaryOverview"><strong>Copy Executive Summary</strong><span>Use during management review</span></button>
-              <button id="resetDemoOverview"><strong>Reset Demo</strong><span>Restore the baseline</span></button>
+              <button id="resetDemoOverview"><strong>Reset</strong><span>Restore the baseline</span></button>
             </div>
           </section>
         </div>
@@ -130,15 +130,15 @@
 
       <section id="workbook" class="view">
         <div class="toolbar">
-          <div><h2>Load Workbook</h2><p>Stage the sample workbook or upload a demo-safe CSV export only. Do not upload private ACSA data into this public demo.</p></div>
+          <div><h2>Load Workbook</h2><p>Stage the sample workbook or upload a safe CSV export. Do not upload private ACSA records into this public view.</p></div>
         </div>
         <div class="import-grid import-workbench">
           <section class="panel import-drop">
-            <div><span class="eyebrow">Workbook bridge</span><h3>Bring demo workbook data in</h3><p>Use the sample workbook or upload a demo-safe CSV export only.</p></div>
+            <div><span class="eyebrow">Workbook bridge</span><h3>Bring workbook data in</h3><p>Use the sample workbook or upload a safe CSV export.</p></div>
             <div class="quick-actions">
               <button class="primary" id="loadSampleWorkbook">Load Sample Workbook</button>
-              <label class="connector-row"><input id="csvUpload" type="file" accept=".csv"><span class="connector-icon">CSV</span><span><strong>Upload Demo CSV</strong><small>Use a demo-safe CSV export only</small></span></label>
-              <button id="applyStaging">Apply To Demo Staging</button>
+              <label class="connector-row"><input id="csvUpload" type="file" accept=".csv"><span class="connector-icon">CSV</span><span><strong>Upload CSV</strong><small>Use a safe CSV export only</small></span></label>
+              <button id="applyStaging">Apply To Staging</button>
             </div>
             <p class="security-note" id="workbookMessage">No workbook staged yet.</p>
           </section>
@@ -220,7 +220,7 @@
           <div class="panel-head"><h3>Training Bookings</h3></div>
           <div class="table-wrap"><table><thead><tr><th>Booking Status</th><th>Employee / Group</th><th>Provider</th><th>Course / Intervention</th><th>Preferred Window</th><th>Training Date</th><th>Time</th><th>Delivery Mode</th><th>Venue / Link</th><th>Reminder Status</th><th>Evidence Required</th><th>ATR Status</th><th>Action</th></tr></thead><tbody id="bookingRows"></tbody></table></div>
         </section>
-        <section class="panel table-panel"><div class="panel-head"><h3>Demo Training Records</h3></div><div class="table-wrap"><table><thead><tr><th>Type</th><th>Employee</th><th>Course</th><th>Provider</th><th>Period</th><th>Status</th></tr></thead><tbody id="trainingRows"></tbody></table></div></section>
+        <section class="panel table-panel"><div class="panel-head"><h3>Training Records</h3></div><div class="table-wrap"><table><thead><tr><th>Type</th><th>Employee</th><th>Course</th><th>Provider</th><th>Period</th><th>Status</th></tr></thead><tbody id="trainingRows"></tbody></table></div></section>
       </section>
 
       <section id="people" class="view">

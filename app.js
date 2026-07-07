@@ -316,8 +316,8 @@ function renderOverview() {
 
 function renderWorkbook() {
   document.getElementById("detectedColumns").innerHTML = (stagedRows[0] ? Object.keys(stagedRows[0]) : requiredColumns).map(col => `<div><span>${col}</span><strong>${requiredColumns.includes(col) ? "Mapped" : "Extra"}</strong></div>`).join("");
-  document.getElementById("fieldChecklist").innerHTML = requiredColumns.map(col => `<div class="check-row complete"><span>OK</span><div><strong>${col}</strong><small>demo mapping ready</small></div></div>`).join("");
-  document.getElementById("importImpact").innerHTML = `<div class="issue good"><strong>Rows staged</strong><span>${stagedRows.length || "Sample workbook ready"} rows available for demo staging.</span></div><div class="issue good"><strong>Production note</strong><span>Production version would validate and write approved rows through the secured API and Dataverse layer.</span></div>`;
+  document.getElementById("fieldChecklist").innerHTML = requiredColumns.map(col => `<div class="check-row complete"><span>OK</span><div><strong>${col}</strong><small>mapping ready</small></div></div>`).join("");
+  document.getElementById("importImpact").innerHTML = `<div class="issue good"><strong>Rows staged</strong><span>${stagedRows.length || "Sample workbook ready"} rows available for staging.</span></div><div class="issue good"><strong>Implementation note</strong><span>A production version would validate and write approved rows through the secured API and Dataverse layer.</span></div>`;
   document.getElementById("importPreview").innerHTML = (stagedRows.length ? stagedRows : sampleWorkbookRows()).slice(0, 8).map(row => `<tr><td>${row["Employee Name"]}</td><td>${row["Course / Intervention"]}</td><td>${row["Requested / Suggested"]}</td><td>${row["Planned WSP"]}</td><td>${row["Achieved ATR"]}</td><td>${row["Review Status"]}</td></tr>`).join("");
 }
 
@@ -626,14 +626,14 @@ function sampleWorkbookRows() {
 function stageSampleWorkbook() {
   stagedRows = sampleWorkbookRows();
   renderWorkbook();
-  document.getElementById("workbookMessage").textContent = "Sample workbook loaded: 12 demo rows are staged. Review the preview below, then click Apply To Demo Staging.";
+  document.getElementById("workbookMessage").textContent = "Sample workbook loaded: 12 rows are staged. Review the preview below, then click Apply To Staging.";
   revealImportPreview();
 }
 
 function stageUploadedWorkbook(rows) {
   stagedRows = rows;
   renderWorkbook();
-  document.getElementById("workbookMessage").textContent = `${stagedRows.length.toLocaleString("en-ZA")} uploaded demo rows are staged. Review the preview below, then click Apply To Demo Staging.`;
+  document.getElementById("workbookMessage").textContent = `${stagedRows.length.toLocaleString("en-ZA")} uploaded rows are staged. Review the preview below, then click Apply To Staging.`;
   revealImportPreview();
 }
 
@@ -708,7 +708,7 @@ function applyWorkbookRows() {
     if (row["Achieved ATR"] === "Yes") state.actuals.push({ ...base, id: `${base.id}-act`, cost: Number(row["Actual Cost"] || 0), evidenceStatus: row["Evidence Status"] });
   });
   saveState();
-  document.getElementById("workbookMessage").textContent = "Workbook staged into the demo view. A production implementation would validate and write approved rows through a secured implementation layer.";
+  document.getElementById("workbookMessage").textContent = "Workbook rows applied to staging. A production implementation would validate and write approved rows through a secured implementation layer.";
   renderAll();
 }
 
