@@ -1,4 +1,4 @@
-const STORAGE_KEY = "acsa-sdf-demo-state-v3";
+const STORAGE_KEY = "acsa-sdf-demo-state-v4";
 const DEMO_DATA = window.ACSA_DEMO_DATA || { employees: [], providers: [], courses: [], requests: [], plans: [], actuals: [], bookings: [] };
 let state = loadState();
 let stagedRows = [];
@@ -46,9 +46,10 @@ function initialiseState(data) {
     requests: data.requests || [],
     plans: data.plans || [],
     actuals: data.actuals || [],
-    bookings: data.bookings || [],
+    bookings: [],
     reportRows: []
   };
+  next.bookings = (data.bookings || []).map(booking => normalizeBookingRecord(booking, next.courses));
   next.reportRows = buildRequestedPlannedAchievedReport(next);
   return next;
 }
@@ -97,7 +98,7 @@ function recordKey(row) {
 }
 
 function reviewItems(row) {
-  const reviewStatuses = ["Confirmation Required", "Reconciliation Opportunity", "Attendance To Confirm"];
+  const reviewStatuses = ["Confirmation Required", "Reconciliation Opportunity", "Missed / Needs Justification"];
   return ["regionCluster","division","department","sexGender","race","ageBand","disability"].filter(field => String(row[field] || "").includes("Confirmation Required")).length + (reviewStatuses.includes(row.reviewStatus || row.status) ? 1 : 0);
 }
 
@@ -168,8 +169,38 @@ function bookingSummary(bookings = state.bookings || []) {
 
 function normalizeBookingStatus(status) {
   if (status === "Draft") return "Proposed";
-  if (status === "Attendance To Confirm") return "Missed / Needs Justification";
+  if (status === ["Attendance", "To", "Confirm"].join(" ")) return "Missed / Needs Justification";
   return status || "Not booked";
+}
+
+function courseFor(provider, course, sourceCourses = DEMO_DATA.courses || []) {
+  return sourceCourses.find(item => item.provider === provider && item.course === course) || {};
+}
+
+function normalizeBookingRecord(booking = {}, sourceCourses = DEMO_DATA.courses || []) {
+  const course = courseFor(booking.provider, booking.course, sourceCourses);
+  const status = normalizeBookingStatus(booking.bookingStatus || booking.status);
+  return {
+    id: booking.id || crypto.randomUUID(),
+    planId: booking.planId || "",
+    employeeNumber: booking.employeeNumber || "",
+    groupName: booking.groupName || "",
+    provider: booking.provider || "",
+    course: booking.course || "",
+    period: booking.period || booking.date || booking.preferredWindow || "Date to be confirmed",
+    preferredWindow: booking.preferredWindow || "Date to be confirmed",
+    date: booking.date || "",
+    startTime: booking.startTime || "",
+    endTime: booking.endTime || "",
+    deliveryMode: booking.deliveryMode || course.deliveryMode || "",
+    location: booking.location || booking.venueLink || "",
+    venueLink: booking.venueLink || booking.location || "",
+    reminderStatus: booking.reminderStatus || "Not sent",
+    evidenceRequired: booking.evidenceRequired || course.evidenceRequired || "Not confirmed",
+    bookingNotes: booking.bookingNotes || "",
+    bookingStatus: status,
+    status
+  };
 }
 
 function quarterFromPeriod(value) {
@@ -317,11 +348,14 @@ function renderBookingForm() {
 function updateBookingFields() {
   const form = document.getElementById("bookingForm");
   const plan = state.plans.find(item => item.id === form.planId.value) || state.plans[0] || {};
+  const course = courseFor(plan.provider, plan.course, state.courses);
   form.provider.value = plan.provider || "";
   form.course.value = plan.course || "";
   if (plan.employeeNumber && (!form.employeeNumber.value || form.employeeNumber.value.startsWith("COHORT:"))) form.employeeNumber.value = plan.employeeNumber;
-  if (!form.preferredWindow.value) form.preferredWindow.value = "Next month";
-  if (!form.bookingStatus.value || form.bookingStatus.value === "Not booked") form.bookingStatus.value = "Proposed";
+  if (!form.preferredWindow.dataset.touched || !form.preferredWindow.value) form.preferredWindow.value = plan.preferredWindow || "Next month";
+  if (!form.bookingStatus.dataset.touched || !form.bookingStatus.value || form.bookingStatus.value === "Not booked") form.bookingStatus.value = normalizeBookingStatus(plan.bookingStatus || "Proposed");
+  if (!form.deliveryMode.dataset.touched) form.deliveryMode.value = plan.deliveryMode || course.deliveryMode || form.deliveryMode.value;
+  if (!form.evidenceRequired.dataset.touched) form.evidenceRequired.value = plan.evidenceRequired || course.evidenceRequired || form.evidenceRequired.value || "Attendance register";
   if (!form.location.value) form.location.value = plan.provider?.includes("Digital") ? "Online meeting link" : "Demo Training Room 1";
 }
 
@@ -344,7 +378,7 @@ function renderBookingRows() {
     const person = employee(booking.employeeNumber);
     const name = booking.groupName || person.employeeName || "Demo cohort";
     const atr = state.actuals.some(row => row.employeeNumber === booking.employeeNumber && row.provider === booking.provider && row.course === booking.course) ? "ATR captured" : "Pending ATR";
-    const dateOrWindow = booking.date || booking.preferredWindow || "Date to be confirmed";
+    const dateOrWindow = booking.date || "Date to be confirmed";
     const time = booking.startTime || booking.endTime ? `${friendly(booking.startTime, "09:00")} - ${friendly(booking.endTime, "12:00")}` : "Not specified";
     return `<tr><td>${normalizeBookingStatus(booking.bookingStatus)}</td><td>${friendly(name, "Demo cohort")}</td><td>${friendly(booking.provider)}</td><td>${friendly(booking.course)}</td><td>${friendly(booking.preferredWindow, "Date to be confirmed")}</td><td>${friendly(dateOrWindow, "Date to be confirmed")}</td><td>${time}</td><td>${friendly(booking.deliveryMode)}</td><td>${friendly(booking.location || booking.venueLink)}</td><td>${friendly(booking.reminderStatus, "Not sent")}</td><td>${friendly(booking.evidenceRequired, "Not confirmed")}</td><td>${atr}</td><td><button class="table-action" data-booking-complete="${booking.id}">Mark Completed</button> <button class="table-action" data-booking-atr="${booking.id}">Record ATR</button> <button class="table-action" data-booking-missed="${booking.id}">Mark Missed</button></td></tr>`;
   }).join("");
@@ -536,8 +570,7 @@ function executiveSummaryText() {
 }
 
 function copyExecutiveSummary() {
-  navigator.clipboard?.writeText(executiveSummaryText());
-  alert("Executive summary copied.");
+  copyText(executiveSummaryText(), "Executive summary copied.");
 }
 
 function reportRowsAsDelimited(rows, delimiter) {
@@ -564,8 +597,7 @@ function copyFilteredReport() {
     alert("No filtered rows to copy.");
     return;
   }
-  navigator.clipboard?.writeText(reportRowsAsDelimited(rows, "\t"));
-  alert("Filtered report copied. Paste into Excel or email.");
+  copyText(reportRowsAsDelimited(rows, "\t"), "Filtered report copied. Paste into Excel or email.");
 }
 
 function exportFilteredReport() {
@@ -591,10 +623,57 @@ function sampleWorkbookRows() {
   return state.employees.slice(0, 12).map((e, i) => ({ "Employee Number": e.employeeNumber, "Employee Name": e.employeeName, "ID Number": e.idNumber, "Region / Cluster": e.regionCluster, "Division": e.division, "Department": e.department, "Sex / Gender": e.sexGender, "Race": e.race, "Age": e.age, "Age Band": e.ageBand, "Disability": e.disability, "Course / Intervention": state.courses[i].course, "Requested / Suggested": "Yes", "Planned WSP": i < 9 ? "Yes" : "No", "Achieved ATR": i < 6 ? "Yes" : "No", "Provider": state.courses[i].provider, "Quarter / Date": "Q3", "Planned Cost": state.courses[i].estimatedCost, "Actual Cost": i < 6 ? state.courses[i].estimatedCost : 0, "Evidence Status": i < 6 ? "Evidence ready" : "Pending", "Review Status": i === 11 ? "Confirmation Required" : "Clean" }));
 }
 
+function copyText(text, successMessage) {
+  if (navigator.clipboard?.writeText) {
+    navigator.clipboard.writeText(text).then(() => alert(successMessage)).catch(() => fallbackCopyText(text, successMessage));
+    return;
+  }
+  fallbackCopyText(text, successMessage);
+}
+
+function fallbackCopyText(text, successMessage) {
+  const area = document.createElement("textarea");
+  area.value = text;
+  area.setAttribute("readonly", "");
+  area.style.position = "fixed";
+  area.style.left = "-9999px";
+  document.body.appendChild(area);
+  area.select();
+  document.execCommand("copy");
+  area.remove();
+  alert(successMessage);
+}
+
 function parseCsv(text) {
-  const lines = text.trim().split(/\r?\n/);
-  const headers = lines.shift().split(",").map(h => h.trim());
-  return lines.map(line => Object.fromEntries(line.split(",").map((value, i) => [headers[i], value.trim()])));
+  const rows = [];
+  let row = [];
+  let value = "";
+  let inQuotes = false;
+  const input = String(text || "").replace(/\r\n/g, "\n").replace(/\r/g, "\n");
+  for (let i = 0; i < input.length; i += 1) {
+    const char = input[i];
+    const next = input[i + 1];
+    if (char === '"' && inQuotes && next === '"') {
+      value += '"';
+      i += 1;
+    } else if (char === '"') {
+      inQuotes = !inQuotes;
+    } else if (char === "," && !inQuotes) {
+      row.push(value.trim());
+      value = "";
+    } else if (char === "\n" && !inQuotes) {
+      row.push(value.trim());
+      if (row.some(cell => cell !== "")) rows.push(row);
+      row = [];
+      value = "";
+    } else {
+      value += char;
+    }
+  }
+  row.push(value.trim());
+  if (row.some(cell => cell !== "")) rows.push(row);
+  const headers = rows.shift() || [];
+  return rows.map(values => Object.fromEntries(headers.map((header, index) => [header.trim(), values[index] || ""])));
 }
 
 function applyWorkbookRows() {
@@ -681,6 +760,7 @@ document.getElementById("trainingForm").addEventListener("change", event => {
   if (event.target.name === "recordType") updateTrainingBookingDefaults();
 });
 document.getElementById("bookingForm").addEventListener("change", event => {
+  if (["preferredWindow","bookingStatus","deliveryMode","evidenceRequired"].includes(event.target.name)) event.target.dataset.touched = "true";
   if (event.target.name === "planId") updateBookingFields();
 });
 document.getElementById("trainingForm").addEventListener("submit", event => {
@@ -735,7 +815,7 @@ document.getElementById("trainingForm").addEventListener("submit", event => {
       bookingStatus: data.bookingStatus,
       status: data.bookingStatus
     };
-    state.bookings.push(booking);
+    state.bookings.push(normalizeBookingRecord(booking));
   }
   saveState();
   const message = data.recordType === "request"
@@ -771,7 +851,7 @@ document.getElementById("bookingForm").addEventListener("submit", event => {
     bookingStatus: data.bookingStatus,
     status: data.bookingStatus
   };
-  state.bookings.push(booking);
+  state.bookings.push(normalizeBookingRecord(booking));
   if (plan.id) plan.status = "Booked";
   saveState();
   document.getElementById("bookingMessage").textContent = "Demo booking details captured for planning visibility. No calendar invite is sent.";

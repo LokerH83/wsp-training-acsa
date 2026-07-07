@@ -34,10 +34,10 @@ const demoCourseRows = [
   ["Safety Skills Academy", "Occupational Health and Safety", "Safety", "2 days", "Classroom", 2500, "Certificate", "ATR"],
   ["Safety Skills Academy", "Emergency Response Coordination", "Safety", "3 days", "Simulation", 4200, "Simulation checklist", "ATR"],
   ["Safety Skills Academy", "Incident Investigation", "Safety", "2 days", "Classroom", 3300, "Case assessment", "WSP / ATR"],
-  ["Digital Skills Institute", "Excel Reporting for SDF Teams", "Digital", "1 day", "Virtual", 1200, "Practical workbook", "WSP"],
+  ["Digital Skills Institute", "Excel Reporting for SDF Staff", "Digital", "1 day", "Virtual", 1200, "Practical workbook", "WSP"],
   ["Digital Skills Institute", "Power BI Overview Basics", "Digital", "2 days", "Virtual", 3600, "Overview file", "WSP / ATR"],
   ["Digital Skills Institute", "Data Quality for Training Records", "Digital", "1 day", "Workshop", 1700, "Data checklist", "WSP / ATR"],
-  ["Digital Skills Institute", "Cyber Awareness for Airport Teams", "Digital", "Half day", "Online", 850, "Completion record", "ATR"],
+  ["Digital Skills Institute", "Cyber Awareness for Airport Staff", "Digital", "Half day", "Online", 850, "Completion record", "ATR"],
   ["Leadership Development Partner", "Frontline Leadership Essentials", "Leadership", "2 days", "Classroom", 3900, "Attendance register", "WSP / ATR"],
   ["Leadership Development Partner", "Coaching Conversations", "Leadership", "1 day", "Workshop", 2100, "Reflection log", "WSP"],
   ["Leadership Development Partner", "Performance Management Basics", "Leadership", "1 day", "Blended", 1900, "Manager sign-off", "WSP"],
@@ -122,6 +122,7 @@ const demoActuals = [
 
 function demoBooking(planIndex, status, date, startTime, endTime, deliveryMode, reminderStatus, location, groupName = "") {
   const plan = demoPlans[planIndex];
+  const course = demoCourses.find(item => item.provider === plan.provider && item.course === plan.course) || {};
   return {
     id: `booking-${planIndex + 1}`,
     planId: plan.id,
@@ -130,12 +131,15 @@ function demoBooking(planIndex, status, date, startTime, endTime, deliveryMode, 
     provider: plan.provider,
     course: plan.course,
     period: plan.period,
+    preferredWindow: date ? "Next month" : "Date to be confirmed",
     date,
     startTime,
     endTime,
     deliveryMode,
     location,
     reminderStatus,
+    evidenceRequired: course.evidenceRequired || "Not confirmed",
+    bookingNotes: "",
     bookingStatus: status,
     status
   };
@@ -144,12 +148,12 @@ function demoBooking(planIndex, status, date, startTime, endTime, deliveryMode, 
 const demoBookings = [
   demoBooking(0, "Booked", "2026-08-12", "09:00", "12:00", "Classroom", "Reminder scheduled", "Demo Training Room 1"),
   demoBooking(1, "Completed", "2026-07-22", "10:00", "13:00", "Blended", "Reminder sent", "Demo Training Room 2"),
-  demoBooking(2, "Draft", "2026-08-19", "09:00", "11:00", "Classroom", "Not sent", "To be confirmed"),
+  demoBooking(2, "Proposed", "2026-08-19", "09:00", "11:00", "Classroom", "Not sent", "To be confirmed"),
   demoBooking(4, "Missed / Needs Justification", "2026-07-29", "08:30", "12:30", "Classroom", "Reminder sent", "Demo Safety Lab"),
   demoBooking(8, "Booked", "2026-09-03", "13:00", "16:00", "Online", "Reminder scheduled", "Online meeting link"),
   demoBooking(11, "Completed", "2026-07-15", "09:00", "16:00", "Classroom", "Reminder sent", "Leadership Room A"),
   demoBooking(15, "Booked", "2026-08-27", "09:00", "15:00", "Blended", "Not sent", "Technical Training Centre"),
-  demoBooking(23, "Draft", "2026-09-10", "10:00", "12:00", "Classroom", "Not sent", "Operations Skills Academy", "Airport Operations Supervisors cohort")
+  demoBooking(23, "Proposed", "2026-09-10", "10:00", "12:00", "Classroom", "Not sent", "Operations Skills Academy", "Airport Operations Supervisors cohort")
 ];
 
 window.ACSA_DEMO_DATA = {
