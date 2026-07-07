@@ -2791,40 +2791,35 @@ body {
 /* Demo journey polish */
 .sales-strip {
   position: relative;
-  gap: 0;
-  padding: 12px;
+  gap: 16px;
+  padding: 0;
   border: 1px solid #cfe2ea;
   border-radius: 12px;
   background:
-    linear-gradient(90deg, rgba(0, 109, 143, .08), rgba(245, 164, 0, .08)),
+    linear-gradient(135deg, rgba(0, 109, 143, .07), rgba(245, 164, 0, .07)),
     #ffffff;
-  box-shadow: 0 10px 24px rgba(0, 63, 92, .07);
+  box-shadow: 0 10px 26px rgba(0, 55, 78, .07);
 }
 
 .sales-strip::before {
-  content: "";
-  position: absolute;
-  left: 56px;
-  right: 56px;
-  top: 42px;
-  height: 2px;
-  background: linear-gradient(90deg, rgba(0, 109, 143, .22), rgba(245, 164, 0, .32));
+  display: none;
 }
 
 .sales-strip article {
   position: relative;
   z-index: 1;
   display: grid;
-  grid-template-columns: 42px minmax(0, 1fr);
+  grid-template-columns: 44px minmax(0, 1fr);
   grid-template-rows: auto auto;
-  column-gap: 12px;
+  column-gap: 16px;
+  row-gap: 8px;
   align-items: start;
-  min-height: 112px;
-  padding: 18px 18px 16px;
-  border: 0;
+  min-height: 124px;
+  padding: 24px 28px 22px;
+  border: 1px solid rgba(0, 109, 143, .13);
   border-radius: 10px;
-  background: transparent;
-  box-shadow: none;
+  background: rgba(255, 255, 255, .78);
+  box-shadow: 0 8px 22px rgba(0, 54, 76, .055);
 }
 
 .sales-strip article + article {
@@ -2832,8 +2827,8 @@ body {
 }
 
 .sales-strip em {
-  width: 38px;
-  height: 38px;
+  width: 40px;
+  height: 40px;
   display: grid;
   place-items: center;
   grid-row: 1 / span 2;
@@ -2855,22 +2850,22 @@ body {
 }
 
 .sales-strip strong {
-  margin: 1px 0 6px;
+  margin: 2px 0 2px;
   color: #07364d;
   font-size: 15px;
-  line-height: 1.2;
+  line-height: 1.25;
 }
 
 .sales-strip span {
-  max-width: 34rem;
+  max-width: 35rem;
   color: #4d6573;
   font-size: 13px;
-  line-height: 1.45;
+  line-height: 1.55;
 }
 
 @media (max-width: 1180px) {
   .sales-strip {
-    gap: 10px;
+    gap: 12px;
   }
 
   .sales-strip::before {
@@ -2879,10 +2874,20 @@ body {
 
   .sales-strip article {
     border: 1px solid rgba(0, 109, 143, .13);
-    background: rgba(255, 255, 255, .7);
+    background: rgba(255, 255, 255, .78);
   }
 
   .sales-strip article + article {
     border-left: 1px solid rgba(0, 109, 143, .13);
+  }
+}
+
+@media (max-width: 1080px) {
+  .sales-strip {
+    grid-template-columns: 1fr;
+  }
+
+  .sales-strip article {
+    min-height: auto;
   }
 }
