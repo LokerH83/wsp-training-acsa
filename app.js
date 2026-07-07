@@ -1,4 +1,4 @@
-const STORAGE_KEY = "acsa-sdf-demo-state-v4";
+const STORAGE_KEY = "acsa-sdf-demo-state-v5";
 const DEMO_DATA = window.ACSA_DEMO_DATA || { employees: [], providers: [], courses: [], requests: [], plans: [], actuals: [], bookings: [] };
 let state = loadState();
 let stagedRows = [];
@@ -326,7 +326,7 @@ function renderWorkbook() {
   ].map(([number, label, status]) => `<div class="workbook-step ${status}"><span>${number}</span><strong>${label}</strong></div>`).join("");
   document.getElementById("detectedColumns").innerHTML = (stagedRows[0] ? Object.keys(stagedRows[0]) : requiredColumns).map(col => `<div><span>${col}</span><strong>${requiredColumns.includes(col) ? "Mapped" : "Extra"}</strong></div>`).join("");
   document.getElementById("fieldChecklist").innerHTML = requiredColumns.map(col => `<div class="check-row complete"><span>OK</span><div><strong>${col}</strong><small>mapping ready</small></div></div>`).join("");
-  document.getElementById("importImpact").innerHTML = `<div class="issue good"><strong>Rows staged</strong><span>${stagedRows.length || "Sample workbook ready"} rows available for staging.</span></div><div class="issue good"><strong>Implementation note</strong><span>A production version would validate and write approved rows through the secured API and Dataverse layer.</span></div>`;
+  document.getElementById("importImpact").innerHTML = `<div class="issue good"><strong>Rows staged</strong><span>${stagedRows.length || "24-row sample workbook ready"} rows available for staging.</span></div><div class="issue good"><strong>Implementation note</strong><span>A production version would validate and write approved rows through the secured API and Dataverse layer.</span></div>`;
   document.getElementById("importPreview").innerHTML = (stagedRows.length ? stagedRows : sampleWorkbookRows()).slice(0, 8).map(row => `<tr><td>${row["Employee Name"]}</td><td>${row["Course / Intervention"]}</td><td>${row["Requested / Suggested"]}</td><td>${row["Planned WSP"]}</td><td>${row["Achieved ATR"]}</td><td>${row["Review Status"]}</td></tr>`).join("");
   ["applyStaging", "applyStagingPreview"].forEach(id => {
     const button = document.getElementById(id);
@@ -636,14 +636,17 @@ function exportFilteredReport() {
 }
 
 function sampleWorkbookRows() {
-  return state.employees.slice(0, 12).map((e, i) => ({ "Employee Number": e.employeeNumber, "Employee Name": e.employeeName, "ID Number": e.idNumber, "Region / Cluster": e.regionCluster, "Division": e.division, "Department": e.department, "Sex / Gender": e.sexGender, "Race": e.race, "Age": e.age, "Age Band": e.ageBand, "Disability": e.disability, "Course / Intervention": state.courses[i].course, "Requested / Suggested": "Yes", "Planned WSP": i < 9 ? "Yes" : "No", "Achieved ATR": i < 6 ? "Yes" : "No", "Provider": state.courses[i].provider, "Quarter / Date": "Q3", "Planned Cost": state.courses[i].estimatedCost, "Actual Cost": i < 6 ? state.courses[i].estimatedCost : 0, "Evidence Status": i < 6 ? "Evidence ready" : "Pending", "Review Status": i === 11 ? "Confirmation Required" : "Clean" }));
+  return state.employees.slice(0, 24).map((e, i) => {
+    const course = state.courses[i % state.courses.length];
+    return { "Employee Number": e.employeeNumber, "Employee Name": e.employeeName, "ID Number": e.idNumber, "Region / Cluster": e.regionCluster, "Division": e.division, "Department": e.department, "Sex / Gender": e.sexGender, "Race": e.race, "Age": e.age, "Age Band": e.ageBand, "Disability": e.disability, "Course / Intervention": course.course, "Requested / Suggested": "Yes", "Planned WSP": i < 18 ? "Yes" : "No", "Achieved ATR": i < 12 ? "Yes" : "No", "Provider": course.provider, "Quarter / Date": ["Q1", "Q2", "Q3", "Q4"][i % 4], "Planned Cost": course.estimatedCost, "Actual Cost": i < 12 ? course.estimatedCost : 0, "Evidence Status": i < 12 ? "Evidence ready" : "Pending", "Review Status": i === 11 || i === 21 ? "Confirmation Required" : "Clean" };
+  });
 }
 
 function stageSampleWorkbook() {
   stagedRows = sampleWorkbookRows();
   workbookStageState = "loaded";
   renderWorkbook();
-  document.getElementById("workbookMessage").textContent = "Sample workbook loaded: 12 rows are staged. Review the preview below, then click Apply To Staging.";
+  document.getElementById("workbookMessage").textContent = `Sample workbook loaded: ${stagedRows.length.toLocaleString("en-ZA")} rows are staged. Review the preview below, then click Apply To Staging.`;
   revealImportPreview();
 }
 

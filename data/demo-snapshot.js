@@ -80,7 +80,7 @@ const demoEmployees = demoNames.map((employeeName, index) => {
     division: demoDivisions[index % demoDivisions.length],
     department: demoDepartments[index % demoDepartments.length],
     sexGender: demoGender[index % demoGender.length],
-    race: demoRace[index % demoRace.length],
+    race: demoRace[Math.floor(index / 2) % demoRace.length],
     age: baseAge + (index % 4),
     ageBand,
     disability: index % 11 === 0 ? "Yes" : "No"
