@@ -1,4 +1,4 @@
-name: Pack Power Apps Solution
+name: Import Verified Power Apps Export
 
 on:
   workflow_dispatch:
@@ -7,7 +7,7 @@ on:
       - add-unpacked-solution
 
 jobs:
-  pack-inject:
+  import-solution:
     runs-on: windows-latest
     steps:
       - name: Checkout
@@ -16,26 +16,29 @@ jobs:
       - name: Install Power Platform tools
         uses: microsoft/powerplatform-actions/actions-install@v1
 
-      - name: Pack solution
-        uses: microsoft/powerplatform-actions/pack-solution@v1
-        with:
-          solution-folder: src/solution
-          solution-file: exports/WSPTrainingManagementSystem_with_entities_CI.zip
-          solution-type: Unmanaged
+      - name: Confirm solution export exists
+        shell: pwsh
+        run: |
+          $solution = "${{ github.workspace }}\exports\WSPTrainingManagementSystem_complete_solution.zip"
+          if(-not (Test-Path $solution)) {
+            Write-Error "Verified Power Apps export was not found: $solution"
+            exit 1
+          }
+          Write-Output "Using verified Power Apps export: $solution"
 
-      - name: Authenticate and import solution into sandbox
+      - name: Import verified solution into sandbox
         uses: microsoft/powerplatform-actions/import-solution@v1
         with:
           environment-url: ${{ secrets.PP_ENVIRONMENT }}
           app-id: ${{ secrets.PP_CLIENT_ID }}
           client-secret: ${{ secrets.PP_CLIENT_SECRET }}
           tenant-id: ${{ secrets.PP_TENANT_ID }}
-          solution-file: exports/WSPTrainingManagementSystem_with_entities_CI.zip
+          solution-file: exports/WSPTrainingManagementSystem_complete_solution.zip
           force-overwrite: true
           publish-changes: true
 
-      - name: Upload packed solution artifact
+      - name: Upload imported solution artifact
         uses: actions/upload-artifact@v4
         with:
-          name: packed-solution
-          path: exports/WSPTrainingManagementSystem_with_entities_CI.zip
+          name: verified-power-apps-export
+          path: exports/WSPTrainingManagementSystem_complete_solution.zip
