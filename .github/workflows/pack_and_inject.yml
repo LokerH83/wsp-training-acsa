@@ -13,12 +13,6 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Prepare environment
-        shell: pwsh
-        run: |
-          Write-Output "Listing repo files for debug"
-          Get-ChildItem -Recurse -Force | Select-Object -First 50 | ForEach-Object { Write-Output $_.FullName }
-
       - name: Copy generated entity artifacts into solution
         shell: pwsh
         run: |
@@ -30,44 +24,26 @@ jobs:
             Write-Output "Copied entity artifacts to solution Entities folder"
           } else { Write-Output "No artifacts/entities folder found; skipping copy" }
 
-      - name: Pack solution (pac if available, otherwise Compress-Archive)
-        shell: pwsh
-        run: |
-          $work = "${{ github.workspace }}\src\solution"
-          $out = "${{ github.workspace }}\exports\WSPTrainingManagementSystem_with_entities_CI.zip"
-          if(Get-Command pac -ErrorAction SilentlyContinue) {
-            pac solution pack --folder $work --zipfile $out
-          } else {
-            if(Test-Path $out){ Remove-Item $out -Force }
-            Compress-Archive -Path (Join-Path $work '*') -DestinationPath $out -Force
-          }
-          Write-Output "Packed solution to: $out"
+      - name: Install Power Platform tools
+        uses: microsoft/powerplatform-actions/actions-install@v1
 
-      - name: Install Power Platform CLI (if missing)
-        shell: pwsh
-        run: |
-          if(-not (Get-Command pac -ErrorAction SilentlyContinue)) {
-            Write-Output "pac not found — attempting install via Chocolatey"
-            choco install microsoft-powerplatform-cli -y || Write-Output "choco install failed; pac may still be unavailable"
-          } else { Write-Output "pac already installed" }
+      - name: Pack solution
+        uses: microsoft/powerplatform-actions/pack-solution@v1
+        with:
+          solution-folder: src/solution
+          solution-file: exports/WSPTrainingManagementSystem_with_entities_CI.zip
+          solution-type: Unmanaged
 
       - name: Authenticate and import solution into sandbox
-        if: ${{ secrets.PP_CLIENT_ID && secrets.PP_CLIENT_SECRET && secrets.PP_TENANT_ID && secrets.PP_ENVIRONMENT }}
-        shell: pwsh
-        env:
-          PP_CLIENT_ID: ${{ secrets.PP_CLIENT_ID }}
-          PP_CLIENT_SECRET: ${{ secrets.PP_CLIENT_SECRET }}
-          PP_TENANT_ID: ${{ secrets.PP_TENANT_ID }}
-          PP_ENVIRONMENT: ${{ secrets.PP_ENVIRONMENT }}
-        run: |
-          $out = "${{ github.workspace }}\exports\WSPTrainingManagementSystem_with_entities_CI.zip"
-          if(-not (Test-Path $out)) { Write-Error "Packed solution not found: $out"; exit 1 }
-          if(-not (Get-Command pac -ErrorAction SilentlyContinue)) { Write-Error "pac CLI not available; cannot import"; exit 1 }
-          Write-Output "Authenticating to Power Platform using service principal..."
-          pac auth create --name ghauth --url $env:PP_ENVIRONMENT --clientId $env:PP_CLIENT_ID --clientSecret $env:PP_CLIENT_SECRET --tenant $env:PP_TENANT_ID
-          pac auth select --name ghauth
-          Write-Output "Starting solution import..."
-          pac solution import --zipfile $out --environment $env:PP_ENVIRONMENT --overwrite
+        uses: microsoft/powerplatform-actions/import-solution@v1
+        with:
+          environment-url: ${{ secrets.PP_ENVIRONMENT }}
+          app-id: ${{ secrets.PP_CLIENT_ID }}
+          client-secret: ${{ secrets.PP_CLIENT_SECRET }}
+          tenant-id: ${{ secrets.PP_TENANT_ID }}
+          solution-file: exports/WSPTrainingManagementSystem_with_entities_CI.zip
+          force-overwrite: true
+          publish-changes: true
 
       - name: Upload packed solution artifact
         uses: actions/upload-artifact@v4
