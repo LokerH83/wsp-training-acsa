@@ -13,16 +13,38 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Install PAC CLI
+      - name: Install Power Platform tools
+        uses: microsoft/powerplatform-actions/actions-install@v1
+
+      - name: Resolve PAC CLI path
         shell: pwsh
         run: |
-          dotnet tool update --global Microsoft.PowerApps.CLI.Tool
-          if($LASTEXITCODE -ne 0) {
-            dotnet tool install --global Microsoft.PowerApps.CLI.Tool
+          $ErrorActionPreference = "Stop"
+          $candidates = @()
+
+          if($env:POWERPLATFORMTOOLS_PACCLIPATH) {
+            $candidates += Join-Path $env:POWERPLATFORMTOOLS_PACCLIPATH "pac\tools\pac.exe"
+            $candidates += Join-Path $env:POWERPLATFORMTOOLS_PACCLIPATH "pac.exe"
           }
-          "$env:USERPROFILE\.dotnet\tools" | Out-File -FilePath $env:GITHUB_PATH -Append
-          $env:Path = "$env:USERPROFILE\.dotnet\tools;$env:Path"
-          pac --version
+
+          $candidates += "$env:USERPROFILE\.dotnet\tools\pac.exe"
+          $pac = $candidates | Where-Object { Test-Path $_ } | Select-Object -First 1
+
+          if(-not $pac -and $env:POWERPLATFORMTOOLS_PACCLIPATH -and (Test-Path $env:POWERPLATFORMTOOLS_PACCLIPATH)) {
+            $pac = Get-ChildItem -Path $env:POWERPLATFORMTOOLS_PACCLIPATH -Recurse -Filter pac.exe -ErrorAction SilentlyContinue |
+              Select-Object -First 1 -ExpandProperty FullName
+          }
+
+          if(-not $pac) {
+            Write-Output "POWERPLATFORMTOOLS_PACCLIPATH=$env:POWERPLATFORMTOOLS_PACCLIPATH"
+            Write-Output "PAC CLI candidates checked:"
+            $candidates | ForEach-Object { Write-Output " - $_" }
+            throw "PAC CLI could not be resolved after actions-install."
+          }
+
+          Write-Output "PAC_EXE=$pac" | Out-File -FilePath $env:GITHUB_ENV -Append
+          Write-Output "Resolved PAC CLI: $pac"
+          & $pac --version
 
       - name: Confirm solution export exists
         shell: pwsh
@@ -51,13 +73,13 @@ jobs:
           $ErrorActionPreference = "Continue"
           $log = "${{ github.workspace }}\exports\powerplatform-import.log"
           $solution = "${{ github.workspace }}\exports\WSPTrainingManagementSystem_complete_solution.zip"
-          $pac = (Get-Command pac -ErrorAction SilentlyContinue)
-          if(-not $pac) {
-            "PAC CLI was not found on PATH after actions-install." | Tee-Object -FilePath $log -Append
-            throw "PAC CLI was not found on PATH after actions-install."
+          $pac = $env:PAC_EXE
+          if(-not $pac -or -not (Test-Path $pac)) {
+            "PAC_EXE was not resolved or does not exist: $pac" | Tee-Object -FilePath $log -Append
+            throw "PAC_EXE was not resolved or does not exist."
           }
-          "PAC path=$($pac.Source)" | Tee-Object -FilePath $log -Append
-          & pac --version *> "${{ github.workspace }}\exports\pac-version.log"
+          "PAC path=$pac" | Tee-Object -FilePath $log -Append
+          & $pac --version *> "${{ github.workspace }}\exports\pac-version.log"
           Get-Content "${{ github.workspace }}\exports\pac-version.log" | Tee-Object -FilePath $log -Append
 
           function Format-PacArgs {
@@ -81,7 +103,7 @@ jobs:
             param([string[]]$Arguments)
             $tmp = "${{ github.workspace }}\exports\pac-step-output.log"
             if(Test-Path $tmp) { Remove-Item $tmp -Force }
-            & pac @Arguments *> $tmp
+            & $pac @Arguments *> $tmp
             $exitCode = $LASTEXITCODE
             if(Test-Path $tmp) {
               Get-Content $tmp | Tee-Object -FilePath $log -Append
