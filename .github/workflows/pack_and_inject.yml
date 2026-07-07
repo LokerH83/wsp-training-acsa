@@ -178,6 +178,33 @@ jobs:
             }
           }
 
+          function Run-PacWithRetry {
+            param(
+              [string]$Label,
+              [string[]]$Arguments,
+              [int]$Attempts = 3,
+              [int]$DelaySeconds = 45
+            )
+
+            for($attempt = 1; $attempt -le $Attempts; $attempt++) {
+              Write-Log "===== $Label attempt $attempt of $Attempts ====="
+              Write-Log (Format-PacArgs $Arguments)
+              $exitCode = Invoke-Pac $Arguments
+              Write-Log "exit_code=$exitCode"
+
+              if($exitCode -eq 0) {
+                return
+              }
+
+              if($attempt -lt $Attempts) {
+                Write-Log "$Label failed; waiting $DelaySeconds seconds before retry."
+                Start-Sleep -Seconds $DelaySeconds
+              }
+            }
+
+            throw "$Label failed after $Attempts attempts. See powerplatform-import.log artifact."
+          }
+
           function Try-Pac {
             param([string]$Label, [string[]]$Arguments)
             Write-Log "===== $Label ====="
@@ -265,14 +292,14 @@ jobs:
 
           Run-Pac "auth who" @("auth", "who")
 
-          Run-Pac "solution import" @(
+          Run-PacWithRetry "solution import" @(
             "solution", "import",
             "--path", $solution,
             "--environment", $environmentTarget,
             "--force-overwrite",
             "--publish-changes",
-            "--max-async-wait-time", "30"
-          )
+            "--max-async-wait-time", "60"
+          ) -Attempts 3 -DelaySeconds 60
 
       - name: Upload Power Platform import log
         if: always()
