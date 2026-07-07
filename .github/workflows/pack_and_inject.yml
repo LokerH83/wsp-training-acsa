@@ -5,57 +5,106 @@ on:
   push:
     branches:
       - main
-      - add-unpacked-solution
 
 jobs:
   import-solution:
     runs-on: windows-latest
+
     steps:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Install Power Platform tools
-        uses: microsoft/powerplatform-actions/actions-install@v1
+      - name: Initialize diagnostics
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = "Stop"
+          $exports = Join-Path $env:GITHUB_WORKSPACE "exports"
+          New-Item -ItemType Directory -Path $exports -Force | Out-Null
+
+          $log = Join-Path $exports "powerplatform-import.log"
+          "Power Platform import diagnostics" | Set-Content -Path $log -Encoding utf8
+          "run_id=$env:GITHUB_RUN_ID" | Add-Content -Path $log
+          "run_attempt=$env:GITHUB_RUN_ATTEMPT" | Add-Content -Path $log
+          "sha=$env:GITHUB_SHA" | Add-Content -Path $log
+          "workspace=$env:GITHUB_WORKSPACE" | Add-Content -Path $log
+          "runner_os=$env:RUNNER_OS" | Add-Content -Path $log
+          "initialized=$(Get-Date -Format o)" | Add-Content -Path $log
+
+          "POWERPLATFORM_IMPORT_LOG=$log" | Out-File -FilePath $env:GITHUB_ENV -Append -Encoding utf8
+          "Diagnostics initialized at $log"
+
+      - name: Install PAC CLI
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = "Continue"
+          $log = $env:POWERPLATFORM_IMPORT_LOG
+          "===== Install PAC CLI =====" | Tee-Object -FilePath $log -Append
+
+          dotnet --info 2>&1 | Tee-Object -FilePath $log -Append
+          $installOutput = Join-Path $env:RUNNER_TEMP "pac-tool-install.log"
+          dotnet tool update --global Microsoft.PowerApps.CLI.Tool *> $installOutput
+          $exitCode = $LASTEXITCODE
+
+          if(Test-Path $installOutput) {
+            Get-Content $installOutput | Tee-Object -FilePath $log -Append
+          }
+          "dotnet_tool_exit_code=$exitCode" | Tee-Object -FilePath $log -Append
+
+          if($exitCode -ne 0) {
+            throw "Failed to install or update Microsoft.PowerApps.CLI.Tool. See powerplatform-import.log artifact."
+          }
+
+          $dotnetTools = Join-Path $env:USERPROFILE ".dotnet\tools"
+          $dotnetTools | Out-File -FilePath $env:GITHUB_PATH -Append -Encoding utf8
+          "dotnet_tools_path=$dotnetTools" | Tee-Object -FilePath $log -Append
 
       - name: Resolve PAC CLI path
         shell: pwsh
         run: |
           $ErrorActionPreference = "Stop"
-          $candidates = @()
+          $log = $env:POWERPLATFORM_IMPORT_LOG
+          "===== Resolve PAC CLI path =====" | Tee-Object -FilePath $log -Append
 
-          if($env:POWERPLATFORMTOOLS_PACCLIPATH) {
-            $candidates += Join-Path $env:POWERPLATFORMTOOLS_PACCLIPATH "pac\tools\pac.exe"
-            $candidates += Join-Path $env:POWERPLATFORMTOOLS_PACCLIPATH "pac.exe"
+          $candidates = @(
+            (Join-Path $env:USERPROFILE ".dotnet\tools\pac.exe"),
+            (Join-Path $env:USERPROFILE ".dotnet\tools\pac.cmd")
+          )
+
+          $command = Get-Command pac -ErrorAction SilentlyContinue
+          if($command) {
+            $candidates += $command.Source
           }
 
-          $candidates += "$env:USERPROFILE\.dotnet\tools\pac.exe"
-          $pac = $candidates | Where-Object { Test-Path $_ } | Select-Object -First 1
-
-          if(-not $pac -and $env:POWERPLATFORMTOOLS_PACCLIPATH -and (Test-Path $env:POWERPLATFORMTOOLS_PACCLIPATH)) {
-            $pac = Get-ChildItem -Path $env:POWERPLATFORMTOOLS_PACCLIPATH -Recurse -Filter pac.exe -ErrorAction SilentlyContinue |
-              Select-Object -First 1 -ExpandProperty FullName
-          }
+          $pac = $candidates |
+            Where-Object { $_ -and (Test-Path $_) } |
+            Select-Object -First 1
 
           if(-not $pac) {
-            Write-Output "POWERPLATFORMTOOLS_PACCLIPATH=$env:POWERPLATFORMTOOLS_PACCLIPATH"
-            Write-Output "PAC CLI candidates checked:"
-            $candidates | ForEach-Object { Write-Output " - $_" }
-            throw "PAC CLI could not be resolved after actions-install."
+            "PAC CLI candidates checked:" | Tee-Object -FilePath $log -Append
+            $candidates | ForEach-Object { " - $_" | Tee-Object -FilePath $log -Append }
+            throw "PAC CLI could not be resolved after dotnet tool install."
           }
 
-          Write-Output "PAC_EXE=$pac" | Out-File -FilePath $env:GITHUB_ENV -Append
-          Write-Output "Resolved PAC CLI: $pac"
-          & $pac --version
+          "PAC_EXE=$pac" | Out-File -FilePath $env:GITHUB_ENV -Append -Encoding utf8
+          "pac_path=$pac" | Tee-Object -FilePath $log -Append
+          & $pac --version 2>&1 | Tee-Object -FilePath $log -Append
 
       - name: Confirm solution export exists
         shell: pwsh
         run: |
-          $solution = "${{ github.workspace }}\exports\WSPTrainingManagementSystem_complete_solution.zip"
+          $ErrorActionPreference = "Stop"
+          $log = $env:POWERPLATFORM_IMPORT_LOG
+          "===== Confirm solution export exists =====" | Tee-Object -FilePath $log -Append
+
+          $solution = Join-Path $env:GITHUB_WORKSPACE "exports\WSPTrainingManagementSystem_complete_solution.zip"
           if(-not (Test-Path $solution)) {
-            Write-Error "Verified Power Apps export was not found: $solution"
-            exit 1
+            "Verified Power Apps export was not found: $solution" | Tee-Object -FilePath $log -Append
+            throw "Verified Power Apps export was not found."
           }
-          Write-Output "Using verified Power Apps export: $solution"
+
+          $item = Get-Item $solution
+          "solution_path=$solution" | Tee-Object -FilePath $log -Append
+          "solution_size_bytes=$($item.Length)" | Tee-Object -FilePath $log -Append
 
       - name: Upload verified solution artifact
         uses: actions/upload-artifact@v4
@@ -72,16 +121,14 @@ jobs:
           PP_TENANT_ID: ${{ secrets.PP_TENANT_ID }}
         run: |
           $ErrorActionPreference = "Continue"
-          $log = "${{ github.workspace }}\exports\powerplatform-import.log"
-          $solution = "${{ github.workspace }}\exports\WSPTrainingManagementSystem_complete_solution.zip"
+          $log = $env:POWERPLATFORM_IMPORT_LOG
+          $solution = Join-Path $env:GITHUB_WORKSPACE "exports\WSPTrainingManagementSystem_complete_solution.zip"
           $pac = $env:PAC_EXE
-          if(-not $pac -or -not (Test-Path $pac)) {
-            "PAC_EXE was not resolved or does not exist: $pac" | Tee-Object -FilePath $log -Append
-            throw "PAC_EXE was not resolved or does not exist."
+
+          function Write-Log {
+            param([string]$Message)
+            $Message | Tee-Object -FilePath $log -Append
           }
-          "PAC path=$pac" | Tee-Object -FilePath $log -Append
-          & $pac --version *> "${{ github.workspace }}\exports\pac-version.log"
-          Get-Content "${{ github.workspace }}\exports\pac-version.log" | Tee-Object -FilePath $log -Append
 
           function Format-PacArgs {
             param([string[]]$Arguments)
@@ -102,25 +149,29 @@ jobs:
 
           function Invoke-Pac {
             param([string[]]$Arguments)
-            $tmp = "${{ github.workspace }}\exports\pac-step-output.log"
+            $tmp = Join-Path $env:RUNNER_TEMP "pac-step-output.log"
             if(Test-Path $tmp) { Remove-Item $tmp -Force }
+
             & $pac @Arguments *> $tmp
             $exitCode = $LASTEXITCODE
+
             if(Test-Path $tmp) {
               Get-Content $tmp | Tee-Object -FilePath $log -Append
             }
+
             if($null -eq $exitCode) {
               if($?) { $exitCode = 0 } else { $exitCode = 1 }
             }
+
             return [int]$exitCode
           }
 
           function Run-Pac {
             param([string]$Label, [string[]]$Arguments)
-            "===== $Label =====" | Tee-Object -FilePath $log -Append
-            Format-PacArgs $Arguments | Tee-Object -FilePath $log -Append
+            Write-Log "===== $Label ====="
+            Write-Log (Format-PacArgs $Arguments)
             $exitCode = Invoke-Pac $Arguments
-            "exit_code=$exitCode" | Tee-Object -FilePath $log -Append
+            Write-Log "exit_code=$exitCode"
             if($exitCode -ne 0) {
               throw "$Label failed with exit code $exitCode. See powerplatform-import.log artifact."
             }
@@ -128,17 +179,35 @@ jobs:
 
           function Try-Pac {
             param([string]$Label, [string[]]$Arguments)
-            "===== $Label =====" | Tee-Object -FilePath $log -Append
-            Format-PacArgs $Arguments | Tee-Object -FilePath $log -Append
+            Write-Log "===== $Label ====="
+            Write-Log (Format-PacArgs $Arguments)
             $exitCode = Invoke-Pac $Arguments
-            "exit_code=$exitCode" | Tee-Object -FilePath $log -Append
+            Write-Log "exit_code=$exitCode"
             return $exitCode
           }
 
-          "PP_ENVIRONMENT=$env:PP_ENVIRONMENT" | Tee-Object -FilePath $log -Append
-          "PP_CLIENT_ID present=$([bool]$env:PP_CLIENT_ID)" | Tee-Object -FilePath $log -Append
-          "PP_TENANT_ID present=$([bool]$env:PP_TENANT_ID)" | Tee-Object -FilePath $log -Append
-          "PP_CLIENT_SECRET present=$([bool]$env:PP_CLIENT_SECRET)" | Tee-Object -FilePath $log -Append
+          "===== Authenticate and import with PAC CLI =====" | Tee-Object -FilePath $log -Append
+          if(-not $pac -or -not (Test-Path $pac)) {
+            Write-Log "PAC_EXE was not resolved or does not exist: $pac"
+            throw "PAC_EXE was not resolved or does not exist."
+          }
+
+          Write-Log "pac_path=$pac"
+          & $pac --version 2>&1 | Tee-Object -FilePath $log -Append
+          Write-Log "PP_ENVIRONMENT=$env:PP_ENVIRONMENT"
+          Write-Log "PP_CLIENT_ID present=$([bool]$env:PP_CLIENT_ID)"
+          Write-Log "PP_TENANT_ID present=$([bool]$env:PP_TENANT_ID)"
+          Write-Log "PP_CLIENT_SECRET present=$([bool]$env:PP_CLIENT_SECRET)"
+
+          $missingSecrets = @()
+          if(-not $env:PP_ENVIRONMENT) { $missingSecrets += "PP_ENVIRONMENT" }
+          if(-not $env:PP_CLIENT_ID) { $missingSecrets += "PP_CLIENT_ID" }
+          if(-not $env:PP_CLIENT_SECRET) { $missingSecrets += "PP_CLIENT_SECRET" }
+          if(-not $env:PP_TENANT_ID) { $missingSecrets += "PP_TENANT_ID" }
+          if($missingSecrets.Count -gt 0) {
+            Write-Log "Missing required secrets: $($missingSecrets -join ', ')"
+            throw "One or more required Power Platform secrets are missing."
+          }
 
           $authExit = Try-Pac "auth create with environment" @(
             "auth", "create",
@@ -150,7 +219,7 @@ jobs:
           )
 
           if($authExit -ne 0) {
-            "Environment auth failed; retrying with --url." | Tee-Object -FilePath $log -Append
+            Write-Log "Environment auth failed; retrying with --url."
             $authExit = Try-Pac "auth create with url" @(
               "auth", "create",
               "--name", "github-actions-acsa-url",
@@ -182,3 +251,4 @@ jobs:
         with:
           name: powerplatform-import-log
           path: exports/powerplatform-import.log
+          if-no-files-found: error
