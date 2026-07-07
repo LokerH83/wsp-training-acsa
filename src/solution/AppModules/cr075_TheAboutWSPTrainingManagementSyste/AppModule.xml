@@ -1,0 +1,50 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<AppModule>
+  <UniqueName>cr075_TheAboutWSPTrainingManagementSyste</UniqueName>
+  <IntroducedVersion>1.0.0.0</IntroducedVersion>
+  <WebResourceId>953b9fac-1e5e-e611-80d6-00155ded156f</WebResourceId>
+  <OptimizedFor></OptimizedFor>
+  <statecode>0</statecode>
+  <statuscode>1</statuscode>
+  <FormFactor>1</FormFactor>
+  <ClientType>4</ClientType>
+  <NavigationType>0</NavigationType>
+  <AppModuleComponents>
+    <AppModuleComponent type="1" schemaName="ssa_dataprovider" />
+    <AppModuleComponent type="1" schemaName="ssa_employeerecord" />
+    <AppModuleComponent type="1" schemaName="ssa_employeetrainingrecord" />
+    <AppModuleComponent type="1" schemaName="ssa_employeetrainingrecord1" />
+    <AppModuleComponent type="1" schemaName="ssa_trainingcourse" />
+    <AppModuleComponent type="62" schemaName="cr075_TheAboutWSPTrainingManagementSyste" />
+  </AppModuleComponents>
+  <AppModuleRoleMaps>
+    <Role id="{627090ff-40a3-4053-8790-584edc5be201}" />
+    <Role id="{119f245c-3cc8-4b62-b31c-d1a046ced15d}" />
+  </AppModuleRoleMaps>
+  <LocalizedNames>
+    <LocalizedName description="The About WSP Training Management System" languagecode="1033" />
+  </LocalizedNames>
+  <Descriptions>
+    <Description description="Model-driven app for managing WSP training plans, ATR actual training records, employee profiles, course usage, provider usage, budgets, import batches, and audit issues." languagecode="1033" />
+  </Descriptions>
+  <appelements>
+    <appelement uniquename="cr075_cr075_TheAboutWSPTrainingManagementSyste_name_cr075_TheAboutWSPTrainingManagementSyste_MCPServer">
+      <iscustomizable>1</iscustomizable>
+      <name>The About WSP Training Management System MCP Server</name>
+      <objectid>
+        <name>cr075_TheAboutWSPTrainingManagementSyste_MCPServer</name>
+      </objectid>
+      <objectidtype>mcpserver</objectidtype>
+    </appelement>
+  </appelements>
+  <appsettings>
+    <appsetting settingdefinitionid.uniquename="AppChannel">
+      <iscustomizable>1</iscustomizable>
+      <value>1</value>
+    </appsetting>
+    <appsetting settingdefinitionid.uniquename="m365copilotmodelappenabled">
+      <iscustomizable>1</iscustomizable>
+      <value>2</value>
+    </appsetting>
+  </appsettings>
+</AppModule>

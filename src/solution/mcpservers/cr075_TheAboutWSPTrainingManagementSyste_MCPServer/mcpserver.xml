@@ -1,0 +1,10 @@
+<mcpserver name="cr075_TheAboutWSPTrainingManagementSyste_MCPServer">
+  <description>MCP Server for app The About WSP Training Management System</description>
+  <displayname>The About WSP Training Management System MCP Server</displayname>
+  <iscustom>0</iscustom>
+  <iscustomizable>1</iscustomizable>
+  <isremote>0</isremote>
+  <serverurl>https://agent365.svc.cloud.microsoft/mcp/environments/4ddc761e-0ac9-e691-abb8-6e83aaa5f855/servers/cr075_TheAboutWSPTrainingManagementSyste_MCPServer</serverurl>
+  <statecode>0</statecode>
+  <statuscode>1</statuscode>
+</mcpserver>

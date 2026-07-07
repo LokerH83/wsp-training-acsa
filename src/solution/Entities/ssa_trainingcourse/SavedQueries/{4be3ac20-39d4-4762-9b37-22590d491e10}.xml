@@ -1,0 +1,44 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<savedqueries xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <savedquery>
+    <IsCustomizable>1</IsCustomizable>
+    <CanBeDeleted>0</CanBeDeleted>
+    <isquickfindquery>0</isquickfindquery>
+    <isprivate>0</isprivate>
+    <isdefault>1</isdefault>
+    <savedqueryid>{4be3ac20-39d4-4762-9b37-22590d491e10}</savedqueryid>
+    <layoutxml>
+      <grid name="resultset" jump="ssa_coursename" select="1" icon="1" preview="1">
+        <row name="result" id="ssa_trainingcourseid">
+          <cell name="ssa_coursename" width="300" />
+          <cell name="ssa_trainingcategory" width="150" />
+          <cell name="ssa_defaultplannedcost" width="150" />
+          <cell name="ssa_plannedrecordcount" width="150" />
+          <cell name="ssa_coursecode" width="150" />
+        </row>
+      </grid>
+    </layoutxml>
+    <querytype>0</querytype>
+    <fetchxml>
+      <fetch version="1.0" mapping="logical">
+        <entity name="ssa_trainingcourse">
+          <attribute name="ssa_trainingcourseid" />
+          <attribute name="ssa_coursename" />
+          <attribute name="createdon" />
+          <order attribute="ssa_coursename" descending="false" />
+          <filter type="and">
+            <condition attribute="statecode" operator="eq" value="0" />
+          </filter>
+          <attribute name="ssa_trainingcategory" />
+          <attribute name="ssa_defaultplannedcost" />
+          <attribute name="ssa_plannedrecordcount" />
+          <attribute name="ssa_coursecode" />
+        </entity>
+      </fetch>
+    </fetchxml>
+    <IntroducedVersion>1.0</IntroducedVersion>
+    <LocalizedNames>
+      <LocalizedName description="Active Training Course" languagecode="1033" />
+    </LocalizedNames>
+  </savedquery>
+</savedqueries>

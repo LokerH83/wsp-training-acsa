@@ -1,0 +1,34 @@
+{
+  "name": "Booking - Lifecycle",
+  "description": "Flow skeleton: enforce booking lifecycle transitions and notifications.",
+  "trigger": "When a row is added or modified (Dataverse)",
+  "triggerSettings": {
+    "table": "cr075_booking",
+    "filteringAttributes": ["cr075_status"]
+  },
+  "steps": [
+    {
+      "name": "OnBooked",
+      "type": "Condition",
+      "expression": "@equals(triggerBody()?['cr075_status'], 3)",
+      "true": [
+        {
+          "name": "NotifyAttendees",
+          "type": "Send an email (V2)",
+          "to": "<attendees-placeholder>",
+          "subject": "Booking confirmed",
+          "body": "Booking '@triggerBody()?['cr075_name']' is confirmed for @triggerBody()?['cr075_start'] to @triggerBody()?['cr075_end']."
+        },
+        {
+          "name": "UpdateATR",
+          "type": "Update a row (Dataverse)",
+          "table": "ssa_employeetrainingrecord",
+          "rowId": "@triggerBody()?['cr075_employeetrainingrecordid']",
+          "fields": { "cr075_trainingscheduled": true }
+        }
+      ],
+      "false": []
+    }
+  ],
+  "notes": "Import into Solutions and replace placeholders (attendees, owner lookups) with real dynamic content."
+}

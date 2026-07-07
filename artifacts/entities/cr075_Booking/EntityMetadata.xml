@@ -1,0 +1,40 @@
+<EntityMetadata LogicalName="cr075_booking" SchemaName="cr075_Booking">
+  <DisplayName>
+    <LocalizedLabel Description="Booking" Label="Booking" LanguageCode="1033" />
+  </DisplayName>
+  <PrimaryNameAttribute>cr075_name</PrimaryNameAttribute>
+  <Attributes>
+    <StringAttribute SchemaName="cr075_name" LogicalName="cr075_name" MaxLength="200">
+      <DisplayName><LocalizedLabel Label="Booking Reference" LanguageCode="1033" /></DisplayName>
+    </StringAttribute>
+    <PicklistAttribute SchemaName="cr075_status" LogicalName="cr075_status">
+      <DisplayName><LocalizedLabel Label="Status" LanguageCode="1033" /></DisplayName>
+      <Options>
+        <Option Value="1" Label="Requested" />
+        <Option Value="2" Label="Planned" />
+        <Option Value="3" Label="Booked" />
+        <Option Value="4" Label="Cancelled" />
+        <Option Value="5" Label="Completed" />
+      </Options>
+    </PicklistAttribute>
+    <DateTimeAttribute SchemaName="cr075_start" LogicalName="cr075_start" Format="DateAndTime">
+      <DisplayName><LocalizedLabel Label="Start" LanguageCode="1033" /></DisplayName>
+    </DateTimeAttribute>
+    <DateTimeAttribute SchemaName="cr075_end" LogicalName="cr075_end" Format="DateAndTime">
+      <DisplayName><LocalizedLabel Label="End" LanguageCode="1033" /></DisplayName>
+    </DateTimeAttribute>
+    <StringAttribute SchemaName="cr075_location" LogicalName="cr075_location" MaxLength="250">
+      <DisplayName><LocalizedLabel Label="Location" LanguageCode="1033" /></DisplayName>
+    </StringAttribute>
+    <LookupAttribute SchemaName="cr075_resource" LogicalName="cr075_resource" Targets="systemuser,team">
+      <DisplayName><LocalizedLabel Label="Resource" LanguageCode="1033" /></DisplayName>
+    </LookupAttribute>
+    <LookupAttribute SchemaName="cr075_employeetrainingrecordid" LogicalName="cr075_employeetrainingrecordid" Targets="ssa_employeetrainingrecord">
+      <DisplayName><LocalizedLabel Label="Employee Training Record" LanguageCode="1033" /></DisplayName>
+    </LookupAttribute>
+    <LookupAttribute SchemaName="cr075_approvedby" LogicalName="cr075_approvedby" Targets="systemuser">
+      <DisplayName><LocalizedLabel Label="Approved By" LanguageCode="1033" /></DisplayName>
+    </LookupAttribute>
+  </Attributes>
+  <ManyToOneRelationships />
+</EntityMetadata>

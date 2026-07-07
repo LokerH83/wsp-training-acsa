@@ -1,0 +1,76 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<savedqueries xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <savedquery>
+    <IsCustomizable>1</IsCustomizable>
+    <CanBeDeleted>0</CanBeDeleted>
+    <isquickfindquery>0</isquickfindquery>
+    <isprivate>0</isprivate>
+    <isdefault>1</isdefault>
+    <savedqueryid>{975356cd-050a-45fb-bd00-bc979b16866b}</savedqueryid>
+    <layoutxml>
+      <grid name="resultset" jump="ssa_employeename" select="1" icon="1" preview="1">
+        <row name="result" id="ssa_employeetrainingrecord1id">
+          <cell name="ssa_employeename" width="300" />
+          <cell name="ssa_employeenumber" width="150" />
+          <cell name="ssa_grade" width="150" />
+          <cell name="ssa_division" width="150" />
+          <cell name="ssa_manager" width="150" />
+          <cell name="ssa_position" width="150" />
+          <cell name="ssa_employmentcategory" width="150" />
+          <cell name="ssa_racegender" width="150" />
+          <cell name="ssa_age" width="150" />
+          <cell name="ssa_disabilitystatus" width="150" />
+          <cell name="ssa_trainingcategory" width="150" />
+          <cell name="ssa_coursename" width="150" />
+          <cell name="ssa_provider" width="150" />
+          <cell name="ssa_plannedcost" width="150" />
+          <cell name="ssa_priority" width="150" />
+          <cell name="ssa_plannedquarter" width="150" />
+          <cell name="ssa_trainingcheck" width="150" />
+          <cell name="ssa_comments" width="150" />
+          <cell name="ssa_wspyear" width="150" />
+          <cell name="ssa_trainingplanid" width="150" />
+          <cell name="ssa_trainingplanstatus" width="150" />
+        </row>
+      </grid>
+    </layoutxml>
+    <querytype>0</querytype>
+    <fetchxml>
+      <fetch version="1.0" mapping="logical">
+        <entity name="ssa_employeetrainingrecord1">
+          <attribute name="ssa_employeetrainingrecord1id" />
+          <attribute name="ssa_employeename" />
+          <attribute name="createdon" />
+          <order attribute="ssa_employeename" descending="false" />
+          <filter type="and">
+            <condition attribute="statecode" operator="eq" value="0" />
+          </filter>
+          <attribute name="ssa_employeenumber" />
+          <attribute name="ssa_grade" />
+          <attribute name="ssa_division" />
+          <attribute name="ssa_manager" />
+          <attribute name="ssa_position" />
+          <attribute name="ssa_employmentcategory" />
+          <attribute name="ssa_racegender" />
+          <attribute name="ssa_age" />
+          <attribute name="ssa_disabilitystatus" />
+          <attribute name="ssa_trainingcategory" />
+          <attribute name="ssa_coursename" />
+          <attribute name="ssa_provider" />
+          <attribute name="ssa_plannedcost" />
+          <attribute name="ssa_priority" />
+          <attribute name="ssa_plannedquarter" />
+          <attribute name="ssa_trainingcheck" />
+          <attribute name="ssa_comments" />
+          <attribute name="ssa_wspyear" />
+          <attribute name="ssa_trainingplanid" />
+          <attribute name="ssa_trainingplanstatus" />
+        </entity>
+      </fetch>
+    </fetchxml>
+    <IntroducedVersion>1.0</IntroducedVersion>
+    <LocalizedNames>
+      <LocalizedName description="Active Employee Training Record" languagecode="1033" />
+    </LocalizedNames>
+  </savedquery>
+</savedqueries>

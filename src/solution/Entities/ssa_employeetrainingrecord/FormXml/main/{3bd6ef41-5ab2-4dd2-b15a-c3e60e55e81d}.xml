@@ -1,0 +1,255 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<forms xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <systemform>
+    <formid>{3bd6ef41-5ab2-4dd2-b15a-c3e60e55e81d}</formid>
+    <IntroducedVersion>1.0</IntroducedVersion>
+    <FormPresentation>1</FormPresentation>
+    <FormActivationState>1</FormActivationState>
+    <form>
+      <tabs>
+        <tab verticallayout="true" id="{16F9F647-E83B-46B4-9B09-E6C955B54C02}" IsUserDefined="1">
+          <labels>
+            <label description="General" languagecode="1033" />
+          </labels>
+          <columns>
+            <column width="100%">
+              <sections>
+                <section showlabel="false" showbar="false" IsUserDefined="0" id="{A42CBBF5-A1A5-484A-A945-54CED3F0EC14}">
+                  <labels>
+                    <label description="General" languagecode="1033" />
+                  </labels>
+                  <rows>
+                    <row>
+                      <cell id="{8ECC7A6C-E0B7-484E-8F83-AA9E888A78D0}">
+                        <labels>
+                          <label description="Employee Name" languagecode="1033" />
+                        </labels>
+                        <control id="ssa_employeename" classid="{4273EDBD-AC1D-40d3-9FB2-095C621B552D}" datafieldname="ssa_employeename" />
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{8C8C35A4-E2C0-4B45-9838-6385DC3CC001}">
+                        <labels>
+                          <label description="Owner" languagecode="1033" />
+                        </labels>
+                        <control id="ownerid" classid="{270BD3DB-D9AF-4782-9025-509E298DEC0A}" datafieldname="ownerid" />
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{16f3c15d-d2fd-45cf-b710-24534dcf7008}">
+                        <labels>
+                          <label description="Employee Number" languagecode="1033" />
+                        </labels>
+                        <control id="ssa_employeenumber" classid="{4273edbd-ac1d-40d3-9fb2-095c621b552d}" datafieldname="ssa_employeenumber" />
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{6a39afbc-8a91-4f15-9daa-5d5a4374f36a}">
+                        <labels>
+                          <label description="Position" languagecode="1033" />
+                        </labels>
+                        <control id="ssa_positiontitle" classid="{4273edbd-ac1d-40d3-9fb2-095c621b552d}" datafieldname="ssa_positiontitle" />
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{25491cca-a87e-469d-b562-e45e5c26d350}">
+                        <labels>
+                          <label description="Grade" languagecode="1033" />
+                        </labels>
+                        <control id="ssa_gradelevel" classid="{4273edbd-ac1d-40d3-9fb2-095c621b552d}" datafieldname="ssa_gradelevel" />
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{05431e61-ad3c-479c-b27b-5b205380d809}">
+                        <labels>
+                          <label description="Location" languagecode="1033" />
+                        </labels>
+                        <control id="ssa_worklocation" classid="{4273edbd-ac1d-40d3-9fb2-095c621b552d}" datafieldname="ssa_worklocation" />
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{fffcd376-305c-46c0-9a8c-7709d845b8b2}">
+                        <labels>
+                          <label description="Cluster" languagecode="1033" />
+                        </labels>
+                        <control id="ssa_cluster" classid="{4273edbd-ac1d-40d3-9fb2-095c621b552d}" datafieldname="ssa_cluster" />
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{226aa9fd-1366-488e-9789-e1d06439bb79}">
+                        <labels>
+                          <label description="Division" languagecode="1033" />
+                        </labels>
+                        <control id="ssa_division" classid="{4273edbd-ac1d-40d3-9fb2-095c621b552d}" datafieldname="ssa_division" />
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{852bcfdd-bf48-47b3-88c6-65f0a7a5b0dd}">
+                        <labels>
+                          <label description="Department" languagecode="1033" />
+                        </labels>
+                        <control id="ssa_department" classid="{4273edbd-ac1d-40d3-9fb2-095c621b552d}" datafieldname="ssa_department" />
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{ec4da93e-1d6c-42d5-b84a-f7f524d1f752}">
+                        <labels>
+                          <label description="Race" languagecode="1033" />
+                        </labels>
+                        <control id="ssa_race" classid="{3ef39988-22bb-4f0b-bbbe-64b5a3748aee}" datafieldname="ssa_race" />
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{8eeb0845-2b31-4c9a-a06e-b8f901ba332d}">
+                        <labels>
+                          <label description="Gender" languagecode="1033" />
+                        </labels>
+                        <control id="ssa_gender" classid="{3ef39988-22bb-4f0b-bbbe-64b5a3748aee}" datafieldname="ssa_gender" />
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{f3f763f3-8b51-4ce9-b98e-38cfd3c65efd}">
+                        <labels>
+                          <label description="Age" languagecode="1033" />
+                        </labels>
+                        <control id="ssa_age" classid="{c6d124ca-7eda-4a60-aea9-7fb8d318b68f}" datafieldname="ssa_age" />
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{be10479b-563e-43ad-9c11-75ebd5c800fc}">
+                        <labels>
+                          <label description="Disability" languagecode="1033" />
+                        </labels>
+                        <control id="ssa_disabilitystatus" classid="{67fac785-cd58-4f9f-abb3-4b7ddc6ed5ed}" datafieldname="ssa_disabilitystatus" />
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{09fc91cb-bec9-4a85-9b2d-e47ce3c6cac5}">
+                        <labels>
+                          <label description="Course Name" languagecode="1033" />
+                        </labels>
+                        <control id="ssa_coursename" classid="{4273edbd-ac1d-40d3-9fb2-095c621b552d}" datafieldname="ssa_coursename" />
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{c2fda262-671c-4e15-8f63-8f089bed3d3b}">
+                        <labels>
+                          <label description="Development Type" languagecode="1033" />
+                        </labels>
+                        <control id="ssa_developmenttype" classid="{4273edbd-ac1d-40d3-9fb2-095c621b552d}" datafieldname="ssa_developmenttype" />
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{148ff8e5-a1be-4c90-a64a-b83d27415dbb}">
+                        <labels>
+                          <label description="Action / Rollout" languagecode="1033" />
+                        </labels>
+                        <control id="ssa_actionorrollout" classid="{3ef39988-22bb-4f0b-bbbe-64b5a3748aee}" datafieldname="ssa_actionorrollout" />
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{7ae9b18b-3a1d-408a-a42e-6bf18ef7368b}">
+                        <labels>
+                          <label description="Training Month" languagecode="1033" />
+                        </labels>
+                        <control id="ssa_trainingmonth" classid="{4273edbd-ac1d-40d3-9fb2-095c621b552d}" datafieldname="ssa_trainingmonth" />
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{0c480350-6cd3-4880-9edc-9dbcb7f57438}">
+                        <labels>
+                          <label description="Training End Date" languagecode="1033" />
+                        </labels>
+                        <control id="ssa_trainingenddate" classid="{5b773807-9fb2-42db-97c3-7a91eff8adff}" datafieldname="ssa_trainingenddate" />
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{e551634c-d814-45ba-adb5-ea1add11e14f}">
+                        <labels>
+                          <label description="Duration Hours" languagecode="1033" />
+                        </labels>
+                        <control id="ssa_durationhours" classid="{c3efe0c3-0ec6-42be-8349-cbd9079dfd8e}" datafieldname="ssa_durationhours" />
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{c662bd75-c191-47e7-bdba-6f82a7827f04}">
+                        <labels>
+                          <label description="Actual Cost" languagecode="1033" />
+                        </labels>
+                        <control id="ssa_actualcost" classid="{533b9e00-756b-4312-95a0-dc888637ac78}" datafieldname="ssa_actualcost" />
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{ac908224-8117-467c-a241-ffe2644781a6}">
+                        <labels>
+                          <label description="WSP Completion Status" languagecode="1033" />
+                        </labels>
+                        <control id="ssa_wspcompletionstatus" classid="{4273edbd-ac1d-40d3-9fb2-095c621b552d}" datafieldname="ssa_wspcompletionstatus" />
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{3ebe8231-5473-4390-958f-f13aa553d328}">
+                        <labels>
+                          <label description="Programme Category" languagecode="1033" />
+                        </labels>
+                        <control id="ssa_programmecategory" classid="{4273edbd-ac1d-40d3-9fb2-095c621b552d}" datafieldname="ssa_programmecategory" />
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{bd9cc89e-7e72-4b0e-a9fa-a1bb6432538e}">
+                        <labels>
+                          <label description="ACSA Programme Category" languagecode="1033" />
+                        </labels>
+                        <control id="ssa_acsaprogrammecategory" classid="{3ef39988-22bb-4f0b-bbbe-64b5a3748aee}" datafieldname="ssa_acsaprogrammecategory" />
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{9bc73fe2-09fe-4ea5-b939-87aa1b36c954}">
+                        <labels>
+                          <label description="BBBEE Category" languagecode="1033" />
+                        </labels>
+                        <control id="ssa_bbbeecategory" classid="{4273edbd-ac1d-40d3-9fb2-095c621b552d}" datafieldname="ssa_bbbeecategory" />
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{8e7051bf-9d5b-4181-9e8e-1d5153fbc3b2}">
+                        <labels>
+                          <label description="ATR Year" languagecode="1033" />
+                        </labels>
+                        <control id="ssa_atryear" classid="{4273edbd-ac1d-40d3-9fb2-095c621b552d}" datafieldname="ssa_atryear" />
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{843be0ca-8d9d-4c8e-bd7d-28682ab7a8cb}">
+                        <labels>
+                          <label description="Training Actual ID" languagecode="1033" />
+                        </labels>
+                        <control id="ssa_trainingactualid" classid="{4273edbd-ac1d-40d3-9fb2-095c621b552d}" datafieldname="ssa_trainingactualid" />
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{f50fa2a2-ef36-42eb-b15a-424d9d615110}">
+                        <labels>
+                          <label description="Training Actual Status" languagecode="1033" />
+                        </labels>
+                        <control id="ssa_trainingactualstatus" classid="{4273edbd-ac1d-40d3-9fb2-095c621b552d}" datafieldname="ssa_trainingactualstatus" />
+                      </cell>
+                    </row>
+                  </rows>
+                </section>
+              </sections>
+            </column>
+          </columns>
+        </tab>
+      </tabs>
+    </form>
+    <IsCustomizable>1</IsCustomizable>
+    <CanBeDeleted>1</CanBeDeleted>
+    <LocalizedNames>
+      <LocalizedName description="Information" languagecode="1033" />
+    </LocalizedNames>
+    <Descriptions>
+      <Description description="A form for this entity." languagecode="1033" />
+    </Descriptions>
+  </systemform>
+</forms>

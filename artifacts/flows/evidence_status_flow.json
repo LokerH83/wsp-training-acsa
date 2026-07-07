@@ -1,0 +1,41 @@
+{
+  "name": "Evidence - On Submitted",
+  "description": "Flow skeleton: when an Evidence record status becomes 'Submitted', set submitted date and notify ATR owner.",
+  "trigger": "When a row is modified (Dataverse)",
+  "triggerSettings": {
+    "table": "cr075_evidence",
+    "scope": "Organisation",
+    "filteringAttributes": ["cr075_status"]
+  },
+  "steps": [
+    {
+      "name": "CheckStatus",
+      "type": "Condition",
+      "expression": "@equals(triggerBody()?['cr075_status'], 2)",
+      "true": [
+        {
+          "name": "SetSubmittedOn",
+          "type": "Update a row (Dataverse)",
+          "table": "cr075_evidence",
+          "rowId": "@triggerBody()?['cr075_evidenceid']",
+          "fields": { "cr075_submittedon": "@utcNow()" }
+        },
+        {
+          "name": "GetATR",
+          "type": "Get a row (Dataverse)",
+          "table": "ssa_employeetrainingrecord",
+          "rowId": "@triggerBody()?['cr075_employeetrainingrecordid']"
+        },
+        {
+          "name": "SendNotification",
+          "type": "Send an email (V2)",
+          "to": "@outputs('GetATR')?['body/_ownerid_value@OData.Community.Display.V1.FormattedValue']",
+          "subject": "Evidence submitted for ATR",
+          "body": "Evidence '@triggerBody()?['cr075_name']' was submitted."
+        }
+      ],
+      "false": []
+    }
+  ],
+  "notes": "Replace placeholder expressions with Power Automate dynamic content when creating the flow in the solution. Export/import via Solutions for production deployment."
+}

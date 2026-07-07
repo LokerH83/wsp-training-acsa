@@ -1,0 +1,50 @@
+<EntityMetadata LogicalName="cr075_evidence" SchemaName="cr075_Evidence">
+  <DisplayName>
+    <LocalizedLabel Description="Evidence" Label="Evidence" LanguageCode="1033" />
+  </DisplayName>
+  <PrimaryNameAttribute>cr075_name</PrimaryNameAttribute>
+  <Attributes>
+    <StringAttribute SchemaName="cr075_name" LogicalName="cr075_name" MaxLength="200">
+      <DisplayName><LocalizedLabel Label="Title" LanguageCode="1033" /></DisplayName>
+    </StringAttribute>
+    <MemoAttribute SchemaName="cr075_description" LogicalName="cr075_description">
+      <DisplayName><LocalizedLabel Label="Description" LanguageCode="1033" /></DisplayName>
+    </MemoAttribute>
+    <PicklistAttribute SchemaName="cr075_evidencetype" LogicalName="cr075_evidencetype">
+      <DisplayName><LocalizedLabel Label="Evidence Type" LanguageCode="1033" /></DisplayName>
+      <Options>
+        <Option Value="100000000" Label="Document" />
+        <Option Value="100000001" Label="Image" />
+        <Option Value="100000002" Label="Link" />
+        <Option Value="100000003" Label="Transcript" />
+      </Options>
+    </PicklistAttribute>
+    <PicklistAttribute SchemaName="cr075_status" LogicalName="cr075_status">
+      <DisplayName><LocalizedLabel Label="Status" LanguageCode="1033" /></DisplayName>
+      <Options>
+        <Option Value="1" Label="Draft" />
+        <Option Value="2" Label="Submitted" />
+        <Option Value="3" Label="Accepted" />
+        <Option Value="4" Label="Rejected" />
+      </Options>
+    </PicklistAttribute>
+    <BooleanAttribute SchemaName="cr075_hasfile" LogicalName="cr075_hasfile">
+      <DisplayName><LocalizedLabel Label="Has File" LanguageCode="1033" /></DisplayName>
+    </BooleanAttribute>
+    <StringAttribute SchemaName="cr075_link" LogicalName="cr075_link" MaxLength="1024">
+      <DisplayName><LocalizedLabel Label="External Link" LanguageCode="1033" /></DisplayName>
+    </StringAttribute>
+    <DateTimeAttribute SchemaName="cr075_submittedon" LogicalName="cr075_submittedon" Format="DateAndTime">
+      <DisplayName><LocalizedLabel Label="Submitted On" LanguageCode="1033" /></DisplayName>
+    </DateTimeAttribute>
+    <LookupAttribute SchemaName="cr075_submittedby" LogicalName="cr075_submittedby" Targets="systemuser,contact">
+      <DisplayName><LocalizedLabel Label="Submitted By" LanguageCode="1033" /></DisplayName>
+    </LookupAttribute>
+    <LookupAttribute SchemaName="cr075_employeetrainingrecordid" LogicalName="cr075_employeetrainingrecordid" Targets="ssa_employeetrainingrecord">
+      <DisplayName><LocalizedLabel Label="Employee Training Record" LanguageCode="1033" /></DisplayName>
+    </LookupAttribute>
+  </Attributes>
+  <ManyToOneRelationships>
+    <RelationshipSchemaName>cr075_evidence_ssa_employeetrainingrecord</RelationshipSchemaName>
+  </ManyToOneRelationships>
+</EntityMetadata>

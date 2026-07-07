@@ -1,0 +1,40 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<savedqueries xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <savedquery>
+    <IsCustomizable>1</IsCustomizable>
+    <CanBeDeleted>0</CanBeDeleted>
+    <isquickfindquery>0</isquickfindquery>
+    <isprivate>0</isprivate>
+    <isdefault>1</isdefault>
+    <savedqueryid>{0f526257-42c9-415a-922b-081074747209}</savedqueryid>
+    <layoutxml>
+      <grid name="resultset" jump="ssa_providername" select="1" icon="1" preview="1">
+        <row name="result" id="ssa_dataproviderid">
+          <cell name="ssa_providername" width="300" />
+          <cell name="ssa_plannedrecordcount" width="150" />
+          <cell name="ssa_providercode" width="150" />
+        </row>
+      </grid>
+    </layoutxml>
+    <querytype>0</querytype>
+    <fetchxml>
+      <fetch version="1.0" mapping="logical">
+        <entity name="ssa_dataprovider">
+          <attribute name="ssa_dataproviderid" />
+          <attribute name="ssa_providername" />
+          <attribute name="createdon" />
+          <order attribute="ssa_providername" descending="false" />
+          <filter type="and">
+            <condition attribute="statecode" operator="eq" value="0" />
+          </filter>
+          <attribute name="ssa_plannedrecordcount" />
+          <attribute name="ssa_providercode" />
+        </entity>
+      </fetch>
+    </fetchxml>
+    <IntroducedVersion>1.0</IntroducedVersion>
+    <LocalizedNames>
+      <LocalizedName description="Active Data Provider" languagecode="1033" />
+    </LocalizedNames>
+  </savedquery>
+</savedqueries>

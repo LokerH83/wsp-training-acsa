@@ -1,0 +1,86 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<savedqueries xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <savedquery>
+    <IsCustomizable>1</IsCustomizable>
+    <CanBeDeleted>0</CanBeDeleted>
+    <isquickfindquery>0</isquickfindquery>
+    <isprivate>0</isprivate>
+    <isdefault>1</isdefault>
+    <savedqueryid>{40dc1402-9d13-4bb0-8fd7-418d802e251b}</savedqueryid>
+    <layoutxml>
+      <grid name="resultset" jump="ssa_employeename" select="1" icon="1" preview="1">
+        <row name="result" id="ssa_employeetrainingrecordid">
+          <cell name="ssa_employeename" width="300" />
+          <cell name="ssa_employeenumber" width="150" />
+          <cell name="ssa_positiontitle" width="150" />
+          <cell name="ssa_gradelevel" width="150" />
+          <cell name="ssa_worklocation" width="150" />
+          <cell name="ssa_cluster" width="150" />
+          <cell name="ssa_division" width="150" />
+          <cell name="ssa_department" width="150" />
+          <cell name="ssa_race" width="150" />
+          <cell name="ssa_gender" width="150" />
+          <cell name="ssa_age" width="150" />
+          <cell name="ssa_disabilitystatus" width="150" />
+          <cell name="ssa_coursename" width="150" />
+          <cell name="ssa_developmenttype" width="150" />
+          <cell name="ssa_actionorrollout" width="150" />
+          <cell name="ssa_trainingmonth" width="150" />
+          <cell name="ssa_trainingenddate" width="150" />
+          <cell name="ssa_durationhours" width="150" />
+          <cell name="ssa_actualcost" width="150" />
+          <cell name="ssa_wspcompletionstatus" width="150" />
+          <cell name="ssa_programmecategory" width="150" />
+          <cell name="ssa_acsaprogrammecategory" width="150" />
+          <cell name="ssa_bbbeecategory" width="150" />
+          <cell name="ssa_atryear" width="150" />
+          <cell name="ssa_trainingactualid" width="150" />
+          <cell name="ssa_trainingactualstatus" width="150" />
+        </row>
+      </grid>
+    </layoutxml>
+    <querytype>0</querytype>
+    <fetchxml>
+      <fetch version="1.0" mapping="logical">
+        <entity name="ssa_employeetrainingrecord">
+          <attribute name="ssa_employeetrainingrecordid" />
+          <attribute name="ssa_employeename" />
+          <attribute name="createdon" />
+          <order attribute="ssa_employeename" descending="false" />
+          <filter type="and">
+            <condition attribute="statecode" operator="eq" value="0" />
+          </filter>
+          <attribute name="ssa_employeenumber" />
+          <attribute name="ssa_positiontitle" />
+          <attribute name="ssa_gradelevel" />
+          <attribute name="ssa_worklocation" />
+          <attribute name="ssa_cluster" />
+          <attribute name="ssa_division" />
+          <attribute name="ssa_department" />
+          <attribute name="ssa_race" />
+          <attribute name="ssa_gender" />
+          <attribute name="ssa_age" />
+          <attribute name="ssa_disabilitystatus" />
+          <attribute name="ssa_coursename" />
+          <attribute name="ssa_developmenttype" />
+          <attribute name="ssa_actionorrollout" />
+          <attribute name="ssa_trainingmonth" />
+          <attribute name="ssa_trainingenddate" />
+          <attribute name="ssa_durationhours" />
+          <attribute name="ssa_actualcost" />
+          <attribute name="ssa_wspcompletionstatus" />
+          <attribute name="ssa_programmecategory" />
+          <attribute name="ssa_acsaprogrammecategory" />
+          <attribute name="ssa_bbbeecategory" />
+          <attribute name="ssa_atryear" />
+          <attribute name="ssa_trainingactualid" />
+          <attribute name="ssa_trainingactualstatus" />
+        </entity>
+      </fetch>
+    </fetchxml>
+    <IntroducedVersion>1.0</IntroducedVersion>
+    <LocalizedNames>
+      <LocalizedName description="Active Employee Training Record" languagecode="1033" />
+    </LocalizedNames>
+  </savedquery>
+</savedqueries>

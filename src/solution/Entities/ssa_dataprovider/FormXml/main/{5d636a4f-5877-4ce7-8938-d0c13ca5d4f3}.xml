@@ -1,0 +1,71 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<forms xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <systemform>
+    <formid>{5d636a4f-5877-4ce7-8938-d0c13ca5d4f3}</formid>
+    <IntroducedVersion>1.0</IntroducedVersion>
+    <FormPresentation>1</FormPresentation>
+    <FormActivationState>1</FormActivationState>
+    <form>
+      <tabs>
+        <tab verticallayout="true" id="{96FE48E8-39C8-449D-A6B5-994A2AD496FA}" IsUserDefined="1">
+          <labels>
+            <label description="General" languagecode="1033" />
+          </labels>
+          <columns>
+            <column width="100%">
+              <sections>
+                <section showlabel="false" showbar="false" IsUserDefined="0" id="{72BC847B-AC9E-4D77-A643-2B6262E57CCD}">
+                  <labels>
+                    <label description="General" languagecode="1033" />
+                  </labels>
+                  <rows>
+                    <row>
+                      <cell id="{DFE6E129-9FE9-47E8-A026-AECD199FC216}">
+                        <labels>
+                          <label description="Provider Name" languagecode="1033" />
+                        </labels>
+                        <control id="ssa_providername" classid="{4273EDBD-AC1D-40d3-9FB2-095C621B552D}" datafieldname="ssa_providername" />
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{83F1E46C-D2D1-4420-B395-78A151FD955A}">
+                        <labels>
+                          <label description="Owner" languagecode="1033" />
+                        </labels>
+                        <control id="ownerid" classid="{270BD3DB-D9AF-4782-9025-509E298DEC0A}" datafieldname="ownerid" />
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{2d93eab6-c530-41a3-9f5f-d4bea29efad3}">
+                        <labels>
+                          <label description="Planned Record Count" languagecode="1033" />
+                        </labels>
+                        <control id="ssa_plannedrecordcount" classid="{c6d124ca-7eda-4a60-aea9-7fb8d318b68f}" datafieldname="ssa_plannedrecordcount" />
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{676dde9f-a911-43cb-9e55-f520af1e2837}">
+                        <labels>
+                          <label description="Provider Code" languagecode="1033" />
+                        </labels>
+                        <control id="ssa_providercode" classid="{4273edbd-ac1d-40d3-9fb2-095c621b552d}" datafieldname="ssa_providercode" />
+                      </cell>
+                    </row>
+                  </rows>
+                </section>
+              </sections>
+            </column>
+          </columns>
+        </tab>
+      </tabs>
+    </form>
+    <IsCustomizable>1</IsCustomizable>
+    <CanBeDeleted>1</CanBeDeleted>
+    <LocalizedNames>
+      <LocalizedName description="Information" languagecode="1033" />
+    </LocalizedNames>
+    <Descriptions>
+      <Description description="A form for this entity." languagecode="1033" />
+    </Descriptions>
+  </systemform>
+</forms>

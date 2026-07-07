@@ -1,0 +1,78 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<savedqueries xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <savedquery>
+    <IsCustomizable>1</IsCustomizable>
+    <CanBeDeleted>0</CanBeDeleted>
+    <isquickfindquery>0</isquickfindquery>
+    <isprivate>0</isprivate>
+    <isdefault>1</isdefault>
+    <savedqueryid>{2d144cbf-8991-4718-bd52-6bfcc092d5fb}</savedqueryid>
+    <layoutxml>
+      <grid name="resultset" jump="ssa_fullname" select="1" icon="1" preview="1">
+        <row name="result" id="ssa_employeerecordid">
+          <cell name="ssa_fullname" width="300" />
+          <cell name="ssa_employeenumber" width="150" />
+          <cell name="ssa_gender" width="150" />
+          <cell name="ssa_race" width="150" />
+          <cell name="ssa_disabilitystatus" width="150" />
+          <cell name="ssa_businessunit" width="150" />
+          <cell name="ssa_division" width="150" />
+          <cell name="ssa_location" width="150" />
+          <cell name="ssa_jobtitle" width="150" />
+          <cell name="ssa_jobname" width="150" />
+          <cell name="ssa_grade" width="150" />
+          <cell name="ssa_gradename" width="150" />
+          <cell name="ssa_occupationalcategory" width="150" />
+          <cell name="ssa_eelevel" width="150" />
+          <cell name="ssa_eefunction" width="150" />
+          <cell name="ssa_nationality" width="150" />
+          <cell name="ssa_age" width="150" />
+          <cell name="ssa_startdate" width="150" />
+          <cell name="ssa_datejoined" width="150" />
+          <cell name="ssa_terminationdate" width="150" />
+          <cell name="ssa_employeestatus" width="150" />
+          <cell name="ssa_profileusabilitystatus" width="150" />
+        </row>
+      </grid>
+    </layoutxml>
+    <querytype>0</querytype>
+    <fetchxml>
+      <fetch version="1.0" mapping="logical">
+        <entity name="ssa_employeerecord">
+          <attribute name="ssa_employeerecordid" />
+          <attribute name="ssa_fullname" />
+          <attribute name="createdon" />
+          <order attribute="ssa_fullname" descending="false" />
+          <filter type="and">
+            <condition attribute="statecode" operator="eq" value="0" />
+          </filter>
+          <attribute name="ssa_employeenumber" />
+          <attribute name="ssa_gender" />
+          <attribute name="ssa_race" />
+          <attribute name="ssa_disabilitystatus" />
+          <attribute name="ssa_businessunit" />
+          <attribute name="ssa_division" />
+          <attribute name="ssa_location" />
+          <attribute name="ssa_jobtitle" />
+          <attribute name="ssa_jobname" />
+          <attribute name="ssa_grade" />
+          <attribute name="ssa_gradename" />
+          <attribute name="ssa_occupationalcategory" />
+          <attribute name="ssa_eelevel" />
+          <attribute name="ssa_eefunction" />
+          <attribute name="ssa_nationality" />
+          <attribute name="ssa_age" />
+          <attribute name="ssa_startdate" />
+          <attribute name="ssa_datejoined" />
+          <attribute name="ssa_terminationdate" />
+          <attribute name="ssa_employeestatus" />
+          <attribute name="ssa_profileusabilitystatus" />
+        </entity>
+      </fetch>
+    </fetchxml>
+    <IntroducedVersion>1.0</IntroducedVersion>
+    <LocalizedNames>
+      <LocalizedName description="Client Demo - Employee Profiles" languagecode="1033" />
+    </LocalizedNames>
+  </savedquery>
+</savedqueries>

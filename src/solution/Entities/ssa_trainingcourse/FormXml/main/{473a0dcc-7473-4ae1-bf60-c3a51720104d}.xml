@@ -1,0 +1,87 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<forms xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <systemform>
+    <formid>{473a0dcc-7473-4ae1-bf60-c3a51720104d}</formid>
+    <IntroducedVersion>1.0</IntroducedVersion>
+    <FormPresentation>1</FormPresentation>
+    <FormActivationState>1</FormActivationState>
+    <form>
+      <tabs>
+        <tab verticallayout="true" id="{BF0B6F69-40C2-44E3-BD4A-244C3A73BF9E}" IsUserDefined="1">
+          <labels>
+            <label description="General" languagecode="1033" />
+          </labels>
+          <columns>
+            <column width="100%">
+              <sections>
+                <section showlabel="false" showbar="false" IsUserDefined="0" id="{32E9E4D7-8CF7-43E0-BEFB-936BFAD4411E}">
+                  <labels>
+                    <label description="General" languagecode="1033" />
+                  </labels>
+                  <rows>
+                    <row>
+                      <cell id="{5D2777A3-A803-49A4-99EC-8C65C7B546CB}">
+                        <labels>
+                          <label description="Course Name" languagecode="1033" />
+                        </labels>
+                        <control id="ssa_coursename" classid="{4273EDBD-AC1D-40d3-9FB2-095C621B552D}" datafieldname="ssa_coursename" />
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{748E83CF-100C-4491-9C0C-BD3831ADD106}">
+                        <labels>
+                          <label description="Owner" languagecode="1033" />
+                        </labels>
+                        <control id="ownerid" classid="{270BD3DB-D9AF-4782-9025-509E298DEC0A}" datafieldname="ownerid" />
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{d0b5a7d8-704b-458b-afc6-575aa4ea102f}">
+                        <labels>
+                          <label description="Training Category" languagecode="1033" />
+                        </labels>
+                        <control id="ssa_trainingcategory" classid="{3ef39988-22bb-4f0b-bbbe-64b5a3748aee}" datafieldname="ssa_trainingcategory" />
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{9560a244-704e-4152-aed6-2e3769df8cda}">
+                        <labels>
+                          <label description="Default Planned Cost" languagecode="1033" />
+                        </labels>
+                        <control id="ssa_defaultplannedcost" classid="{533b9e00-756b-4312-95a0-dc888637ac78}" datafieldname="ssa_defaultplannedcost" />
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{a0feebeb-c2be-40ed-8ebc-1e656f47bb11}">
+                        <labels>
+                          <label description="Planned Record Count" languagecode="1033" />
+                        </labels>
+                        <control id="ssa_plannedrecordcount" classid="{c6d124ca-7eda-4a60-aea9-7fb8d318b68f}" datafieldname="ssa_plannedrecordcount" />
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{b63fae29-92be-407e-8efb-5a2483b2d649}">
+                        <labels>
+                          <label description="Course Code" languagecode="1033" />
+                        </labels>
+                        <control id="ssa_coursecode" classid="{4273edbd-ac1d-40d3-9fb2-095c621b552d}" datafieldname="ssa_coursecode" />
+                      </cell>
+                    </row>
+                  </rows>
+                </section>
+              </sections>
+            </column>
+          </columns>
+        </tab>
+      </tabs>
+    </form>
+    <IsCustomizable>1</IsCustomizable>
+    <CanBeDeleted>1</CanBeDeleted>
+    <LocalizedNames>
+      <LocalizedName description="Information" languagecode="1033" />
+    </LocalizedNames>
+    <Descriptions>
+      <Description description="A form for this entity." languagecode="1033" />
+    </Descriptions>
+  </systemform>
+</forms>

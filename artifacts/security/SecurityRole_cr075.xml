@@ -1,0 +1,9 @@
+<Role>
+  <Name>cr075 - App Contributor</Name>
+  <Description>Role granting privileges for Evidence, Review Item, and Booking entities.</Description>
+  <Privileges>
+    <EntityPrivilege Entity="cr075_evidence" Create="true" Read="true" Write="true" Delete="true" Append="true" AppendTo="true" Assign="true" Share="false" />
+    <EntityPrivilege Entity="cr075_reviewitem" Create="true" Read="true" Write="true" Delete="true" Append="true" AppendTo="true" Assign="true" Share="false" />
+    <EntityPrivilege Entity="cr075_booking" Create="true" Read="true" Write="true" Delete="true" Append="true" AppendTo="true" Assign="true" Share="false" />
+  </Privileges>
+</Role>

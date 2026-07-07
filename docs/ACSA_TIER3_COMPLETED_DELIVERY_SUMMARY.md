@@ -45,16 +45,29 @@ This package now contains:
 - The core training and employee data model exists.
 - The app navigation structure is present.
 - Forms and views for the included entities are now part of the package.
+- Draft Evidence, Review Item and Booking entity artifacts have been prepared for sandbox validation.
+- Draft flow and security-role skeletons have been prepared as Tier 3 build accelerators.
+- Unpacked solution source has been added under `src/solution/` for controlled future build work.
+
+## Latest build workspace assets
+
+- Build workspace note: `TIER3_BUILD_WORKSPACE.md`
+- Entity specification: `docs/ACSA_TIER3_MISSING_ENTITIES_SPEC.md`
+- Flow/security notes: `docs/ACSA_TIER3_FLOWS_ROLES_README.md`
+- Latest sandbox-validation candidate: `exports/WSPTrainingManagementSystem_with_entities_20260707075243.zip`
+
+This candidate should be imported into a sandbox first. It is not yet a production-ready package.
 
 ## Remaining gap work to finish Tier 3
 
 The following items still need to be completed before the solution is production-ready:
 
-- Evidence capture entity and evidence tracking workflow
-- Review item entity and review management workflow
-- Booking / approval workflow entity and process
+- Sandbox validation of the draft Evidence, Review Item and Booking entities
+- Evidence tracking workflow implementation and testing
+- Review item management workflow implementation and testing
+- Booking / approval workflow implementation and testing
 - Business rules and automation for training status transitions
-- Security role definitions and role-based access model
+- Security role validation and role-based access testing
 - Power BI reporting dataset and dashboards
 - Approval, evidence sign-off and ATR confirmation flows
 - Production deployment documentation and pilot criteria
