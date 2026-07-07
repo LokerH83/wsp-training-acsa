@@ -2,6 +2,10 @@
 
 Demo-safe ACSA SDF dashboard showing workbook loading, provider/course search, training booking, people profiles and requested vs planned vs achieved reporting.
 
+## Start Here For The ACSA Demo
+
+Use `demo/README.md` as the clean demo pack. It contains the live links, Power Apps status, demo order, and the files needed on demo day.
+
 ## What The Demo Does
 
 - Load sample workbook
@@ -65,6 +69,19 @@ Expected URL format:
 ```text
 https://<github-username>.github.io/wsp-training-acsa/
 ```
+
+## Power Platform import workflow
+
+The workflow `.github/workflows/pack_and_inject.yml` imports a verified Power Apps solution using the `pac` CLI.
+
+Required GitHub Actions secrets:
+
+- `PP_ENVIRONMENT` — Power Platform environment ID or environment URL
+- `PP_CLIENT_ID`
+- `PP_CLIENT_SECRET`
+- `PP_TENANT_ID`
+
+It also expects the export file at `exports/WSPTrainingManagementSystem_complete_solution.zip`.
 
 ## Safety Notes
 

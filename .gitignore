@@ -23,3 +23,7 @@ dataverse-snapshot.js
 !exports/README.md
 !exports/WSPTrainingManagementSystem_complete_solution.zip
 !exports/WSPTrainingManagementSystem_with_entities_20260707075243.zip
+!demo/
+!demo/files/
+!demo/files/WSPTrainingManagementSystem_complete_solution.zip
+!demo/files/ACSA_SDF_Demo_Workbook.csv
