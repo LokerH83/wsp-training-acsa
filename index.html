@@ -135,6 +135,7 @@
         <div class="import-grid import-workbench">
           <section class="panel import-drop">
             <div><span class="eyebrow">Workbook bridge</span><h3>Bring workbook data in</h3><p>Use the sample workbook or upload a safe CSV export.</p></div>
+            <div class="workbook-steps" id="workbookSteps" aria-label="Workbook loading steps"></div>
             <div class="quick-actions">
               <button class="primary" id="loadSampleWorkbook">Load Sample Workbook</button>
               <label class="connector-row"><input id="csvUpload" type="file" accept=".csv"><span class="connector-icon">CSV</span><span><strong>Upload CSV</strong><small>Use a safe CSV export only</small></span></label>
@@ -148,7 +149,7 @@
           <section class="panel"><div class="panel-head"><h3>Detected Columns</h3></div><div id="detectedColumns" class="mapping-preview"></div></section>
           <section class="panel"><div class="panel-head"><h3>Required Field Checklist</h3></div><div id="fieldChecklist" class="checklist"></div></section>
         </div>
-        <section class="panel table-panel" id="importPreviewPanel"><div class="panel-head"><h3>Clean Import Preview</h3></div><div class="table-wrap"><table><thead><tr><th>Employee</th><th>Course</th><th>Requested</th><th>Planned</th><th>Achieved</th><th>Review</th></tr></thead><tbody id="importPreview"></tbody></table></div></section>
+        <section class="panel table-panel" id="importPreviewPanel"><div class="panel-head"><h3>Clean Import Preview</h3><button id="applyStagingPreview">Apply To Staging</button></div><div class="table-wrap"><table><thead><tr><th>Employee</th><th>Course</th><th>Requested</th><th>Planned</th><th>Achieved</th><th>Review</th></tr></thead><tbody id="importPreview"></tbody></table></div></section>
       </section>
 
       <section id="training" class="view">

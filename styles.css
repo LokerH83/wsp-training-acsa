@@ -512,6 +512,51 @@ select, input {
   margin-bottom: 12px;
 }
 .quick-actions { display: grid; gap: 10px; }
+.workbook-steps {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
+  margin: 14px 0 12px;
+}
+.workbook-step {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: #f8fbfd;
+  padding: 10px;
+  color: var(--muted);
+}
+.workbook-step span {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  background: #e6eef3;
+  color: var(--blue);
+  font-weight: 800;
+  font-size: 12px;
+}
+.workbook-step strong {
+  font-size: 13px;
+}
+.workbook-step.active,
+.workbook-step.ready {
+  border-color: #7cc8e8;
+  background: #eef9fd;
+  color: var(--ink);
+}
+.workbook-step.complete {
+  border-color: #a7dfbd;
+  background: #f0fbf4;
+  color: var(--ink);
+}
+.workbook-step.complete span {
+  background: var(--green);
+  color: #fff;
+}
 .panel canvas {
   display: block;
   width: 100%;
