@@ -44,7 +44,7 @@ Verification result: unpacking confirms the package includes `AppModules`, `AppM
 
 `WSPTrainingManagementSystem_with_entities_20260707075243.zip`
 
-Generated after adding draft Evidence, Review Item and Booking entity artifacts. Treat this as a sandbox-validation candidate, not a production-ready package, until it has been imported and dependency-checked in Power Apps.
+Generated after adding draft Evidence, Review Item and Booking entity artifacts. Treat this as a sandbox-validation candidate, not a production-intended package, until it has been imported and dependency-checked in Power Apps.
 
 ## Other Packages
 

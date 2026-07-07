@@ -23,9 +23,9 @@ All paths must be relative.
 
 The app must not depend on:
 
-- C:\ paths
+- local absolute Windows paths
 - localhost
-- file:// paths
+- local file URI paths
 - Dataverse
 - APIs
 - authentication

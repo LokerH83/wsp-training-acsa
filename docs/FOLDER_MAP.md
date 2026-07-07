@@ -1,36 +1,28 @@
 # Folder Map
 
-## Active Publish Folder
+This repository is the public-shareable ACSA demo repository.
 
-C:\Users\ThinkPad P1\OneDrive\Documents\GitHub\wsp-training-acsa
+## Public demo root
 
-Purpose:
-GitHub-ready demo folder. This is the only folder Hayden should publish.
+- `index.html`
+- `styles.css`
+- `app.js`
+- `assets/`
+- `data/demo-snapshot.js`
+- `sample-workbooks/ACSA_SDF_Demo_Workbook.csv`
 
-## Active Local Demo Source
+## Demo pack
 
-C:\Users\ThinkPad P1\Documents\Codex\2026-07-03\th\outputs\DEMO
+- `demo/README.md`
+- `demo/DEMO_RUNBOOK.md`
+- `demo/FILES_FOR_DEMO.md`
+- `demo/files/`
 
-Purpose:
-Local source copy of the demo-safe app.
+## Documentation
 
-## Private ACSA Snapshot
+- `docs/`
 
-C:\Users\ThinkPad P1\Documents\Codex\2026-07-03\th\outputs\wsp-training-acsa-client-theme
+## Notes
 
-Purpose:
-Private client snapshot build. Do not publish.
-
-## GitHub Archive
-
-C:\Users\ThinkPad P1\OneDrive\Documents\GitHub\wsp-training-acsa\_archive_old_versions
-
-Purpose:
-Old duplicate files from the GitHub repo folder. Not for publishing.
-
-## Codex Archive
-
-C:\Users\ThinkPad P1\Documents\Codex\2026-07-03\th\outputs\_OLD_DO_NOT_PUBLISH
-
-Purpose:
-Old local build attempts. Not for publishing.
+- Keep private workbooks, screenshots, secrets and local-only archive folders out of the public demo.
+- Use relative repository paths in public documentation.

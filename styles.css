@@ -2648,7 +2648,7 @@ input {
   }
 }
 
-/* Sales-readiness polish */
+/* Sales presentation polish */
 html,
 body {
   overflow-x: hidden;
@@ -2955,6 +2955,57 @@ body {
 
 @media (max-width: 760px) {
   .kpi-grid.relationship-kpis.data-health-kpis {
+    grid-template-columns: 1fr;
+  }
+}
+
+.priority-dashboard {
+  grid-template-columns: minmax(320px, .8fr) minmax(0, 1.2fr);
+}
+
+.priority-dashboard .next-step-panel {
+  background:
+    linear-gradient(135deg, rgba(0, 109, 143, .08), rgba(16, 160, 182, .04)),
+    #ffffff;
+  border-color: #b9dfe9;
+}
+
+.tier-choice-grid {
+  display: grid;
+  gap: 10px;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.tier-choice-grid article {
+  border: 1px solid #d9e8ee;
+  border-radius: 8px;
+  background: #fbfdff;
+  padding: 11px 12px;
+}
+
+.tier-choice-grid span {
+  display: block;
+  color: #647987;
+  font-size: 11px;
+  font-weight: 700;
+  margin-bottom: 5px;
+}
+
+.tier-choice-grid strong {
+  color: #07364d;
+  font-size: 13px;
+  line-height: 1.25;
+}
+
+.tier-choice-grid .recommended {
+  background: #eaf8fc;
+  border-color: #74c5dc;
+  box-shadow: inset 0 0 0 1px rgba(0, 120, 166, .16);
+}
+
+@media (max-width: 1180px) {
+  .priority-dashboard,
+  .tier-choice-grid {
     grid-template-columns: 1fr;
   }
 }

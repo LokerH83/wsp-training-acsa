@@ -1,4 +1,4 @@
-# ACSA Tier 3 Live Readiness Summary
+# ACSA Tier 3 Live Preparation Summary
 
 ## Summary
 
@@ -48,14 +48,14 @@ Each table includes forms and saved views in the complete export.
 - Training Plan -> Course Catalogue
 - Training Plan -> Training Provider
 
-## Still required for live readiness
+## Still required for live preparation
 
-- Evidence capture entity and evidence readiness workflow
+- Evidence capture entity and evidence and review status workflow
 - Review item/audit issue entity and follow-up workflow
 - Booking or approval workflow entity
 - Business rules or cloud flows for plan, booking, ATR, evidence and review status transitions
 - Security role definitions and access testing
-- Power BI reporting layer for requested vs planned vs achieved, evidence readiness and review status
+- Power BI reporting layer for requested vs planned vs achieved, evidence and review status and review status
 - Pilot testing with approved sample data
 
 Detailed build backlog:

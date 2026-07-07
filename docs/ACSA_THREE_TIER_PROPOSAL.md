@@ -46,7 +46,7 @@ Includes:
 - Division / Department filters
 - Race / Sex / Age / Disability filters
 - Provider / Course analysis
-- Evidence readiness view
+- Evidence and review status view
 - Review items
 - Executive summary page
 - SDF training session

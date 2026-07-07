@@ -2,7 +2,7 @@
 
 ## Purpose
 
-This plan describes the recommended Tier 2 delivery for ACSA: keep Excel as the data input layer, then build a Power BI reporting layer that delivers management visibility into training planning, ATR progress, and evidence readiness.
+This plan describes the recommended Tier 2 delivery for ACSA: keep Excel as the data input layer, then build a Power BI reporting layer that delivers management visibility into training planning, ATR progress, and evidence and review status.
 
 ## Scope
 
@@ -15,7 +15,7 @@ Tier 2 includes:
 - Requested vs Planned vs Achieved reporting
 - Filters for Cluster / Region, Division / Department, Race, Sex, Age, Disability
 - Provider / Course analytics
-- Evidence readiness and review item views
+- Evidence and review status and review item views
 - Executive summary page
 - SDF training session for the solution
 
@@ -45,13 +45,13 @@ Tier 2 includes:
    - Build a central data model from the standardised workbook tables
    - Create relationships for people, training plans, actuals, providers, evidence and review items
    - Develop key measures for requested, planned and achieved training
-   - Add filters for geography, department, demographics, provider and evidence readiness
+   - Add filters for geography, department, demographics, provider and evidence and review status
    - Build an executive summary page with top-level metrics
 
 4. Reporting & Review
    - Deliver interactive dashboards for management and operational use
    - Include drill-through or detail views for provider/course analysis
-   - Provide evidence readiness and outstanding review item visibility
+   - Provide evidence and review status and outstanding review item visibility
    - Validate dashboards with sample workbook data and stakeholder feedback
 
 5. Handover & Training

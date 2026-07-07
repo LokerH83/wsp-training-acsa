@@ -12,7 +12,7 @@ This note explains the helper artifacts for merging the draft Tier 3 entities in
 ## Quick run
 
 ```powershell
-cd "C:\Users\ThinkPad P1\OneDrive\Documents\GitHub\wsp-training-acsa"
+cd <repository-root>
 .\scripts\merge_entities_into_solution.ps1 -SolutionZip "exports\WSPTrainingManagementSystem_complete_solution.zip" -ArtifactsDir "artifacts\entities"
 ```
 

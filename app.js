@@ -1,4 +1,4 @@
-const STORAGE_KEY = "acsa-sdf-demo-state-v2";
+const STORAGE_KEY = "acsa-sdf-demo-state-v3";
 const DEMO_DATA = window.ACSA_DEMO_DATA || { employees: [], providers: [], courses: [], requests: [], plans: [], actuals: [], bookings: [] };
 let state = loadState();
 let stagedRows = [];
@@ -189,7 +189,7 @@ function renderOverview() {
     ["Potential mandatory grant", currency.format(mandatoryGrant)],
     ["Grant value at risk", currency.format(grantAtRisk)],
     ["Evidence / review gap", s.reviewItems],
-    ["B-BBEE skills risk signal", s.reviewItems || s.plannedNotAchieved ? "Monitor" : "Low"]
+    ["B-BBEE skills review status", s.reviewItems || s.plannedNotAchieved ? "Monitor" : "Low"]
   ].map(([label, value]) => `<article class="kpi"><span>${label}</span><strong>${value}</strong><small>demo planning estimate</small></article>`).join("");
   document.getElementById("bookingKpis").innerHTML = [
     ["Booked Training", b.booked], ["Upcoming Sessions", b.upcoming], ["Completed Bookings", b.completed], ["Attendance To Confirm", b.missed]
@@ -197,7 +197,7 @@ function renderOverview() {
   document.getElementById("relationshipBars").innerHTML = [
     ["Requested / Suggested", s.requested, "#0067a0"], ["Planned WSP", s.planned, "#0b7f46"], ["Achieved ATR", s.achieved, "#6f4bb7"]
   ].map(([label, value, color]) => `<div class="bar-row"><div><strong>${label}</strong><span>${value} records</span></div><div class="bar-track"><span style="width:${Math.max(8, Math.round((value / max) * 100))}%;background:${color}"></span></div></div>`).join("");
-  document.getElementById("readinessOverview").innerHTML = [
+  document.getElementById("reviewOverview").innerHTML = [
     ["Requested not planned", s.requestedNotPlanned, s.requestedNotPlanned ? "risk" : "good"],
     ["Planned not achieved", s.plannedNotAchieved, s.plannedNotAchieved ? "risk" : "good"],
     ["Achieved not planned", s.achievedNotPlanned, s.achievedNotPlanned ? "risk" : "good"],
@@ -325,7 +325,7 @@ function hydrateReportFilters() {
 
 function executiveSummaryText() {
   const s = summary();
-  return `ACSA SDF Demo Summary:\nThe demo data shows ${s.requested} requested/suggested records, ${s.planned} planned WSP records and ${s.achieved} achieved ATR records.\nThe dashboard highlights reporting gaps: requested not planned (${s.requestedNotPlanned}), planned not achieved (${s.plannedNotAchieved}) and achieved not planned (${s.achievedNotPlanned}).\nRecords needing review: ${s.reviewItems}.\nThis is a planning estimate for the demo. Production would validate approved records through a secured API and Dataverse layer.\nNext action: confirm the Excel data structure and prove the Power BI reporting layer before investing in the full workflow app.`;
+  return `Demo summary: the dashboard shows ${s.requested} requested training records, ${s.planned} planned WSP records, ${s.achieved} achieved ATR records, ${s.reportingGaps} reporting gaps and ${s.reviewItems} records needing review. The recommended next step is to confirm the Excel data structure and prove the Power BI reporting layer before investing in the full workflow app.`;
 }
 
 function copyExecutiveSummary() {
@@ -352,7 +352,7 @@ function applyWorkbookRows() {
     if (row["Achieved ATR"] === "Yes") state.actuals.push({ ...base, id: `${base.id}-act`, cost: Number(row["Actual Cost"] || 0), evidenceStatus: row["Evidence Status"] });
   });
   saveState();
-  document.getElementById("workbookMessage").textContent = "Workbook staged into demo environment. Production version would validate and write approved rows through the secured API and Dataverse layer.";
+  document.getElementById("workbookMessage").textContent = "Workbook staged into the demo view. A production implementation would validate and write approved rows through a secured implementation layer.";
   renderAll();
 }
 

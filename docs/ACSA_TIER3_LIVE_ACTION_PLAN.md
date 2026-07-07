@@ -2,7 +2,7 @@
 
 ## Goal
 
-Take the ACSA Tier 3 solution from current app export to a production-ready Power Apps + Dataverse deployment with reporting and handover.
+Take the ACSA Tier 3 solution from current app export to a production-intended Power Apps + Dataverse deployment with reporting and handover.
 
 ## Current state
 
@@ -60,7 +60,7 @@ Take the ACSA Tier 3 solution from current app export to a production-ready Powe
 ### Step 3: Build the missing app components
 
 - Add or complete the missing entities and workflows for:
-  - Evidence records and evidence readiness
+  - Evidence records and evidence and review status
   - Review items and follow-up actions
   - Booking/approval workflow
   - Role-based form experiences
@@ -78,7 +78,7 @@ Take the ACSA Tier 3 solution from current app export to a production-ready Powe
 - Create or connect Power BI dashboards for:
   - Requested vs Planned vs Achieved reporting
   - Provider / Course analysis
-  - Evidence readiness and review status
+  - Evidence and review status and review status
   - Executive summary and management view
 - Confirm workbook import/refresh process if Excel remains a source.
 - Validate the app and dashboards with sample data and pilot users.
@@ -111,13 +111,13 @@ Take the ACSA Tier 3 solution from current app export to a production-ready Powe
 
 ### Phase 2: Workflow and governance
 
-- Add evidence capture and readiness tracking
+- Add evidence capture and review tracking
 - Add review item workflow
 - Add booking / approval logic
 - Add audit and governance controls
 - Refine role-based experience
 
-### Phase 3: Production readiness
+### Phase 3: Production preparation
 
 - Validate data and app performance
 - Confirm reporting and refresh process

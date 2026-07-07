@@ -2,7 +2,7 @@
 
 ## Purpose
 
-This checklist supports the final steps needed to move the Tier 3 app toward production-ready delivery.
+This checklist supports the final steps needed to move the Tier 3 app toward production-intended delivery.
 
 ## Completion criteria
 
@@ -100,15 +100,15 @@ Preferred final package name:
 - [ ] Confirm validation rules and business logic for data entry
 - [ ] Confirm status transitions for plan, booking, ATR and evidence
 
-### 4. Reporting and dashboard readiness
+### 4. Reporting and dashboard preparation
 
 - [ ] Confirm Power BI dataset or embedded dashboards are defined
 - [ ] Confirm requested vs planned vs achieved reporting metrics
-- [ ] Confirm evidence readiness and review item reporting
+- [ ] Confirm evidence and review status and review item reporting
 - [ ] Confirm filter requirements for geography, department, demographics, provider/course
 - [ ] Confirm executive summary page requirements
 
-### 5. Deployment readiness
+### 5. Deployment preparation
 
 - [ ] Confirm target environment for production deployment
 - [ ] Confirm solution import process and dependencies

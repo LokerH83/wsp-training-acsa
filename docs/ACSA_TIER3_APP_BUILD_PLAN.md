@@ -48,7 +48,7 @@ This document defines the Tier 3 app build for ACSA: a Microsoft Power Apps + Da
 
 6. Evidence Capture
    - Evidence record types
-   - Evidence readiness statuses
+   - Evidence and review status statuses
    - Link evidence to training actuals
    - Evidence review and validation notes
 
@@ -62,7 +62,7 @@ This document defines the Tier 3 app build for ACSA: a Microsoft Power Apps + Da
    - Power BI dashboard connection
    - Training requested vs planned vs achieved
    - Provider / course analytics
-   - Evidence readiness view
+   - Evidence and review status view
    - Review item status reporting
    - Executive summary page
 
@@ -179,7 +179,7 @@ This document defines the Tier 3 app build for ACSA: a Microsoft Power Apps + Da
 - Build the missing workflow entities for evidence, review items and booking/approval.
 - Add business rules or cloud flows for status changes and handoffs.
 - Add security roles and validate access for SDF, HR/reporting, managers and admins.
-- Connect Power BI reporting for requested vs planned vs achieved, evidence readiness and review status.
+- Connect Power BI reporting for requested vs planned vs achieved, evidence and review status and review status.
 - Agree pilot scope and phase planning.
 
 Detailed next-build backlog:

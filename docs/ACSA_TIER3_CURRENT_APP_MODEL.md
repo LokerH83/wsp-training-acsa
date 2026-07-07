@@ -138,9 +138,9 @@ Verified app package folders include:
    - Role-based forms and dashboards
 3. Add business rules or cloud flows for status transitions across planning, booking, ATR, evidence and review.
 4. Add security roles and validate user access for SDF, HR/reporting, manager and admin users.
-5. Connect Power BI reporting for requested vs planned vs achieved, evidence readiness and review status.
+5. Connect Power BI reporting for requested vs planned vs achieved, evidence and review status and review status.
 6. Pilot the model-driven app with demo-safe or approved sample data before production rollout.
 
 ## Notes
 
-The current export is now a complete app package for the existing model-driven app foundation. It is not yet production-ready because the workflow layer, evidence/review/booking entities, security model and reporting layer still need to be completed.
+The current export is now a complete app package for the existing model-driven app foundation. It is not yet production-intended because the workflow layer, evidence/review/booking entities, security model and reporting layer still need to be completed.

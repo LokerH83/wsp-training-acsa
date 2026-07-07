@@ -8,9 +8,9 @@ The public ACSA SDF demo is live, visually polished, demo-safe and ready for a c
 
 - URL: `https://lokerh83.github.io/wsp-training-acsa/`
 - Current assets: `20260707-journey-polish`
-- Smoke-tested views: Dashboard, SDF Data Drop, Training Planning, Employee Profiles, Reports
+- Smoke-tested views: Overview, Load Workbook, Manage Training, People Profiles, Reports
 - Report filters tested: filter reduced rows, Reset Filters restored the full matrix
-- Stale labels removed: no `Readiness Signal`, `Items To Confirm` or old journey-strip wording
+- Stale labels removed: no `Review Items and reporting gaps`, `Items To Confirm` or old journey-strip wording
 - Browser check: no console errors, no clipped cards/buttons, no horizontal overflow at the main demo viewport
 
 ## Current demo baseline

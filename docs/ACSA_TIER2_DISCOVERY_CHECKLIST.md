@@ -61,7 +61,7 @@ Use this checklist to guide the Tier 2 discovery and data review session for ACS
 ### 4. Evidence & Review Items
 
 - [ ] Confirm what evidence types are tracked
-- [ ] Confirm evidence readiness categories/statuses
+- [ ] Confirm evidence and review status categories/statuses
 - [ ] Confirm how evidence is linked to training records
 - [ ] Confirm review item categories and owners
 - [ ] Confirm required review item status tracking
@@ -74,7 +74,7 @@ Use this checklist to guide the Tier 2 discovery and data review session for ACS
   - Executive summary
   - Requested vs Planned vs Achieved
   - Provider / course analysis
-  - Evidence readiness
+  - Evidence and review status
   - Review items
 - [ ] Confirm required drill-down filters:
   - Cluster / Region

@@ -2,7 +2,7 @@
 
 ## Purpose
 
-This backlog turns the completed app export review into the next practical build steps for moving the ACSA Power Apps solution toward live readiness.
+This backlog turns the completed app export review into the next practical build steps for moving the ACSA Power Apps solution toward live preparation.
 
 ## Verified baseline
 
@@ -94,7 +94,7 @@ Add automation for:
 - Booking completed -> ATR actual can be captured
 - ATR actual captured -> evidence is required or marked not required
 - Evidence rejected -> review item is created
-- Review item closed -> readiness status updates
+- Review item closed -> review status updates
 
 ### 5. Security roles
 
@@ -112,12 +112,12 @@ Create reporting over:
 
 - Requested / planned / achieved training
 - Training spend by provider and course
-- Evidence readiness
+- Evidence and review status
 - Review item status
 - Booking and attendance status
 - Demographic and business unit filters
 
-## Pilot readiness checklist
+## Pilot preparation checklist
 
 - [ ] Confirm required fields for each workflow table
 - [ ] Confirm status values and transitions

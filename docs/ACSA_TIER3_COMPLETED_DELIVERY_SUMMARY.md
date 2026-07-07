@@ -56,11 +56,11 @@ This package now contains:
 - Flow/security notes: `docs/ACSA_TIER3_FLOWS_ROLES_README.md`
 - Latest sandbox-validation candidate: `exports/WSPTrainingManagementSystem_with_entities_20260707075243.zip`
 
-This candidate should be imported into a sandbox first. It is not yet a production-ready package.
+This candidate should be imported into a sandbox first. It is not yet a production-intended package.
 
 ## Remaining gap work to finish Tier 3
 
-The following items still need to be completed before the solution is production-ready:
+The following items still need to be completed before the solution is production-intended:
 
 - Sandbox validation of the draft Evidence, Review Item and Booking entities
 - Evidence tracking workflow implementation and testing
@@ -78,7 +78,7 @@ The following items still need to be completed before the solution is production
 2. Identify or create missing workflow entities for evidence, review, booking and approval.
 3. Add business rules or Power Automate flows to drive plan/booking/ATR/evidence status changes.
 4. Add security roles and verify access for SDF, managers, HR/reporting and admins.
-5. Build the Power BI reporting layer for requested/planned/achieved, evidence readiness and review status.
+5. Build the Power BI reporting layer for requested/planned/achieved, evidence and review status and review status.
 6. Validate the solution with sample or demo-safe data.
 7. Prepare the go-live deployment package and handover materials.
 

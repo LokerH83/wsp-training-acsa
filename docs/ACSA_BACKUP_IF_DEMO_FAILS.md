@@ -20,7 +20,7 @@ The safest first step is to prove the reporting layer before investing in full w
 
 Avoid saying:
 
-- this is production-ready
+- this is production-intended
 - this is official SETA output
 - this is official B-BBEE output
 - this replaces all ACSA systems immediately

@@ -79,7 +79,7 @@ File:
 docs/DEPLOYMENT_NOTES.md
 
 Purpose:
-Explains local/static/GitHub Pages readiness and production boundaries.
+Explains local/static/GitHub Pages setup status and production boundaries.
 
 ## Recommended Meeting Flow
 

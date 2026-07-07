@@ -13,7 +13,7 @@ Explain:
 
 Suggested wording:
 
-“Today I want to show a practical concept for how ACSA could manage WSP and ATR readiness more clearly. This demo is not production data. It is a demo-safe version showing the workflow from workbook loading through to training planning, booking, people profiles and reporting.”
+“Today I want to show a practical concept for how ACSA could manage WSP and ATR reporting more clearly. This demo is not production data. It is a demo-safe version showing the workflow from workbook loading through to training planning, booking, people profiles and reporting.”
 
 ## 2. Overview
 
@@ -23,7 +23,7 @@ Show:
 - Planned WSP
 - Achieved ATR
 - Gaps
-- Readiness signal
+- Review Items and reporting gaps
 - Review items
 
 Key message:
