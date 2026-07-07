@@ -2647,3 +2647,143 @@ input {
     justify-content: flex-start;
   }
 }
+
+/* Sales-readiness polish */
+html,
+body {
+  overflow-x: hidden;
+}
+
+.dashboard-grid,
+.overview-dashboard,
+.overview-dashboard + .overview-dashboard {
+  align-items: start;
+}
+
+.overview-dashboard + .overview-dashboard {
+  grid-template-columns: minmax(250px, 1.05fr) minmax(250px, 1.05fr) minmax(260px, 1.1fr) minmax(280px, .95fr);
+}
+
+.overview-dashboard + .overview-dashboard .panel {
+  min-height: 0;
+}
+
+.bar-list {
+  min-width: 0;
+}
+
+.bar-row {
+  grid-template-columns: minmax(0, .95fr) minmax(96px, .9fr);
+  align-items: center;
+  padding: 12px 0;
+}
+
+.bar-row + .bar-row {
+  border-top: 1px solid #edf3f6;
+}
+
+.bar-row > div:first-child {
+  min-width: 0;
+}
+
+.bar-row strong {
+  overflow-wrap: anywhere;
+}
+
+.bar-track {
+  min-width: 0;
+  overflow: hidden;
+}
+
+.issue {
+  border-left-width: 4px;
+  border-radius: 10px;
+  padding: 13px 14px;
+}
+
+.issue.risk {
+  background: #fff8f0;
+  border-color: #e39a2d;
+}
+
+.issue.warn {
+  background: #f7fbff;
+  border-color: #0078a6;
+}
+
+.issue.good {
+  background: #f5fbf7;
+}
+
+.action-panel {
+  background: linear-gradient(180deg, #ffffff 0%, #f7fbff 100%);
+}
+
+.action-tile-grid {
+  counter-reset: demo-step;
+}
+
+.action-tile-grid button {
+  position: relative;
+  grid-template-columns: 30px minmax(0, 1fr);
+  column-gap: 10px;
+  align-items: center;
+  padding: 10px 12px;
+  border-color: #cde1ea;
+  background: #ffffff;
+}
+
+.action-tile-grid button::before {
+  counter-increment: demo-step;
+  content: counter(demo-step);
+  width: 26px;
+  height: 26px;
+  display: grid;
+  place-items: center;
+  grid-row: span 2;
+  border-radius: 50%;
+  background: #e9f6fb;
+  color: var(--blue);
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.action-tile-grid button:first-child {
+  border-color: #0078a6;
+  background: linear-gradient(180deg, #f4fbff 0%, #ffffff 100%);
+}
+
+.action-tile-grid button:first-child::before {
+  background: var(--blue);
+  color: #fff;
+}
+
+.action-tile-grid button strong,
+.action-tile-grid button span {
+  min-width: 0;
+}
+
+.action-tile-grid button span {
+  margin-top: 1px;
+}
+
+.table-wrap {
+  max-width: 100%;
+}
+
+@media (max-width: 1380px) {
+  .overview-dashboard + .overview-dashboard {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .action-tile-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 980px) {
+  .overview-dashboard + .overview-dashboard,
+  .action-tile-grid {
+    grid-template-columns: 1fr;
+  }
+}
