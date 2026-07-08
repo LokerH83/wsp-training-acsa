@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>ACSA WSP / ATR Reporting Concept Demo</title>
   <link rel="icon" href="data:,">
-  <link rel="stylesheet" href="./styles.css?v=20260708-employee-bookings">
+  <link rel="stylesheet" href="./styles.css?v=20260708-employee-linked">
 </head>
 <body>
   <div class="app">
@@ -183,17 +183,21 @@
             </fieldset>
             <button class="primary" type="submit">Save Record</button>
           </form>
-          <section class="panel provider-panel">
-            <div class="panel-head"><h3>Find Provider / Course</h3></div>
-            <div class="filters provider-search">
-              <input id="providerSearch" placeholder="Provider search">
-              <select id="providerFilter"></select>
-              <input id="courseSearch" placeholder="Course search">
-              <select id="categoryFilter"><option value="All">All categories</option></select>
-            </div>
-            <div class="table-wrap"><table><thead><tr><th>Provider</th><th>Course</th><th>Category</th><th>Duration</th><th>Mode</th><th>Est. Cost</th><th>Evidence</th><th>Relevance</th><th>Action</th></tr></thead><tbody id="courseResults"></tbody></table></div>
+          <section class="panel table-panel employee-interventions-panel">
+            <div class="panel-head"><div><h3>Selected Employee Interventions</h3><p>Requested, planned, booked and achieved activity for the employee selected on the left.</p></div></div>
+            <div class="table-wrap"><table><thead><tr><th>Type</th><th>Course / Intervention</th><th>Provider</th><th>Period</th><th>Booking</th><th>Evidence</th><th>Status</th><th>Action</th></tr></thead><tbody id="trainingRows"></tbody></table></div>
           </section>
         </div>
+        <section class="panel provider-panel">
+          <div class="panel-head"><div><h3>Relevant Courses for Selected Employee</h3><p>Suggestions are prioritised from the employee profile context and existing intervention history.</p></div></div>
+          <div class="filters provider-search">
+            <input id="providerSearch" placeholder="Provider search">
+            <select id="providerFilter"></select>
+            <input id="courseSearch" placeholder="Course search">
+            <select id="categoryFilter"><option value="All">All categories</option></select>
+          </div>
+          <div class="table-wrap"><table><thead><tr><th>Provider</th><th>Course</th><th>Category</th><th>Duration</th><th>Mode</th><th>Est. Cost</th><th>Evidence</th><th>Relevance</th><th>Action</th></tr></thead><tbody id="courseResults"></tbody></table></div>
+        </section>
         <section class="panel booking-panel">
           <div class="panel-head">
             <div><h3>Book / Schedule Training</h3><p>Capture proposed booking details for demo planning visibility. No calendar invite is sent.</p></div>
@@ -221,7 +225,6 @@
           <div class="panel-head"><h3>Training Bookings</h3></div>
           <div class="table-wrap"><table><thead><tr><th>Booking Status</th><th>Employee / Group</th><th>Provider</th><th>Course / Intervention</th><th>Preferred Window</th><th>Training Date</th><th>Time</th><th>Delivery Mode</th><th>Venue / Link</th><th>Reminder Status</th><th>Evidence Required</th><th>ATR Status</th><th>Action</th></tr></thead><tbody id="bookingRows"></tbody></table></div>
         </section>
-        <section class="panel table-panel"><div class="panel-head"><h3>Training Records</h3></div><div class="table-wrap"><table><thead><tr><th>Type</th><th>Employee</th><th>Course</th><th>Provider</th><th>Period</th><th>Status</th></tr></thead><tbody id="trainingRows"></tbody></table></div></section>
       </section>
 
       <section id="people" class="view">
@@ -244,7 +247,7 @@
       </section>
     </main>
   </div>
-  <script src="./data/demo-snapshot.js?v=20260708-employee-bookings"></script>
-  <script src="./app.js?v=20260708-employee-bookings"></script>
+  <script src="./data/demo-snapshot.js?v=20260708-employee-linked"></script>
+  <script src="./app.js?v=20260708-employee-linked"></script>
 </body>
 </html>

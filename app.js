@@ -1,4 +1,4 @@
-const STORAGE_KEY = "acsa-sdf-demo-state-v7";
+const STORAGE_KEY = "acsa-sdf-demo-state-v8";
 const DEMO_DATA = window.ACSA_DEMO_DATA || { employees: [], providers: [], courses: [], requests: [], plans: [], actuals: [], bookings: [] };
 let state = loadState();
 let stagedRows = [];
@@ -438,8 +438,16 @@ function renderTrainingRows() {
     ...state.requests.filter(row => row.employeeNumber === selectedEmployeeNumber).map(row => ["Request", row]),
     ...state.plans.filter(row => row.employeeNumber === selectedEmployeeNumber).map(row => ["Plan", row]),
     ...state.actuals.filter(row => row.employeeNumber === selectedEmployeeNumber).map(row => ["ATR", row])
-  ];
-  document.getElementById("trainingRows").innerHTML = rows.slice(-12).reverse().map(([type,row]) => `<tr><td>${type}</td><td>${friendly(employee(row.employeeNumber).employeeName, "Demo employee")}</td><td>${friendly(row.course)}</td><td>${friendly(row.provider)}</td><td>${friendly(row.period, "Date to be confirmed")}</td><td>${friendly(row.status || row.evidenceStatus, "Clean")}</td></tr>`).join("") || `<tr><td colspan="6">No training records for the selected employee yet.</td></tr>`;
+  ].sort((a, b) => (a[1].createdAt || 0) - (b[1].createdAt || 0));
+  document.getElementById("trainingRows").innerHTML = rows.slice(-12).map(([type,row]) => {
+    const booking = state.bookings.find(item => item.employeeNumber === row.employeeNumber && item.provider === row.provider && item.course === row.course);
+    const bookingStatus = booking ? normalizeBookingStatus(booking.bookingStatus) : friendly(row.bookingStatus, type === "Plan" ? "Not booked" : "Not applicable");
+    const matchingCourse = courseFor(row.provider, row.course, state.courses);
+    const action = type === "Plan"
+      ? `<button class="table-action" data-book-plan="${row.id}">Book</button>`
+      : matchingCourse.id ? `<button class="table-action" data-use-course="${matchingCourse.id}">Select</button>` : "";
+    return `<tr><td>${type}</td><td>${friendly(row.course)}</td><td>${friendly(row.provider)}</td><td>${friendly(row.period, "Date to be confirmed")}</td><td>${bookingStatus}</td><td>${friendly(row.evidenceRequired || row.evidenceStatus, "Not confirmed")}</td><td>${friendly(row.status || row.reviewStatus, "Clean")}</td><td>${action}</td></tr>`;
+  }).join("") || `<tr><td colspan="8">No interventions for the selected employee yet. Select a relevant course below or save a new record on the left.</td></tr>`;
 }
 
 function updateInheritedFields() {
@@ -465,13 +473,46 @@ function hydrateProviderFilters() {
   document.getElementById("categoryFilter").innerHTML = `<option value="All">All categories</option>${categories.map(c => `<option>${c}</option>`).join("")}`;
 }
 
+function relevantCategoriesForEmployee(person) {
+  const text = [person.department, person.division, person.regionCluster, person.jobTitle].join(" ").toLowerCase();
+  if (text.includes("passenger") || text.includes("customer")) return ["Service", "Operations", "Safety", "Digital"];
+  if (text.includes("airside") || text.includes("airport") || text.includes("operations")) return ["Operations", "Safety", "Technical", "Service"];
+  if (text.includes("corporate") || text.includes("finance") || text.includes("admin")) return ["Digital", "Leadership", "Service"];
+  if (text.includes("human") || text.includes("hr") || text.includes("people")) return ["Leadership", "Digital", "Service"];
+  if (text.includes("technical") || text.includes("maintenance") || text.includes("rescue") || text.includes("fire")) return ["Technical", "Safety", "Operations"];
+  return ["Operations", "Safety", "Service", "Digital", "Leadership", "Technical"];
+}
+
+function employeeCourseHistorySet(employeeNumber) {
+  return new Set([
+    ...state.requests.filter(row => row.employeeNumber === employeeNumber).map(row => `${row.provider}|${row.course}`),
+    ...state.plans.filter(row => row.employeeNumber === employeeNumber).map(row => `${row.provider}|${row.course}`),
+    ...state.actuals.filter(row => row.employeeNumber === employeeNumber).map(row => `${row.provider}|${row.course}`)
+  ]);
+}
+
+function courseRelevanceForEmployee(course, person, history) {
+  if (history.has(`${course.provider}|${course.course}`)) return { score: 3, label: "Already linked" };
+  const categories = relevantCategoriesForEmployee(person);
+  if (categories[0] === course.category) return { score: 2, label: "Best match" };
+  if (categories.includes(course.category)) return { score: 1, label: "Profile match" };
+  return { score: 0, label: "Catalogue option" };
+}
+
 function renderCourseResults() {
   const providerText = document.getElementById("providerSearch").value.toLowerCase();
   const courseText = document.getElementById("courseSearch").value.toLowerCase();
   const provider = document.getElementById("providerFilter").value;
   const category = document.getElementById("categoryFilter").value;
-  const rows = state.courses.filter(c => (provider === "All" || c.provider === provider) && (category === "All" || c.category === category) && c.provider.toLowerCase().includes(providerText) && c.course.toLowerCase().includes(courseText));
-  document.getElementById("courseResults").innerHTML = rows.map(c => `<tr><td>${c.provider}</td><td>${c.course}</td><td>${c.category}</td><td>${c.duration}</td><td>${c.deliveryMode}</td><td>${currency.format(c.estimatedCost)}</td><td>${c.evidenceRequired}</td><td>${c.setaBbbeeRelevance}</td><td><button data-use-course="${c.id}">Select</button></td></tr>`).join("");
+  const hasManualFilter = providerText || courseText || provider !== "All" || category !== "All";
+  const person = employee(selectedEmployeeNumber);
+  const history = employeeCourseHistorySet(selectedEmployeeNumber);
+  const rows = state.courses
+    .map(course => ({ ...course, relevance: courseRelevanceForEmployee(course, person, history) }))
+    .filter(c => (provider === "All" || c.provider === provider) && (category === "All" || c.category === category) && c.provider.toLowerCase().includes(providerText) && c.course.toLowerCase().includes(courseText))
+    .filter(c => hasManualFilter || c.relevance.score > 0)
+    .sort((a, b) => b.relevance.score - a.relevance.score || a.provider.localeCompare(b.provider) || a.course.localeCompare(b.course));
+  document.getElementById("courseResults").innerHTML = rows.map(c => `<tr class="${c.relevance.score > 0 ? "course-relevant" : ""}"><td>${c.provider}</td><td>${c.course}</td><td>${c.category}</td><td>${c.duration}</td><td>${c.deliveryMode}</td><td>${currency.format(c.estimatedCost)}</td><td>${c.evidenceRequired}</td><td><span class="relevance-pill">${c.relevance.label}</span></td><td><button data-use-course="${c.id}">Select</button></td></tr>`).join("") || `<tr><td colspan="9">No courses match the selected employee context and filters.</td></tr>`;
 }
 
 function renderPeople() {
@@ -802,6 +843,7 @@ document.addEventListener("click", event => {
   const courseButton = event.target.closest("[data-use-course]");
   if (courseButton) {
     const course = state.courses.find(c => c.id === courseButton.dataset.useCourse);
+    if (!course) return;
     const form = document.getElementById("trainingForm");
     form.provider.value = course.provider;
     form.course.value = course.course;
@@ -815,6 +857,25 @@ document.addEventListener("click", event => {
     renderBookingRows();
     renderTrainingRows();
     setView("training");
+  }
+  const bookPlanButton = event.target.closest("[data-book-plan]");
+  if (bookPlanButton) {
+    const plan = state.plans.find(item => item.id === bookPlanButton.dataset.bookPlan);
+    if (plan) {
+      selectedEmployeeNumber = plan.employeeNumber;
+      const trainingForm = document.getElementById("trainingForm");
+      trainingForm.employeeNumber.value = selectedEmployeeNumber;
+      trainingForm.provider.value = plan.provider;
+      trainingForm.course.value = plan.course;
+      updateInheritedFields();
+      renderBookingForm();
+      const bookingForm = document.getElementById("bookingForm");
+      bookingForm.planId.value = plan.id;
+      updateBookingFields();
+      renderBookingRows();
+      renderTrainingRows();
+      document.getElementById("bookingForm").scrollIntoView({ behavior: "smooth", block: "start" });
+    }
   }
   const completeButton = event.target.closest("[data-booking-complete]");
   if (completeButton) {
@@ -856,6 +917,7 @@ document.getElementById("trainingForm").addEventListener("change", event => {
     renderBookingForm();
     renderBookingRows();
     renderTrainingRows();
+    renderCourseResults();
   }
   if (["provider","course"].includes(event.target.name)) updateBookingFields();
   if (["preferredWindow","bookingStatus","evidenceRequired"].includes(event.target.name)) event.target.dataset.touched = "true";
@@ -871,6 +933,7 @@ document.getElementById("bookingForm").addEventListener("change", event => {
     renderBookingForm();
     renderBookingRows();
     renderTrainingRows();
+    renderCourseResults();
   }
 });
 document.getElementById("trainingForm").addEventListener("submit", event => {
@@ -897,7 +960,8 @@ document.getElementById("trainingForm").addEventListener("submit", event => {
     endTime: data.endTime,
     venueLink: data.venueLink,
     reminderStatus: data.reminderStatus,
-    bookingNotes: data.bookingNotes
+    bookingNotes: data.bookingNotes,
+    createdAt: Date.now()
   };
   if (data.recordType === "request") state.requests.push(record);
   if (data.recordType === "plan") state.plans.push(record);
@@ -923,7 +987,8 @@ document.getElementById("trainingForm").addEventListener("submit", event => {
       evidenceRequired: data.evidenceRequired,
       bookingNotes: data.bookingNotes,
       bookingStatus: data.bookingStatus,
-      status: data.bookingStatus
+      status: data.bookingStatus,
+      createdAt: Date.now()
     };
     state.bookings.push(normalizeBookingRecord(booking));
   }
@@ -953,7 +1018,8 @@ document.getElementById("bookingForm").addEventListener("submit", event => {
       preferredWindow: data.preferredWindow,
       bookingStatus: data.bookingStatus,
       deliveryMode: data.deliveryMode,
-      evidenceRequired: data.evidenceRequired
+      evidenceRequired: data.evidenceRequired,
+      createdAt: Date.now()
     };
     state.plans.push(plan);
   }
@@ -975,7 +1041,8 @@ document.getElementById("bookingForm").addEventListener("submit", event => {
     evidenceRequired: data.evidenceRequired,
     bookingNotes: data.bookingNotes,
     bookingStatus: data.bookingStatus,
-    status: data.bookingStatus
+    status: data.bookingStatus,
+    createdAt: Date.now()
   };
   state.bookings.push(normalizeBookingRecord(booking));
   if (plan.id) plan.status = "Booked";
