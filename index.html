@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>ACSA WSP / ATR Reporting Concept Demo</title>
   <link rel="icon" href="data:,">
-  <link rel="stylesheet" href="./styles.css?v=20260708-employee-linked">
+  <link rel="stylesheet" href="./styles.css?v=20260708-period-dropdown">
 </head>
 <body>
   <div class="app">
@@ -161,7 +161,7 @@
             <div class="inherited-fields"><strong>Employee profile context</strong><div id="inheritedFields" class="profile-context-grid">Select an employee.</div></div>
             <label>Provider<select name="provider" required></select></label>
             <label>Course<select name="course" required></select></label>
-            <label>Quarter / Date<input name="period" placeholder="Date to be confirmed"></label>
+            <label>Quarter / Period<select name="period"><option>Date to be confirmed</option><option>Q1</option><option>Q2</option><option>Q3</option><option>Q4</option><option>This month</option><option>Next month</option></select></label>
             <fieldset class="booking-detail-fields planning-options">
               <legend>Planning / Booking Options</legend>
               <label>Preferred Training Window<select name="preferredWindow"><option>Date to be confirmed</option><option>This month</option><option>Next month</option><option>Q1</option><option>Q2</option><option>Q3</option><option>Q4</option></select></label>
@@ -247,7 +247,7 @@
       </section>
     </main>
   </div>
-  <script src="./data/demo-snapshot.js?v=20260708-employee-linked"></script>
-  <script src="./app.js?v=20260708-employee-linked"></script>
+  <script src="./data/demo-snapshot.js?v=20260708-period-dropdown"></script>
+  <script src="./app.js?v=20260708-period-dropdown"></script>
 </body>
 </html>
