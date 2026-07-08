@@ -319,6 +319,19 @@ function renderOverview() {
 function renderWorkbook() {
   const hasRows = stagedRows.length > 0;
   const isApplied = workbookStageState === "applied";
+  const currentCounts = {
+    requested: state.requests.length,
+    planned: state.plans.length,
+    achieved: state.actuals.length,
+    total: state.requests.length + state.plans.length + state.actuals.length
+  };
+  const stagedCounts = hasRows ? stagedRows.reduce((acc, row) => {
+    if (row["Requested / Suggested"] === "Yes") acc.requested += 1;
+    if (row["Planned WSP"] === "Yes") acc.planned += 1;
+    if (row["Achieved ATR"] === "Yes") acc.achieved += 1;
+    return acc;
+  }, { requested: 0, planned: 0, achieved: 0 }) : null;
+  if (stagedCounts) stagedCounts.total = stagedCounts.requested + stagedCounts.planned + stagedCounts.achieved;
   document.getElementById("workbookSteps").innerHTML = [
     ["1", "Load workbook", hasRows || isApplied ? "complete" : "active"],
     ["2", "Review preview", hasRows && !isApplied ? "active" : isApplied ? "complete" : ""],
@@ -326,7 +339,12 @@ function renderWorkbook() {
   ].map(([number, label, status]) => `<div class="workbook-step ${status}"><span>${number}</span><strong>${label}</strong></div>`).join("");
   document.getElementById("detectedColumns").innerHTML = (stagedRows[0] ? Object.keys(stagedRows[0]) : requiredColumns).map(col => `<div><span>${col}</span><strong>${requiredColumns.includes(col) ? "Mapped" : "Extra"}</strong></div>`).join("");
   document.getElementById("fieldChecklist").innerHTML = requiredColumns.map(col => `<div class="check-row complete"><span>OK</span><div><strong>${col}</strong><small>mapping ready</small></div></div>`).join("");
-  document.getElementById("importImpact").innerHTML = `<div class="issue good"><strong>Rows staged</strong><span>${stagedRows.length || "24-row sample workbook ready"} rows available for staging.</span></div><div class="issue good"><strong>Implementation note</strong><span>A production version would validate and write approved rows through the secured API and Dataverse layer.</span></div>`;
+  document.getElementById("importImpact").innerHTML = [
+    `<div class="issue good"><strong>Active dashboard source</strong><span>${isApplied ? "Loaded workbook" : "Baseline sample"}: ${currentCounts.total.toLocaleString("en-ZA")} included report records (${currentCounts.requested} requested, ${currentCounts.planned} planned, ${currentCounts.achieved} achieved).</span></div>`,
+    hasRows && !isApplied
+      ? `<div class="issue warn"><strong>Workbook staged for refresh</strong><span>${stagedRows.length.toLocaleString("en-ZA")} workbook rows will refresh the dashboard to ${stagedCounts.total.toLocaleString("en-ZA")} included report records (${stagedCounts.requested} requested, ${stagedCounts.planned} planned, ${stagedCounts.achieved} achieved).</span></div>`
+      : `<div class="issue good"><strong>Workbook loader</strong><span>Load the sample workbook or upload CSV to preview new rows before applying them to the dashboard.</span></div>`
+  ].join("");
   document.getElementById("importPreview").innerHTML = (stagedRows.length ? stagedRows : sampleWorkbookRows()).slice(0, 8).map(row => `<tr><td>${row["Employee Name"]}</td><td>${row["Course / Intervention"]}</td><td>${row["Requested / Suggested"]}</td><td>${row["Planned WSP"]}</td><td>${row["Achieved ATR"]}</td><td>${row["Review Status"]}</td></tr>`).join("");
   ["applyStaging", "applyStagingPreview"].forEach(id => {
     const button = document.getElementById(id);

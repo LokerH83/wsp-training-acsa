@@ -512,6 +512,14 @@ select, input {
   margin-bottom: 12px;
 }
 .quick-actions { display: grid; gap: 10px; }
+.quick-actions button:disabled,
+.panel-head button:disabled {
+  cursor: not-allowed;
+  color: #7b8794;
+  background: #eef3f6;
+  border-color: #d8e3e8;
+  box-shadow: none;
+}
 .workbook-steps {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
