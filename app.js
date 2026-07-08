@@ -1,4 +1,4 @@
-const STORAGE_KEY = "acsa-sdf-demo-state-v6";
+const STORAGE_KEY = "acsa-sdf-demo-state-v7";
 const DEMO_DATA = window.ACSA_DEMO_DATA || { employees: [], providers: [], courses: [], requests: [], plans: [], actuals: [], bookings: [] };
 let state = loadState();
 let stagedRows = [];
@@ -367,25 +367,39 @@ function renderTraining() {
   renderCourseResults();
   renderBookingForm();
   renderBookingRows();
-  document.getElementById("trainingRows").innerHTML = [...state.requests.map(r => ["Request", r]), ...state.plans.map(r => ["Plan", r]), ...state.actuals.map(r => ["ATR", r])].slice(-12).reverse().map(([type,row]) => `<tr><td>${type}</td><td>${friendly(employee(row.employeeNumber).employeeName, "Demo employee")}</td><td>${friendly(row.course)}</td><td>${friendly(row.provider)}</td><td>${friendly(row.period, "Date to be confirmed")}</td><td>${friendly(row.status || row.evidenceStatus, "Clean")}</td></tr>`).join("");
+  renderTrainingRows();
 }
 
 function renderBookingForm() {
   const form = document.getElementById("bookingForm");
-  const selectedPlanId = form.planId.value || state.plans[0]?.id || "";
-  form.planId.innerHTML = state.plans.map(plan => `<option value="${plan.id}">${employee(plan.employeeNumber).employeeName || "Demo cohort"} - ${plan.course} (${plan.status || "Clean"})</option>`).join("");
-  form.employeeNumber.innerHTML = `<option value="COHORT:Airport Operations Supervisors">Airport Operations Supervisors cohort</option>${state.employees.map(e => `<option value="${e.employeeNumber}">${e.employeeName} (${e.employeeNumber})</option>`).join("")}`;
-  if (selectedPlanId) form.planId.value = selectedPlanId;
+  const trainingForm = document.getElementById("trainingForm");
+  const selectedPlanId = form.planId.value;
+  const personPlans = state.plans.filter(plan => plan.employeeNumber === selectedEmployeeNumber);
+  form.planId.innerHTML = `<option value="NEW">New booking from selected course</option>${personPlans.map(plan => `<option value="${plan.id}">${plan.course} (${plan.status || "Clean"})</option>`).join("")}`;
+  form.employeeNumber.innerHTML = state.employees.map(e => `<option value="${e.employeeNumber}">${e.employeeName} (${e.employeeNumber})</option>`).join("");
+  form.employeeNumber.value = selectedEmployeeNumber;
+  if (selectedPlanId && [...form.planId.options].some(option => option.value === selectedPlanId)) form.planId.value = selectedPlanId;
+  if (form.planId.value === "NEW") {
+    form.provider.value = trainingForm.provider.value || state.providers[0]?.provider || "";
+    form.course.value = trainingForm.course.value || state.courses[0]?.course || "";
+  }
   updateBookingFields();
 }
 
 function updateBookingFields() {
   const form = document.getElementById("bookingForm");
-  const plan = state.plans.find(item => item.id === form.planId.value) || state.plans[0] || {};
+  const trainingForm = document.getElementById("trainingForm");
+  const plan = form.planId.value === "NEW" ? {
+    employeeNumber: selectedEmployeeNumber,
+    provider: trainingForm.provider.value,
+    course: trainingForm.course.value,
+    preferredWindow: trainingForm.preferredWindow.value,
+    bookingStatus: trainingForm.bookingStatus.value
+  } : state.plans.find(item => item.id === form.planId.value) || {};
   const course = courseFor(plan.provider, plan.course, state.courses);
   form.provider.value = plan.provider || "";
   form.course.value = plan.course || "";
-  if (plan.employeeNumber && (!form.employeeNumber.value || form.employeeNumber.value.startsWith("COHORT:"))) form.employeeNumber.value = plan.employeeNumber;
+  form.employeeNumber.value = plan.employeeNumber || selectedEmployeeNumber;
   if (!form.preferredWindow.dataset.touched || !form.preferredWindow.value) form.preferredWindow.value = plan.preferredWindow || "Next month";
   if (!form.bookingStatus.dataset.touched || !form.bookingStatus.value || form.bookingStatus.value === "Not booked") form.bookingStatus.value = normalizeBookingStatus(plan.bookingStatus || "Proposed");
   if (!form.deliveryMode.dataset.touched) form.deliveryMode.value = plan.deliveryMode || course.deliveryMode || form.deliveryMode.value;
@@ -408,14 +422,24 @@ function updateTrainingBookingDefaults(force = false) {
 }
 
 function renderBookingRows() {
-  document.getElementById("bookingRows").innerHTML = (state.bookings || []).map(booking => {
+  const rows = (state.bookings || []).filter(booking => booking.employeeNumber === selectedEmployeeNumber);
+  document.getElementById("bookingRows").innerHTML = rows.map(booking => {
     const person = employee(booking.employeeNumber);
     const name = booking.groupName || person.employeeName || "Demo cohort";
     const atr = state.actuals.some(row => row.employeeNumber === booking.employeeNumber && row.provider === booking.provider && row.course === booking.course) ? "ATR captured" : "Pending ATR";
     const dateOrWindow = booking.date || "Date to be confirmed";
     const time = booking.startTime || booking.endTime ? `${friendly(booking.startTime, "09:00")} - ${friendly(booking.endTime, "12:00")}` : "Not specified";
     return `<tr><td>${normalizeBookingStatus(booking.bookingStatus)}</td><td>${friendly(name, "Demo cohort")}</td><td>${friendly(booking.provider)}</td><td>${friendly(booking.course)}</td><td>${friendly(booking.preferredWindow, "Date to be confirmed")}</td><td>${friendly(dateOrWindow, "Date to be confirmed")}</td><td>${time}</td><td>${friendly(booking.deliveryMode)}</td><td>${friendly(booking.location || booking.venueLink)}</td><td>${friendly(booking.reminderStatus, "Not sent")}</td><td>${friendly(booking.evidenceRequired, "Not confirmed")}</td><td>${atr}</td><td><button class="table-action" data-booking-complete="${booking.id}">Mark Completed</button> <button class="table-action" data-booking-atr="${booking.id}">Record ATR</button> <button class="table-action" data-booking-missed="${booking.id}">Mark Missed</button></td></tr>`;
-  }).join("");
+  }).join("") || `<tr><td colspan="13">No bookings for the selected employee yet.</td></tr>`;
+}
+
+function renderTrainingRows() {
+  const rows = [
+    ...state.requests.filter(row => row.employeeNumber === selectedEmployeeNumber).map(row => ["Request", row]),
+    ...state.plans.filter(row => row.employeeNumber === selectedEmployeeNumber).map(row => ["Plan", row]),
+    ...state.actuals.filter(row => row.employeeNumber === selectedEmployeeNumber).map(row => ["ATR", row])
+  ];
+  document.getElementById("trainingRows").innerHTML = rows.slice(-12).reverse().map(([type,row]) => `<tr><td>${type}</td><td>${friendly(employee(row.employeeNumber).employeeName, "Demo employee")}</td><td>${friendly(row.course)}</td><td>${friendly(row.provider)}</td><td>${friendly(row.period, "Date to be confirmed")}</td><td>${friendly(row.status || row.evidenceStatus, "Clean")}</td></tr>`).join("") || `<tr><td colspan="6">No training records for the selected employee yet.</td></tr>`;
 }
 
 function updateInheritedFields() {
@@ -787,6 +811,9 @@ document.addEventListener("click", event => {
     form.deliveryMode.dataset.touched = "true";
     form.evidenceRequired.dataset.touched = "true";
     updateTrainingBookingDefaults();
+    renderBookingForm();
+    renderBookingRows();
+    renderTrainingRows();
     setView("training");
   }
   const completeButton = event.target.closest("[data-booking-complete]");
@@ -824,13 +851,27 @@ document.addEventListener("click", event => {
   if (person) { selectedEmployeeNumber = person.dataset.person; renderPeople(); }
 });
 document.getElementById("trainingForm").addEventListener("change", event => {
-  if (event.target.name === "employeeNumber") updateInheritedFields();
+  if (event.target.name === "employeeNumber") {
+    updateInheritedFields();
+    renderBookingForm();
+    renderBookingRows();
+    renderTrainingRows();
+  }
+  if (["provider","course"].includes(event.target.name)) updateBookingFields();
   if (["preferredWindow","bookingStatus","evidenceRequired"].includes(event.target.name)) event.target.dataset.touched = "true";
   if (event.target.name === "recordType") updateTrainingBookingDefaults();
 });
 document.getElementById("bookingForm").addEventListener("change", event => {
   if (["preferredWindow","bookingStatus","deliveryMode","evidenceRequired"].includes(event.target.name)) event.target.dataset.touched = "true";
   if (event.target.name === "planId") updateBookingFields();
+  if (event.target.name === "employeeNumber") {
+    selectedEmployeeNumber = event.target.value;
+    document.getElementById("trainingForm").employeeNumber.value = selectedEmployeeNumber;
+    updateInheritedFields();
+    renderBookingForm();
+    renderBookingRows();
+    renderTrainingRows();
+  }
 });
 document.getElementById("trainingForm").addEventListener("submit", event => {
   event.preventDefault();
@@ -898,13 +939,29 @@ document.getElementById("trainingForm").addEventListener("submit", event => {
 document.getElementById("bookingForm").addEventListener("submit", event => {
   event.preventDefault();
   const data = Object.fromEntries(new FormData(event.currentTarget));
-  const plan = state.plans.find(item => item.id === data.planId) || {};
-  const isGroup = data.employeeNumber.startsWith("COHORT:");
+  let plan = state.plans.find(item => item.id === data.planId) || {};
+  if (!plan.id) {
+    plan = {
+      id: crypto.randomUUID(),
+      employeeNumber: data.employeeNumber,
+      provider: data.provider,
+      course: data.course,
+      period: data.date || data.preferredWindow || "Date to be confirmed",
+      cost: Number(courseFor(data.provider, data.course, state.courses).estimatedCost || 0),
+      hours: 8,
+      status: "Booked",
+      preferredWindow: data.preferredWindow,
+      bookingStatus: data.bookingStatus,
+      deliveryMode: data.deliveryMode,
+      evidenceRequired: data.evidenceRequired
+    };
+    state.plans.push(plan);
+  }
   const booking = {
     id: crypto.randomUUID(),
-    planId: data.planId,
-    employeeNumber: isGroup ? plan.employeeNumber : data.employeeNumber,
-    groupName: isGroup ? data.employeeNumber.replace("COHORT:", "") : "",
+    planId: plan.id,
+    employeeNumber: data.employeeNumber,
+    groupName: "",
     provider: data.provider,
     course: data.course,
     period: data.date,
@@ -923,7 +980,8 @@ document.getElementById("bookingForm").addEventListener("submit", event => {
   state.bookings.push(normalizeBookingRecord(booking));
   if (plan.id) plan.status = "Booked";
   saveState();
-  document.getElementById("bookingMessage").textContent = "Demo booking details captured for planning visibility. No calendar invite is sent.";
+  selectedEmployeeNumber = data.employeeNumber;
+  document.getElementById("bookingMessage").textContent = `Booking saved for ${friendly(employee(data.employeeNumber).employeeName, "selected employee")}.`;
   renderAll();
 });
 ["providerSearch","providerFilter","courseSearch","categoryFilter"].forEach(id => {
