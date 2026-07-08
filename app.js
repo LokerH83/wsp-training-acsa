@@ -1,4 +1,4 @@
-const STORAGE_KEY = "acsa-sdf-demo-state-v5";
+const STORAGE_KEY = "acsa-sdf-demo-state-v6";
 const DEMO_DATA = window.ACSA_DEMO_DATA || { employees: [], providers: [], courses: [], requests: [], plans: [], actuals: [], bookings: [] };
 let state = loadState();
 let stagedRows = [];
@@ -723,6 +723,10 @@ function parseCsv(text) {
 function applyWorkbookRows() {
   if (!stagedRows.length || workbookStageState === "applied") return;
   const rows = stagedRows.length ? stagedRows : sampleWorkbookRows();
+  state.requests = [];
+  state.plans = [];
+  state.actuals = [];
+  state.bookings = [];
   rows.forEach((row, i) => {
     const base = { id: `import-${Date.now()}-${i}`, employeeNumber: row["Employee Number"], provider: row.Provider, course: row["Course / Intervention"], period: row["Quarter / Date"], cost: Number(row["Planned Cost"] || 0), status: row["Review Status"] };
     if (row["Requested / Suggested"] === "Yes") state.requests.push({ ...base, id: `${base.id}-req` });
@@ -732,7 +736,8 @@ function applyWorkbookRows() {
   workbookStageState = "applied";
   saveState();
   renderAll();
-  document.getElementById("workbookMessage").textContent = "Workbook rows applied to staging. Continue to Manage Training or Reports to review the loaded records.";
+  setView("overview");
+  document.getElementById("workbookMessage").textContent = "Workbook rows applied to staging. The Overview dashboard now reflects the loaded workbook.";
 }
 
 function renderAll() {
