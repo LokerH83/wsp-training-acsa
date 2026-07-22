@@ -18,6 +18,29 @@ The public demo is a static GitHub Pages app using synthetic/demo data only. It 
 - People Profiles page with searchable profile-linked training history
 - Reports page with filters, report coverage/date range, copyable summaries and Excel-ready filtered CSV export
 - Reset Demo controls to restore the baseline demo state
+- Client-configurable white-label branding through `client-config.js`
+- Submission-readiness scoring and an actionable Data Quality Centre
+- Submission Workspace with owned actions, due dates, status, evidence references and management sign-off
+- Downloadable action-register CSV and print-ready Submission Readiness Pack
+
+## White-label configuration
+
+Edit `client-config.js` to change the client name, app name, logo, colours, reporting cycle and privacy wording. The app reads these settings at startup, so a client deployment does not require changes to the application logic.
+
+## Submission Workspace
+
+Open **Submission Workspace** from the left navigation or from a Data Quality Centre finding. The workspace turns system-generated findings into a controlled action register:
+
+1. Filter findings by category, severity or status.
+2. Assign an owner and due date.
+3. Record progress as `Open`, `In progress`, `Resolved` or `Accepted exception`.
+4. Add an evidence or reference note.
+5. Record the management decision and approver.
+6. Export the action register to CSV or download the print-ready HTML Readiness Pack.
+
+The readiness gate is deliberately conservative: unresolved high-priority findings produce `HOLD`; unresolved medium/low findings produce `CONDITIONAL`; a fully closed register produces `READY`.
+
+This remains a browser-local concept demo. Actions and sign-off are stored in `localStorage`; they are not yet written to Dataverse, SharePoint or an official submission system.
 
 Recent polish included:
 
@@ -39,6 +62,29 @@ Recent app commits:
 - `844b2a6` - Add filtered report export
 - `450dbfa` - Polish final ACSA demo wording
 - `c567380` - Remove proposal panel from live dashboard
+
+
+
+## Option 2: Excel + Power BI Demo
+
+The Option 2 planning/build pack lives in:
+
+`Excel Demo/`
+
+It includes:
+
+- generated Excel template
+- sample data
+- Python scripts
+- Office Scripts
+- VBA macro modules
+- Power Query M scripts
+- DAX measures
+- Power BI model design
+- dashboard page design
+- refresh/sharing plan
+- testing checklist
+- client handover guide
 
 ## Start Here For The ACSA Demo
 
@@ -79,6 +125,7 @@ Use `demo/README.md` as the clean demo pack. It contains the live links, Power A
 - `docs/product-planning/POWER_BI_REPORTING_DESIGN.md`
 - `docs/product-planning/POWER_APPS_PRODUCTION_ARCHITECTURE.md`
 - `docs/product-planning/PILOT_RUN_PLAN.md`
+- `docs/product-planning/SUBMISSION_WORKSPACE.md`
 
 ## Run Locally
 

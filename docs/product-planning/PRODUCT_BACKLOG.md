@@ -7,6 +7,8 @@
 - [Done] Filtered CSV export
 - [Done] Copy filtered table
 - [Done] Data dictionary
+- [Done] Browser-local submission action register
+- [Done] Readiness Pack and action-register export
 - [Not Started] Client workbook templates
 - [Not Started] Power BI dashboard design
 - [Partial] Production data model
@@ -25,7 +27,7 @@
 
 - [Future Phase] Evidence upload
 - [Future Phase] Calendar/reminder integration
-- [Future Phase] Approval workflow
+- [Partial] Approval workflow (browser-local sign-off complete; production workflow pending)
 - [Future Phase] Export metadata rows
 - [Future Phase] Power BI drill-through pages
 

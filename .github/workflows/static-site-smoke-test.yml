@@ -15,6 +15,9 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
+      - name: Run application smoke checks
+        run: node --check app.js && node scripts/static-smoke.mjs
+
       - name: Start local static site
         run: |
           python3 -m http.server 8092 &

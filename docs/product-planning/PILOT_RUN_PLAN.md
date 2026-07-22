@@ -50,3 +50,13 @@ Run one controlled pilot with client-safe workbook data to prove the reporting w
 - Required workbook changes
 - Reporting design changes
 - Commercial recommendation
+# Submission Workspace pilot checks
+
+- [ ] Open every Data Quality Centre category in the Submission Workspace.
+- [ ] Assign at least one finding to an owner and set a due date.
+- [ ] Move one finding through `Open`, `In progress` and `Resolved`.
+- [ ] Record an evidence/reference note and confirm it persists after refresh.
+- [ ] Confirm unresolved high-priority findings produce a `HOLD` gate.
+- [ ] Export the action register and open the CSV in Excel.
+- [ ] Download the Readiness Pack and verify the action register and sign-off values.
+- [ ] Record a management sign-off decision and confirm it persists after refresh.

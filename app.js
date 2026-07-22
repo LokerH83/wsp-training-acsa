@@ -1,10 +1,12 @@
 const STORAGE_KEY = "acsa-sdf-demo-state-v8";
 const DEMO_DATA = window.ACSA_DEMO_DATA || { employees: [], providers: [], courses: [], requests: [], plans: [], actuals: [], bookings: [] };
+const CLIENT_CONFIG = window.WSP_CLIENT_CONFIG || {};
 let state = loadState();
 let stagedRows = [];
 let selectedEmployeeNumber = state.employees[0]?.employeeNumber || "";
 let reportFilterState = {};
 let overviewFilterState = { quarter: "All", provider: "All" };
+let submissionFilterState = { category: "All", severity: "All", status: "Open actions" };
 let workbookStageState = "empty";
 
 const currency = new Intl.NumberFormat("en-ZA", { style: "currency", currency: "ZAR", maximumFractionDigits: 0 });
@@ -21,6 +23,14 @@ const reportColumns = [
   ["disability", "Disability"], ["requested", "Requested / Suggested"], ["planned", "Planned WSP"], ["achieved", "Achieved ATR"],
   ["requestedNotPlanned", "Requested Not Planned"], ["plannedNotAchieved", "Planned Not Achieved"], ["achievedNotPlanned", "Achieved Not Planned"],
   ["completion", "Completion %"], ["reviewItems", "Review Items"], ["status", "Status"], ["bookingStatus", "Booking Status"]
+];
+const qualityCategoryDefinitions = [
+  { label: "Employee master data", note: "profiles with missing or unconfirmed reporting fields", view: "people" },
+  { label: "Duplicate employee numbers", note: "duplicate identifiers detected", view: "people" },
+  { label: "Incomplete interventions", note: "records missing employee, course, provider or period", view: "training" },
+  { label: "Invalid costs", note: "planned or actual costs needing correction", view: "reports" },
+  { label: "Evidence gaps", note: "achieved records without confirmed evidence", view: "training" },
+  { label: "WSP / ATR reconciliation", note: "records outside the requested to planned to achieved chain", view: "reports" }
 ];
 
 function cloneData() {
@@ -48,7 +58,9 @@ function initialiseState(data) {
     plans: data.plans || [],
     actuals: data.actuals || [],
     bookings: [],
-    reportRows: []
+    reportRows: [],
+    reviewActions: data.reviewActions || {},
+    submissionSignoff: data.submissionSignoff || { decision: "Not reviewed", approver: "", decisionDate: "", notes: "" }
   };
   next.bookings = (data.bookings || []).map(booking => normalizeBookingRecord(booking, next.courses));
   next.reportRows = buildRequestedPlannedAchievedReport(next);
@@ -93,6 +105,113 @@ function escapeHtml(value) {
     '"': "&quot;",
     "'": "&#39;"
   }[char]));
+}
+
+function applyClientBranding() {
+  const config = activeClientConfig();
+  document.documentElement.style.setProperty("--navy", config.primaryColor);
+  document.documentElement.style.setProperty("--blue", config.secondaryColor);
+  document.documentElement.style.setProperty("--accent", config.accentColor);
+  document.title = `${config.clientName} ${config.appName}`;
+  const text = {
+    clientPreparedFor: config.preparedFor, clientTagline: config.tagline,
+    appTitle: `${config.clientName} ${config.appName}`,
+    appSubtitle: `${config.financialYear} reporting cycle · Synthetic data only · Not official SETA or B-BBEE output.`,
+    environmentLabel: config.environmentLabel, privacyNotice: config.privacyNotice,
+    heroTitle: `${config.clientName} ${config.appName}`
+  };
+  Object.entries(text).forEach(([id, value]) => { const node = document.getElementById(id); if (node) node.textContent = value; });
+  const logo = document.getElementById("clientLogo");
+  if (logo && config.logo) { logo.src = config.logo; logo.alt = config.logoAlt; }
+}
+
+function activeClientConfig() {
+  return {
+    clientName: "Client", appName: "WSP / ATR Reporting", preparedFor: "Prepared for Client",
+    tagline: "Workforce Skills Planning", logo: "", logoAlt: "Client logo",
+    primaryColor: "#003f5c", secondaryColor: "#006d8f", accentColor: "#f5a400",
+    financialYear: "Current cycle", environmentLabel: "Demo data only",
+    privacyNotice: "This environment contains synthetic records only.", ...CLIENT_CONFIG
+  };
+}
+
+function issueId(...parts) {
+  let hash = 2166136261;
+  for (const character of parts.join("|").toLowerCase()) {
+    hash ^= character.charCodeAt(0);
+    hash = Math.imul(hash, 16777619);
+  }
+  return `issue-${(hash >>> 0).toString(36)}`;
+}
+
+function dataQualityIssues(source = state) {
+  const issues = [];
+  const add = (category, severity, title, location, detail, recommendation, view) => issues.push({
+    id: issueId(category, title, location), category, severity, title, location, detail, recommendation, view
+  });
+  const profileFields = ["employeeNumber", "employeeName", "division", "department", "sexGender", "race", "ageBand", "disability"];
+  source.employees.forEach((person, index) => {
+    const missing = profileFields.filter(field => !person[field] || String(person[field]).includes("Confirmation Required"));
+    if (missing.length) add("Employee master data", missing.includes("employeeNumber") ? "High" : "Medium", "Complete employee reporting fields", `Employee ${person.employeeNumber || index + 1}: ${person.employeeName || "Unnamed profile"}`, `Missing or unconfirmed: ${missing.join(", ")}.`, "Confirm the source value and update the employee master before reporting.", "people");
+  });
+  const employeeGroups = new Map();
+  source.employees.forEach((person, index) => {
+    const key = String(person.employeeNumber || "").trim().toLowerCase();
+    if (!key) return;
+    if (!employeeGroups.has(key)) employeeGroups.set(key, []);
+    employeeGroups.get(key).push({ person, index });
+  });
+  employeeGroups.forEach((matches, key) => {
+    if (matches.length > 1) add("Duplicate employee numbers", "High", "Resolve duplicate employee identifier", `Employee number ${key}`, `${matches.length} profiles use the same employee number.`, "Confirm the authoritative profile, merge valid history and retire the duplicate identifier.", "people");
+  });
+  [["Request", source.requests], ["Plan", source.plans], ["Actual", source.actuals]].forEach(([type, rows]) => rows.forEach((row, index) => {
+    const missing = ["employeeNumber", "course", "provider", "period"].filter(field => !row[field] || (field === "period" && /confirm/i.test(String(row[field]))));
+    if (missing.length) add("Incomplete interventions", "High", `Complete ${type.toLowerCase()} intervention`, `${type} ${row.id || index + 1}: ${row.employeeNumber || "No employee"} / ${row.course || "No course"}`, `Missing or unconfirmed: ${missing.join(", ")}.`, "Return to the intervention owner and complete the required planning fields.", "training");
+  }));
+  [["Plan", source.plans], ["Actual", source.actuals]].forEach(([type, rows]) => rows.forEach((row, index) => {
+    if (!Number.isFinite(Number(row.cost)) || Number(row.cost) < 0) add("Invalid costs", "High", `Correct ${type.toLowerCase()} cost`, `${type} ${row.id || index + 1}: ${row.employeeNumber || "No employee"} / ${row.course || "No course"}`, `The stored cost '${row.cost}' is not a valid non-negative amount.`, "Confirm the approved value and correct the cost before financial reporting.", "reports");
+  }));
+  source.actuals.forEach((row, index) => {
+    if (!row.evidenceStatus || /required|missing|rejected|not confirmed/i.test(row.evidenceStatus)) add("Evidence gaps", "High", "Confirm achievement evidence", `Actual ${row.id || index + 1}: ${row.employeeNumber || "No employee"} / ${row.course || "No course"}`, `Evidence status: ${row.evidenceStatus || "Not recorded"}.`, "Reference the approved evidence location or return the achievement for correction.", "training");
+  });
+  buildRequestedPlannedAchievedReport(source).forEach((row, index) => {
+    const location = [row.division, row.department, row.course, row.provider].filter(Boolean).join(" / ") || `Report row ${index + 1}`;
+    if (row.requestedNotPlanned) add("WSP / ATR reconciliation", "Medium", "Review requested training not planned", location, `${row.requestedNotPlanned} requested record(s) are not represented in the WSP plan.`, "Confirm the planning decision and either add the plan or record the approved reason for exclusion.", "reports");
+    if (row.plannedNotAchieved) add("WSP / ATR reconciliation", "Medium", "Review planned training not achieved", location, `${row.plannedNotAchieved} planned record(s) have no matching achievement.`, "Confirm delivery status, evidence timing and whether the item must be carried forward.", "reports");
+    if (row.achievedNotPlanned) add("WSP / ATR reconciliation", "High", "Reconcile achievement outside the plan", location, `${row.achievedNotPlanned} achieved record(s) have no matching WSP plan.`, "Confirm the source record and record the approved reconciliation treatment before submission.", "reports");
+  });
+  return issues;
+}
+
+function dataQualityAssessment(source = state) {
+  const issues = dataQualityIssues(source);
+  const records = [...source.requests, ...source.plans, ...source.actuals];
+  const checks = qualityCategoryDefinitions.map(definition => ({
+    ...definition,
+    count: issues.filter(issue => issue.category === definition.label).length
+  }));
+  const affected = checks.reduce((total, check) => total + check.count, 0);
+  const denominator = Math.max(1, source.employees.length + records.length + source.actuals.length);
+  const score = Math.max(0, Math.round(100 * (1 - Math.min(affected, denominator) / denominator)));
+  return { checks, affected, score, issues };
+}
+
+function renderReadiness(source) {
+  const result = dataQualityAssessment(source);
+  const tone = result.score >= 90 ? "good" : result.score >= 70 ? "warn" : "risk";
+  document.getElementById("readinessScore").textContent = `${result.score}%`;
+  document.getElementById("readinessLabel").textContent = result.score >= 90 ? "Ready for final review" : result.score >= 70 ? "Review required" : "Material gaps remain";
+  document.getElementById("readinessBar").style.width = `${result.score}%`;
+  document.getElementById("readinessBar").dataset.tone = tone;
+  document.getElementById("readinessSummary").textContent = result.affected ? `${result.affected} check results require attention before submission.` : "No data-quality exceptions were found in the active dataset.";
+  const status = document.getElementById("qualityStatus");
+  status.textContent = result.affected ? `${result.affected} items to review` : "Checks passed";
+  status.className = `status-pill ${tone}`;
+  document.getElementById("qualityChecks").innerHTML = result.checks.map(check => `
+    <button class="quality-check ${check.count ? "has-issues" : "clear"}" data-view-target="submission" data-submission-filter="${escapeHtml(check.label)}">
+      <span><strong>${escapeHtml(check.label)}</strong><small>${escapeHtml(check.note)}</small></span>
+      <b>${check.count}</b>
+    </button>`).join("");
 }
 
 function recordKey(row) {
@@ -282,6 +401,7 @@ function renderOverview() {
   const s = summary(rows);
   const b = bookingSummary(source.bookings);
   const employeeCount = overviewEmployeeCount(source);
+  renderReadiness(source);
   const annualPayroll = employeeCount * 420000;
   const estimatedSdl = annualPayroll * 0.01;
   const mandatoryGrant = estimatedSdl * 0.2;
@@ -718,6 +838,122 @@ function exportFilteredReport() {
   link.remove();
 }
 
+function reviewAction(issue) {
+  return {
+    owner: "SDF administrator",
+    dueDate: "",
+    status: "Open",
+    evidenceReference: "",
+    ...(state.reviewActions?.[issue.id] || {})
+  };
+}
+
+function isClosedAction(status) {
+  return ["Resolved", "Accepted exception"].includes(status);
+}
+
+function currentSubmissionIssues() {
+  return dataQualityIssues(state).map(issue => ({ ...issue, action: reviewAction(issue) }));
+}
+
+function submissionMetrics(issues = currentSubmissionIssues()) {
+  const open = issues.filter(issue => !isClosedAction(issue.action.status));
+  const high = open.filter(issue => issue.severity === "High");
+  const resolved = issues.length - open.length;
+  const decision = high.length ? "HOLD" : open.length ? "CONDITIONAL" : "READY";
+  return { open, high, resolved, decision };
+}
+
+function submissionDecisionCopy(metrics) {
+  if (metrics.decision === "HOLD") return `${metrics.high.length} unresolved high-priority finding${metrics.high.length === 1 ? "" : "s"} block submission.`;
+  if (metrics.decision === "CONDITIONAL") return `${metrics.open.length} action${metrics.open.length === 1 ? " remains" : "s remain"} before final approval.`;
+  return "All generated findings are resolved or formally accepted as exceptions.";
+}
+
+function renderSubmission() {
+  const issues = currentSubmissionIssues();
+  const metrics = submissionMetrics(issues);
+  const assessment = dataQualityAssessment(state);
+  const categories = qualityCategoryDefinitions.map(item => item.label);
+  const categoryFilter = document.getElementById("submissionCategoryFilter");
+  if (categoryFilter) {
+    categoryFilter.innerHTML = `<option value="All">All categories</option>${categories.map(category => `<option value="${escapeHtml(category)}">${escapeHtml(category)}</option>`).join("")}`;
+    categoryFilter.value = submissionFilterState.category;
+  }
+  const severityFilter = document.getElementById("submissionSeverityFilter");
+  const statusFilter = document.getElementById("submissionStatusFilter");
+  if (severityFilter) severityFilter.value = submissionFilterState.severity;
+  if (statusFilter) statusFilter.value = submissionFilterState.status;
+  const visible = issues.filter(issue => {
+    const categoryOk = submissionFilterState.category === "All" || issue.category === submissionFilterState.category;
+    const severityOk = submissionFilterState.severity === "All" || issue.severity === submissionFilterState.severity;
+    const statusOk = submissionFilterState.status === "All" || (submissionFilterState.status === "Open actions" ? !isClosedAction(issue.action.status) : issue.action.status === submissionFilterState.status);
+    return categoryOk && severityOk && statusOk;
+  });
+  document.getElementById("submissionDecision").textContent = metrics.decision;
+  document.getElementById("submissionDecisionNote").textContent = submissionDecisionCopy(metrics);
+  document.getElementById("submissionDecisionCard").dataset.tone = metrics.decision.toLowerCase();
+  document.getElementById("submissionOpenCount").textContent = metrics.open.length.toLocaleString("en-ZA");
+  document.getElementById("submissionHighCount").textContent = metrics.high.length.toLocaleString("en-ZA");
+  document.getElementById("submissionResolvedCount").textContent = metrics.resolved.toLocaleString("en-ZA");
+  document.getElementById("submissionScore").textContent = `${assessment.score}%`;
+  document.getElementById("submissionFilterCount").textContent = `${visible.length} finding${visible.length === 1 ? "" : "s"}`;
+  document.getElementById("submissionIssueRows").innerHTML = visible.map(issue => `
+    <tr data-issue-id="${issue.id}">
+      <td><span class="severity-pill ${issue.severity.toLowerCase()}">${issue.severity}</span></td>
+      <td><strong>${escapeHtml(issue.category)}</strong><span class="cell-note">${escapeHtml(issue.title)}</span><small>${escapeHtml(issue.detail)}</small></td>
+      <td>${escapeHtml(issue.location)}</td>
+      <td>${escapeHtml(issue.recommendation)} <button class="table-link" data-view-target="${issue.view}">Open source view</button></td>
+      <td><input data-action-field="owner" value="${escapeHtml(issue.action.owner)}" aria-label="Owner for ${escapeHtml(issue.title)}"></td>
+      <td><input data-action-field="dueDate" type="date" value="${escapeHtml(issue.action.dueDate)}" aria-label="Due date for ${escapeHtml(issue.title)}"></td>
+      <td><select data-action-field="status" aria-label="Status for ${escapeHtml(issue.title)}">${["Open", "In progress", "Resolved", "Accepted exception"].map(status => `<option ${issue.action.status === status ? "selected" : ""}>${status}</option>`).join("")}</select></td>
+      <td><input data-action-field="evidenceReference" value="${escapeHtml(issue.action.evidenceReference)}" placeholder="Link, document or decision note" aria-label="Evidence reference for ${escapeHtml(issue.title)}"></td>
+    </tr>`).join("") || `<tr><td colspan="8"><div class="empty-state"><strong>No findings match this view.</strong><span>Adjust the filters or review the readiness decision above.</span></div></td></tr>`;
+  const form = document.getElementById("submissionSignoffForm");
+  if (form) {
+    const signoff = state.submissionSignoff || {};
+    form.decision.value = signoff.decision || "Not reviewed";
+    form.approver.value = signoff.approver || "";
+    form.decisionDate.value = signoff.decisionDate || "";
+    form.notes.value = signoff.notes || "";
+    document.getElementById("submissionSignoffMessage").textContent = signoff.approver ? `${signoff.decision} recorded by ${signoff.approver}${signoff.decisionDate ? ` on ${signoff.decisionDate}` : ""}.` : "No sign-off recorded.";
+  }
+}
+
+function downloadTextFile(content, type, filename) {
+  const blob = new Blob([content], { type });
+  const link = document.createElement("a");
+  link.href = URL.createObjectURL(blob);
+  link.download = filename;
+  document.body.appendChild(link);
+  link.click();
+  URL.revokeObjectURL(link.href);
+  link.remove();
+}
+
+function exportSubmissionActionRegister() {
+  const rows = currentSubmissionIssues();
+  const columns = ["Priority", "Category", "Finding", "Source", "Detail", "Recommended Action", "Owner", "Due Date", "Status", "Evidence Reference"];
+  const body = rows.map(issue => [issue.severity, issue.category, issue.title, issue.location, issue.detail, issue.recommendation, issue.action.owner, issue.action.dueDate, issue.action.status, issue.action.evidenceReference].map(csvEscape).join(","));
+  downloadTextFile(`\uFEFF${[columns.map(csvEscape).join(","), ...body].join("\r\n")}`, "text/csv;charset=utf-8", `submission-action-register-${new Date().toISOString().slice(0, 10)}.csv`);
+}
+
+function readinessPackHtml() {
+  const config = activeClientConfig();
+  const issues = currentSubmissionIssues();
+  const metrics = submissionMetrics(issues);
+  const assessment = dataQualityAssessment(state);
+  const signoff = state.submissionSignoff || {};
+  const generatedAt = new Date().toLocaleString("en-ZA", { dateStyle: "long", timeStyle: "short" });
+  const rows = issues.map(issue => `<tr><td><span class="severity ${issue.severity.toLowerCase()}">${escapeHtml(issue.severity)}</span></td><td><strong>${escapeHtml(issue.category)}</strong><br>${escapeHtml(issue.title)}<small>${escapeHtml(issue.detail)}</small></td><td>${escapeHtml(issue.location)}</td><td>${escapeHtml(issue.action.owner)}</td><td>${escapeHtml(issue.action.dueDate || "Not set")}</td><td>${escapeHtml(issue.action.status)}</td><td>${escapeHtml(issue.action.evidenceReference || "Not referenced")}</td></tr>`).join("");
+  return `<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width"><title>${escapeHtml(config.clientName)} Submission Readiness Pack</title><style>
+    :root{--navy:${config.primaryColor};--blue:${config.secondaryColor};--accent:${config.accentColor}}*{box-sizing:border-box}body{margin:0;color:#173545;background:#eef4f6;font:14px Arial,sans-serif}.page{width:min(1180px,94vw);margin:28px auto;background:#fff;box-shadow:0 14px 42px #16384b1f}.head{padding:34px 42px;color:#fff;background:linear-gradient(135deg,var(--navy),var(--blue))}.head span,.eyebrow{color:var(--accent);font-weight:800;letter-spacing:.12em;text-transform:uppercase;font-size:11px}.head h1{margin:9px 0 4px;font-size:34px}.head p{margin:0;color:#dbeaf0}.content{padding:34px 42px}.decision{display:grid;grid-template-columns:1.2fr repeat(4,1fr);border:1px solid #d9e5e9}.metric{padding:18px;border-right:1px solid #d9e5e9}.metric:last-child{border:0}.metric small{display:block;color:#667e89;text-transform:uppercase;font-size:10px;letter-spacing:.08em}.metric strong{display:block;margin-top:7px;font-size:24px}.gate{color:#fff;background:${metrics.decision === "HOLD" ? "#a02f2f" : metrics.decision === "CONDITIONAL" ? "#8a6500" : "#167347"}}h2{margin:34px 0 10px;color:var(--navy)}.note{color:#607884}table{width:100%;border-collapse:collapse;font-size:11px}th{text-align:left;color:#fff;background:var(--navy);padding:10px}td{vertical-align:top;border:1px solid #d9e5e9;padding:9px}td small{display:block;margin-top:5px;color:#647b86}.severity{display:inline-block;padding:4px 6px;color:#fff;font-size:9px;font-weight:800}.severity.high{background:#a02f2f}.severity.medium{background:#a77600}.severity.low{background:#29705b}.signoff{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-top:20px;padding:18px;border:1px solid #d9e5e9}.signoff div{min-height:54px;border-bottom:1px solid #aebfc6}.signoff small{display:block;color:#647b86;text-transform:uppercase}.foot{padding:18px 42px;color:#607884;background:#f4f8f9;font-size:11px}@media print{body{background:#fff}.page{width:100%;margin:0;box-shadow:none}.head,.gate,th,.severity{print-color-adjust:exact;-webkit-print-color-adjust:exact}.content{padding:24px}table{font-size:9px}@page{size:A4 landscape;margin:10mm}}</style></head><body><main class="page"><header class="head"><span>Controlled management review</span><h1>${escapeHtml(config.clientName)} Submission Readiness Pack</h1><p>${escapeHtml(config.financialYear)} · Generated ${escapeHtml(generatedAt)} · ${escapeHtml(config.environmentLabel)}</p></header><div class="content"><section class="decision"><div class="metric gate"><small>Submission gate</small><strong>${metrics.decision}</strong><span>${escapeHtml(submissionDecisionCopy(metrics))}</span></div><div class="metric"><small>Readiness score</small><strong>${assessment.score}%</strong></div><div class="metric"><small>Open actions</small><strong>${metrics.open.length}</strong></div><div class="metric"><small>High priority</small><strong>${metrics.high.length}</strong></div><div class="metric"><small>Resolved</small><strong>${metrics.resolved}</strong></div></section><h2>Prioritised action register</h2><p class="note">System-generated checks are decision support. Final submission readiness requires human review, evidence confirmation and approved sign-off.</p><table><thead><tr><th>Priority</th><th>Category / Finding</th><th>Source</th><th>Owner</th><th>Due</th><th>Status</th><th>Evidence / Reference</th></tr></thead><tbody>${rows || `<tr><td colspan="7">No findings generated.</td></tr>`}</tbody></table><h2>Management sign-off</h2><section class="signoff"><div><small>Decision</small><strong>${escapeHtml(signoff.decision || "Not reviewed")}</strong></div><div><small>Approver</small><strong>${escapeHtml(signoff.approver || "Not recorded")}</strong></div><div><small>Decision date</small><strong>${escapeHtml(signoff.decisionDate || "Not recorded")}</strong></div><div><small>Conditions / Notes</small><strong>${escapeHtml(signoff.notes || "None recorded")}</strong></div></section></div><footer class="foot">${escapeHtml(config.privacyNotice)} This pack is generated from browser-local demo state and is not an official SETA, B-BBEE or statutory submission.</footer></main></body></html>`;
+}
+
+function downloadReadinessPack() {
+  downloadTextFile(readinessPackHtml(), "text/html;charset=utf-8", `submission-readiness-pack-${new Date().toISOString().slice(0, 10)}.html`);
+}
+
 function sampleWorkbookRows() {
   return state.employees.slice(0, 24).map((e, i) => {
     const course = state.courses[i % state.courses.length];
@@ -829,6 +1065,7 @@ function renderAll() {
   renderWorkbook();
   renderTraining();
   renderPeople();
+  renderSubmission();
   renderReports();
 }
 
@@ -836,6 +1073,11 @@ document.querySelectorAll("[data-view]").forEach(btn => btn.addEventListener("cl
 document.addEventListener("click", event => {
   const target = event.target.closest("[data-view-target]");
   if (target) {
+    if (target.dataset.submissionFilter) {
+      submissionFilterState.category = target.dataset.submissionFilter;
+      submissionFilterState.status = "Open actions";
+      renderSubmission();
+    }
     setView(target.dataset.viewTarget);
     if (target.dataset.mode) document.getElementById("trainingForm").recordType.value = target.dataset.mode;
     if (target.dataset.bookingFocus) document.getElementById("bookingForm").scrollIntoView({ behavior: "smooth", block: "start" });
@@ -1079,5 +1321,37 @@ document.getElementById("copyExecutiveSummaryOverview").addEventListener("click"
 document.getElementById("copyExecutiveSummaryReports").addEventListener("click", copyExecutiveSummary);
 document.getElementById("copyFilteredReport").addEventListener("click", copyFilteredReport);
 document.getElementById("exportFilteredReport").addEventListener("click", exportFilteredReport);
+document.getElementById("submissionCategoryFilter").addEventListener("change", event => {
+  submissionFilterState.category = event.target.value;
+  renderSubmission();
+});
+document.getElementById("submissionSeverityFilter").addEventListener("change", event => {
+  submissionFilterState.severity = event.target.value;
+  renderSubmission();
+});
+document.getElementById("submissionStatusFilter").addEventListener("change", event => {
+  submissionFilterState.status = event.target.value;
+  renderSubmission();
+});
+document.getElementById("submissionIssueRows").addEventListener("change", event => {
+  const row = event.target.closest("[data-issue-id]");
+  const field = event.target.dataset.actionField;
+  if (!row || !field) return;
+  const existing = state.reviewActions[row.dataset.issueId] || {};
+  state.reviewActions[row.dataset.issueId] = { ...existing, [field]: event.target.value };
+  saveState();
+  renderOverview();
+  renderSubmission();
+});
+document.getElementById("submissionSignoffForm").addEventListener("submit", event => {
+  event.preventDefault();
+  state.submissionSignoff = Object.fromEntries(new FormData(event.currentTarget));
+  saveState();
+  renderSubmission();
+});
+document.getElementById("exportActionRegister").addEventListener("click", exportSubmissionActionRegister);
+document.getElementById("downloadReadinessPack").addEventListener("click", downloadReadinessPack);
+document.getElementById("downloadReadinessPackOverview").addEventListener("click", downloadReadinessPack);
 
+applyClientBranding();
 renderAll();
