@@ -1,6 +1,6 @@
 # Functional Demo Test Log
 
-Tested: 2026-07-23T11:36:13.448Z
+Tested: 2026-07-23T11:44:12.476Z
 Live URL: https://lokerh83.github.io/wsp-training-acsa
 
 | Feature | Expected result | Actual result | Pass/Fail | Fix made |
@@ -14,9 +14,9 @@ Live URL: https://lokerh83.github.io/wsp-training-acsa
 | Export | Filtered report and submission action register export without old client-specific filenames. | Filtered report now exports as a neutral WSP/ATR CSV; submission register export remains neutral. | Pass | Changed filtered report download name from acsa-wsp-atr-report to wsp-atr-report. |
 | Reset demo | Top and overview reset buttons restore baseline data and filters. | All required controls and handlers are present. | Pass | None |
 | White-label configuration | Branding remains isolated in client-config.js rather than hardcoded into app logic. | client-config.js is loaded and app.js applies configuration at startup. | Pass | None |
-| Live GitHub Pages availability | Live demo URL returns published index, app, config and data assets. | index 200; app.js 200; client-config.js 404; data 200. | Fail | None |
-| Live GitHub Pages feature markers | Live demo contains the core journey markers, not only local files. | Missing: client-config.js | Fail | None |
-| Live white-label export filename | Live app should use the neutral WSP/ATR export filename after deployment. | Live app still has old export filename. Push/deploy the latest local change. | Fail | Pending deployment from local repo to GitHub Pages. |
+| Live GitHub Pages availability | Live demo URL returns published index, app, config and data assets. | index 200; app.js 200; client-config.js 200; data 200. | Pass | None |
+| Live GitHub Pages feature markers | Live demo contains the core journey markers, not only local files. | All required controls and handlers are present. | Pass | None |
+| Live white-label export filename | Live app should use the neutral WSP/ATR export filename after deployment. | Live app has the neutral export filename. | Pass | None |
 
 ## Release note
 
