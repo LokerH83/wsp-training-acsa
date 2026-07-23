@@ -141,7 +141,10 @@ function applyClientBranding() {
     logo.hidden = true;
     if (logoFallback) {
       logoFallback.hidden = false;
-      logoFallback.textContent = config.logoInitials || initialsFrom(config.clientName);
+      logoFallback.setAttribute("aria-label", config.logoAlt || config.clientName);
+      if (!logoFallback.classList.contains("skillset-fallback-mark")) {
+        logoFallback.textContent = config.logoInitials || initialsFrom(config.clientName);
+      }
     }
   }
 }
@@ -483,6 +486,53 @@ function renderOverview() {
   document.getElementById("latestActivityRows").innerHTML = [...source.actuals.slice(-4), ...source.plans.slice(-4)].slice(-6).reverse().map(row => `<tr><td>${row.evidenceStatus ? "ATR" : "WSP"}</td><td>${employee(row.employeeNumber).employeeName}</td><td>${row.course}</td><td>${row.provider}</td><td>${row.status || row.evidenceStatus || "Clean"}</td></tr>`).join("") || `<tr><td colspan="5">No demo records match the selected filters.</td></tr>`;
 }
 
+function workbookFlagYes(row, field) {
+  return String(row?.[field] || "").trim().toLowerCase() === "yes";
+}
+
+function workbookDiagnosticSummary(rows = []) {
+  return rows.reduce((acc, row) => {
+    const requested = workbookFlagYes(row, "Requested / Suggested");
+    const planned = workbookFlagYes(row, "Planned WSP");
+    const achieved = workbookFlagYes(row, "Achieved ATR");
+    const review = String(row["Review Status"] || "").trim().toLowerCase();
+    const evidence = String(row["Evidence Status"] || "").trim().toLowerCase();
+    const evidenceReady = ["ready", "complete", "completed", "confirmed", "received", "available"].some(token => evidence.includes(token));
+
+    if (requested && !planned) acc.requestedNotPlanned += 1;
+    if (planned && !achieved) acc.plannedNotAchieved += 1;
+    if (achieved && !planned) acc.achievedNotPlanned += 1;
+    if (review && review !== "clean") acc.reviewItems += 1;
+    if ((planned || achieved) && !evidenceReady) acc.evidenceGaps += 1;
+    if (planned && achieved && evidenceReady && (!review || review === "clean")) acc.stableRows += 1;
+    acc.total += 1;
+    return acc;
+  }, {
+    total: 0,
+    stableRows: 0,
+    requestedNotPlanned: 0,
+    plannedNotAchieved: 0,
+    achievedNotPlanned: 0,
+    reviewItems: 0,
+    evidenceGaps: 0
+  });
+}
+
+function workbookDiagnosticHtml(rows = []) {
+  const d = workbookDiagnosticSummary(rows);
+  const attentionTotal = d.requestedNotPlanned + d.plannedNotAchieved + d.achievedNotPlanned + d.reviewItems + d.evidenceGaps;
+
+  if (!d.total) {
+    return `<div class="diagnostic-pair diagnostic-empty"><article class="diagnostic-card process"><span>Ready to inspect</span><strong>No workbook loaded</strong><p>Load the sample or choose a workbook to surface stable signals and reporting risks before the dashboard is trusted.</p></article></div>`;
+  }
+
+  return `<div class="diagnostic-pair">
+    <article class="diagnostic-card stable"><span>Stable signals</span><strong>${d.stableRows.toLocaleString("en-ZA")}</strong><p>Rows where planning, achievement, evidence and review status appear aligned.</p></article>
+    <article class="diagnostic-card problem"><span>Needs attention</span><strong>${attentionTotal.toLocaleString("en-ZA")}</strong><p>${d.requestedNotPlanned} requested not planned · ${d.plannedNotAchieved} planned not achieved · ${d.evidenceGaps} evidence gaps.</p></article>
+    <article class="diagnostic-card process"><span>Microsoft 365 pilot path</span><strong>${d.total.toLocaleString("en-ZA")} rows scanned</strong><p>Use the findings to define SharePoint lists, Dataverse tables, approvals and Power BI refresh rules.</p></article>
+  </div>`;
+}
+
 function renderWorkbook() {
   const hasRows = stagedRows.length > 0;
   const isApplied = workbookStageState === "applied";
@@ -503,8 +553,8 @@ function renderWorkbook() {
   if (stagedCounts) stagedCounts.total = stagedCounts.requested + stagedCounts.planned + stagedCounts.achieved;
   document.getElementById("workbookSteps").innerHTML = [
     ["1", "Load workbook", hasRows || isApplied ? "complete" : "active"],
-    ["2", "Review preview", hasRows && !isApplied ? "active" : isApplied ? "complete" : ""],
-    ["3", "Apply to staging", isApplied ? "complete" : hasRows ? "ready" : ""]
+    ["2", "Expose findings", hasRows && !isApplied ? "active" : isApplied ? "complete" : ""],
+    ["3", "Apply to demo", isApplied ? "complete" : hasRows ? "ready" : ""]
   ].map(([number, label, status]) => `<div class="workbook-step ${status}"><span>${number}</span><strong>${label}</strong></div>`).join("");
   document.getElementById("detectedColumns").innerHTML = detectedColumns.map(col => `<div><span>${col}</span><strong>${requiredColumns.includes(col) ? "Mapped" : "Extra"}</strong></div>`).join("");
   document.getElementById("fieldChecklist").innerHTML = requiredColumns.map(col => {
@@ -514,7 +564,9 @@ function renderWorkbook() {
   const workbookSource = workbookMeta
     ? `<div class="issue ${workbookMeta.ignoredRows ? "warn" : "good"}"><strong>${escapeHtml(workbookMeta.fileName)}</strong><span>${workbookMeta.usedRows.toLocaleString("en-ZA")} rows mapped from ${workbookMeta.sheetCount} sheet${workbookMeta.sheetCount === 1 ? "" : "s"}. ${workbookMeta.ignoredRows ? `${workbookMeta.ignoredRows.toLocaleString("en-ZA")} rows were ignored because they had no usable employee, course or provider signal.` : "No unusable rows detected."}</span></div>`
     : "";
+  const diagnosticHtml = workbookDiagnosticHtml(hasRows ? stagedRows : []);
   document.getElementById("importImpact").innerHTML = [
+    diagnosticHtml,
     workbookSource,
     `<div class="issue good"><strong>Active dashboard source</strong><span>${isApplied ? "Loaded workbook" : "Baseline sample"}: ${currentCounts.total.toLocaleString("en-ZA")} included report records (${currentCounts.requested} requested, ${currentCounts.planned} planned, ${currentCounts.achieved} achieved).</span></div>`,
     hasRows && !isApplied
@@ -1028,7 +1080,7 @@ function stageSampleWorkbook() {
   };
   workbookStageState = "loaded";
   renderWorkbook();
-  document.getElementById("workbookMessage").textContent = `Sample workbook loaded: ${stagedRows.length.toLocaleString("en-ZA")} rows are staged. Review the preview below, then click Apply To Staging.`;
+  document.getElementById("workbookMessage").textContent = `Sample workbook scanned: ${stagedRows.length.toLocaleString("en-ZA")} rows are staged. Review the red and yellow findings, then apply the clean demo refresh.`;
   revealImportPreview();
 }
 
@@ -1043,7 +1095,7 @@ function stageUploadedWorkbook(rows, meta = {}) {
   };
   workbookStageState = "loaded";
   renderWorkbook();
-  document.getElementById("workbookMessage").textContent = `${workbookMeta.fileName}: ${stagedRows.length.toLocaleString("en-ZA")} usable rows are staged from ${workbookMeta.sheetCount} sheet${workbookMeta.sheetCount === 1 ? "" : "s"}. Review the preview below, then click Apply To Staging.`;
+  document.getElementById("workbookMessage").textContent = `${workbookMeta.fileName}: ${stagedRows.length.toLocaleString("en-ZA")} usable rows scanned from ${workbookMeta.sheetCount} sheet${workbookMeta.sheetCount === 1 ? "" : "s"}. The findings below show stable signals and reporting risks before you apply the demo refresh.`;
   revealImportPreview();
 }
 

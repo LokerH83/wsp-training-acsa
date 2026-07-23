@@ -5,22 +5,31 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>SkillSet SA Training Reporting Hub</title>
   <link rel="icon" href="data:,">
-  <link rel="stylesheet" href="./styles.css?v=20260723-skillset-workbook-loader">
+  <link rel="stylesheet" href="./styles.css?v=20260723-skillset-wsp-95">
   <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
 </head>
 <body>
   <div class="app">
     <aside class="sidebar">
       <div class="brand">
-        <div class="brand-mark"><img id="clientLogo" src="" alt="" hidden><span id="clientLogoFallback">SS</span></div>
+        <div class="brand-mark skillset-mark">
+          <img id="clientLogo" src="" alt="" hidden>
+          <span id="clientLogoFallback" class="skillset-fallback-mark" aria-label="SkillSet SA">
+            <span class="skillset-leaf leaf-a"></span>
+            <span class="skillset-leaf leaf-b"></span>
+            <span class="skillset-leaf leaf-c"></span>
+            <span class="skillset-leaf leaf-d"></span>
+            <span class="skillset-trunk"></span>
+          </span>
+        </div>
                 <div><strong id="clientPreparedFor">SkillSet SA</strong><span id="clientTagline">Reporting · Analytics · Insight</span></div>
       </div>
       <nav class="nav" aria-label="Main navigation">
-        <button class="nav-item active" data-view="overview"><span class="ico">O</span>Overview</button>
-        <button class="nav-item" data-view="workbook"><span class="ico">L</span>Load Workbook</button>
-        <button class="nav-item" data-view="training"><span class="ico">M</span>Manage Training</button>
-        <button class="nav-item" data-view="people"><span class="ico">P</span>People Profiles</button>
-        <button class="nav-item" data-view="submission"><span class="ico">S</span>Submission Workspace</button>
+        <button class="nav-item active" data-view="overview"><span class="ico">C</span>Command Centre</button>
+        <button class="nav-item" data-view="workbook"><span class="ico">W</span>Workbook Scanner</button>
+        <button class="nav-item" data-view="training"><span class="ico">T</span>Training Workflow</button>
+        <button class="nav-item" data-view="people"><span class="ico">P</span>People</button>
+        <button class="nav-item" data-view="submission"><span class="ico">S</span>Sign-off</button>
         <button class="nav-item" data-view="reports"><span class="ico">R</span>Reports</button>
       </nav>
       <div class="sidebar-footer"><span class="dataverse-dot"></span><div><strong id="sidebarFooterTitle">White-label ready</strong><span id="sidebarFooterText">Client-specific branding and wording</span></div></div>
@@ -38,14 +47,26 @@
       <section id="overview" class="view active">
         <div class="executive-hero">
           <div class="hero-copy">
-            <span class="demo-badge" id="heroEyebrow">White-label reporting system</span>
-            <h2 id="heroTitle">Turn training records into a controlled reporting workflow.</h2>
-            <p id="heroIntro">A configurable WSP / ATR reporting hub for organisations that still depend on spreadsheets, manual bookings and scattered evidence.</p>
-            <small id="heroFootnote">Use this public demo for walkthroughs only. Production data belongs in a client-controlled Microsoft 365 tenant.</small>
+            <span class="demo-badge" id="heroEyebrow">SkillSet SA · Training reporting diagnostic</span>
+            <h2 id="heroTitle">Find WSP / ATR risk before submission pressure starts.</h2>
+            <p id="heroIntro">Load a workbook, expose planning gaps, evidence weaknesses and reporting actions, then turn the result into a controlled Microsoft 365 pilot.</p>
+            <small id="heroFootnote">Public demo: workbook inspection runs locally in this browser. Production data belongs in SharePoint, Dataverse or the client’s approved Microsoft 365 environment.</small>
           </div>
-          <div class="filters dashboard-filters">
-            <select id="overviewQuarterFilter" aria-label="Demo quarter"><option>All quarters</option><option>Q1</option><option>Q2</option><option>Q3</option><option>Q4</option></select>
-            <select id="overviewProviderFilter" aria-label="Demo provider"><option>All providers</option></select>
+          <div class="hero-diagnostic-card">
+            <span class="eyebrow">Your first move</span>
+            <h3>Start with the workbook.</h3>
+            <p>The demo should immediately show what is planned, what is achieved, what is missing and what needs management attention.</p>
+            <button class="primary" data-view-target="workbook">Open workbook scanner →</button>
+            <div class="mini-proof-grid" aria-label="Diagnostic signals">
+              <span><strong>01</strong> Demand</span>
+              <span><strong>02</strong> WSP plan</span>
+              <span><strong>03</strong> ATR proof</span>
+              <span><strong>04</strong> Sign-off</span>
+            </div>
+            <div class="filters dashboard-filters compact-filter-row">
+              <select id="overviewQuarterFilter" aria-label="Demo quarter"><option>All quarters</option><option>Q1</option><option>Q2</option><option>Q3</option><option>Q4</option></select>
+              <select id="overviewProviderFilter" aria-label="Demo provider"><option>All providers</option></select>
+            </div>
           </div>
         </div>
 
@@ -146,12 +167,20 @@
       </section>
 
       <section id="workbook" class="view">
-        <div class="toolbar">
-          <div><h2>Load Workbook</h2><p id="workbookIntro">Stage the sample workbook or upload a safe CSV export. Do not upload private or client-identifiable records into this public demo.</p></div>
-        </div>
-        <div class="import-grid import-workbench">
-          <section class="panel import-drop">
-            <div><span class="eyebrow">Workbook bridge</span><h3>Bring workbook data in</h3><p>Use the sample workbook, upload a CSV export, or load a safe Excel workbook directly in your browser.</p></div>
+        <div class="workbook-hero scanner-import-hero">
+          <div class="hero-copy">
+            <span class="demo-badge">Local workbook scanner</span>
+            <h2>See the training reporting risks hiding inside the workbook.</h2>
+            <p id="workbookIntro">Stage the sample workbook or inspect a safe Excel / CSV file in this browser. The demo does not upload workbook data to a server.</p>
+            <ul class="hero-checks">
+              <li>Requested training not yet planned</li>
+              <li>Planned activity not yet achieved</li>
+              <li>Evidence, review and sign-off gaps</li>
+              <li>Workbook structure ready for Microsoft 365</li>
+            </ul>
+          </div>
+          <section class="panel import-drop scanner-drop-card">
+            <div><span class="eyebrow">Workbook bridge</span><h3>Drop the workbook here</h3><p>Use the sample workbook, upload CSV, or load a safe Excel workbook directly in your browser.</p></div>
             <div class="workbook-steps" id="workbookSteps" aria-label="Workbook loading steps"></div>
             <div class="quick-actions">
               <button class="primary" id="loadSampleWorkbook">Load Sample Workbook</button>
@@ -160,7 +189,10 @@
             </div>
             <p class="security-note" id="workbookMessage">No workbook staged yet. Excel files are inspected in this browser and are not uploaded by the demo.</p>
           </section>
-          <section class="panel"><div class="panel-head"><h3>Import Impact Summary</h3></div><div id="importImpact" class="issue-list"></div></section>
+        </div>
+        <div class="import-grid import-workbench import-findings-grid">
+          <section class="panel import-impact-panel"><div class="panel-head"><h3>Instant Workbook Findings</h3><p>What the file says before anyone starts manually rebuilding reports.</p></div><div id="importImpact" class="issue-list"></div></section>
+          <section class="panel import-next-step-panel"><div class="panel-head"><h3>What happens next</h3></div><div class="scanner-next-step"><span>01</span><strong>Scan the workbook</strong><p>Map rows into requested, planned and achieved activity.</p></div><div class="scanner-next-step"><span>02</span><strong>Repair the process</strong><p>Turn workbook findings into actions, ownership and sign-off.</p></div><div class="scanner-next-step"><span>03</span><strong>Move to Microsoft 365</strong><p>Replace fragile workbook dependency with governed SharePoint / Dataverse workflow.</p></div></section>
         </div>
         <div class="report-grid report-grid-2">
           <section class="panel"><div class="panel-head"><h3>Detected Columns</h3></div><div id="detectedColumns" class="mapping-preview"></div></section>

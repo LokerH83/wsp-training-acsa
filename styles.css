@@ -4650,3 +4650,426 @@ tbody tr:hover {
     font-size: clamp(38px, 15vw, 58px) !important;
   }
 }
+
+/* =========================================================
+   SKILLSET SA 9.5 PRODUCT PASS
+   Scanner-grade workbook loading + cleaner commercial demo
+   ========================================================= */
+:root {
+  --skillset-green: #063c25;
+  --skillset-green-2: #075331;
+  --skillset-green-3: #107c41;
+  --skillset-deep: #022b1a;
+  --skillset-gold: #ffcc00;
+  --skillset-red: #c93a3a;
+  --skillset-paper: #f8faf6;
+  --skillset-line: #d8e4dc;
+}
+
+.executive-hero,
+.scanner-import-hero {
+  position: relative !important;
+  overflow: hidden !important;
+  border: 1px solid rgba(255, 255, 255, .14) !important;
+  background:
+    linear-gradient(90deg, rgba(2, 43, 26, .98), rgba(6, 60, 37, .94) 46%, rgba(21, 94, 45, .88)),
+    radial-gradient(circle at 82% 20%, rgba(255, 204, 0, .11), transparent 34%) !important;
+  color: #fff !important;
+  box-shadow: 0 28px 80px rgba(2, 43, 26, .18) !important;
+}
+
+.executive-hero::before,
+.scanner-import-hero::before {
+  content: "" !important;
+  position: absolute !important;
+  inset: 0 !important;
+  pointer-events: none !important;
+  background-image:
+    linear-gradient(rgba(255, 255, 255, .045) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, .045) 1px, transparent 1px) !important;
+  background-size: 72px 72px !important;
+  opacity: .65 !important;
+}
+
+.executive-hero::after,
+.scanner-import-hero::after {
+  content: "" !important;
+  position: absolute !important;
+  right: -160px !important;
+  bottom: -220px !important;
+  width: 520px !important;
+  height: 520px !important;
+  border: 1px solid rgba(255, 204, 0, .42) !important;
+  border-radius: 50% !important;
+  opacity: .7 !important;
+}
+
+.executive-hero > *,
+.scanner-import-hero > * {
+  position: relative !important;
+  z-index: 1 !important;
+}
+
+.executive-hero .hero-copy,
+.scanner-import-hero .hero-copy {
+  max-width: 760px !important;
+}
+
+.executive-hero .hero-copy h2,
+.scanner-import-hero .hero-copy h2 {
+  color: #fff !important;
+  font-size: clamp(54px, 7vw, 96px) !important;
+  font-weight: 500 !important;
+  letter-spacing: -.075em !important;
+  line-height: .92 !important;
+  margin: 20px 0 22px !important;
+}
+
+.executive-hero .hero-copy p,
+.scanner-import-hero .hero-copy p,
+.executive-hero .hero-copy small,
+.scanner-import-hero .hero-copy small {
+  color: rgba(255, 255, 255, .86) !important;
+  font-size: 17px !important;
+  line-height: 1.75 !important;
+}
+
+.hero-diagnostic-card,
+.scanner-drop-card {
+  border: 1px solid rgba(255, 255, 255, .18) !important;
+  border-top: 5px solid var(--skillset-gold) !important;
+  background: rgba(2, 43, 26, .82) !important;
+  color: #fff !important;
+  box-shadow: 0 24px 80px rgba(0, 0, 0, .18) !important;
+}
+
+.hero-diagnostic-card h3,
+.scanner-drop-card h3 {
+  color: #fff !important;
+  font-size: clamp(28px, 3vw, 44px) !important;
+  font-weight: 500 !important;
+  letter-spacing: -.055em !important;
+  line-height: 1 !important;
+  margin: 10px 0 14px !important;
+}
+
+.hero-diagnostic-card p,
+.scanner-drop-card p,
+.hero-diagnostic-card small,
+.scanner-drop-card small {
+  color: rgba(255, 255, 255, .78) !important;
+}
+
+.mini-proof-grid {
+  display: grid !important;
+  grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  gap: 10px !important;
+  margin-top: 22px !important;
+}
+
+.mini-proof-grid span {
+  border: 1px solid rgba(255, 255, 255, .16) !important;
+  background: rgba(255, 255, 255, .05) !important;
+  padding: 12px !important;
+  color: rgba(255, 255, 255, .82) !important;
+  font-size: 12px !important;
+  font-weight: 800 !important;
+}
+
+.mini-proof-grid strong {
+  display: block !important;
+  color: var(--skillset-gold) !important;
+  font-size: 12px !important;
+  letter-spacing: .16em !important;
+  margin-bottom: 6px !important;
+}
+
+.compact-filter-row {
+  display: flex !important;
+  gap: 10px !important;
+  margin-top: 20px !important;
+}
+
+.compact-filter-row select {
+  min-width: 0 !important;
+  background: rgba(255, 255, 255, .08) !important;
+  border-color: rgba(255, 255, 255, .2) !important;
+  color: #fff !important;
+}
+
+.scanner-drop-card .quick-actions {
+  display: grid !important;
+  gap: 12px !important;
+  margin-top: 20px !important;
+}
+
+.scanner-drop-card .workbook-file-drop {
+  border: 1px dashed rgba(255, 255, 255, .35) !important;
+  background: rgba(255, 255, 255, .06) !important;
+  color: #fff !important;
+}
+
+.scanner-drop-card .workbook-step {
+  border-color: rgba(255, 255, 255, .18) !important;
+  background: rgba(255, 255, 255, .055) !important;
+  color: #fff !important;
+}
+
+.scanner-drop-card .workbook-step span {
+  color: var(--skillset-gold) !important;
+}
+
+.hero-checks {
+  display: grid !important;
+  gap: 0 !important;
+  margin: 28px 0 0 !important;
+  padding: 0 !important;
+  list-style: none !important;
+  max-width: 560px !important;
+  border-top: 1px solid rgba(255, 255, 255, .16) !important;
+}
+
+.hero-checks li {
+  position: relative !important;
+  padding: 15px 0 15px 28px !important;
+  border-bottom: 1px solid rgba(255, 255, 255, .16) !important;
+  color: rgba(255, 255, 255, .88) !important;
+}
+
+.hero-checks li::before {
+  content: "□" !important;
+  position: absolute !important;
+  left: 0 !important;
+  top: 15px !important;
+  color: var(--skillset-gold) !important;
+  font-size: 11px !important;
+}
+
+.import-workbench {
+  align-items: start !important;
+  margin-top: 28px !important;
+}
+
+.import-impact-panel {
+  background: #fff !important;
+  border-top: 5px solid var(--skillset-gold) !important;
+}
+
+.diagnostic-pair {
+  display: grid !important;
+  grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+  gap: 14px !important;
+  margin-bottom: 18px !important;
+}
+
+.diagnostic-empty {
+  grid-template-columns: 1fr !important;
+}
+
+.diagnostic-card {
+  padding: 18px !important;
+  border: 1px solid var(--skillset-line) !important;
+  background: var(--skillset-paper) !important;
+}
+
+.diagnostic-card span {
+  display: block !important;
+  color: var(--skillset-green-3) !important;
+  font-size: 10px !important;
+  font-weight: 900 !important;
+  letter-spacing: .18em !important;
+  text-transform: uppercase !important;
+}
+
+.diagnostic-card strong {
+  display: block !important;
+  color: var(--skillset-deep) !important;
+  font-size: clamp(30px, 3vw, 42px) !important;
+  font-weight: 700 !important;
+  letter-spacing: -.06em !important;
+  line-height: 1 !important;
+  margin: 12px 0 8px !important;
+}
+
+.diagnostic-card p {
+  margin: 0 !important;
+  color: #52675d !important;
+  font-size: 13px !important;
+  line-height: 1.55 !important;
+}
+
+.diagnostic-card.stable {
+  border-top: 5px solid var(--skillset-green-3) !important;
+  background: #f2fbf5 !important;
+}
+
+.diagnostic-card.problem {
+  border-top: 5px solid var(--skillset-red) !important;
+  background: #fff4f4 !important;
+}
+
+.diagnostic-card.problem span,
+.diagnostic-card.problem strong {
+  color: #9d2424 !important;
+}
+
+.diagnostic-card.process {
+  border-top: 5px solid var(--skillset-gold) !important;
+}
+
+.import-next-step-panel {
+  background: var(--skillset-green) !important;
+  border: 1px solid rgba(255, 255, 255, .14) !important;
+  border-top: 5px solid var(--skillset-gold) !important;
+  color: #fff !important;
+}
+
+.import-next-step-panel h3,
+.import-next-step-panel .panel-head h3 {
+  color: #fff !important;
+}
+
+.scanner-next-step {
+  display: grid !important;
+  grid-template-columns: 44px 1fr !important;
+  gap: 12px !important;
+  padding: 16px 0 !important;
+  border-top: 1px solid rgba(255, 255, 255, .16) !important;
+}
+
+.scanner-next-step span {
+  color: var(--skillset-gold) !important;
+  font-size: 12px !important;
+  font-weight: 900 !important;
+  letter-spacing: .12em !important;
+}
+
+.scanner-next-step strong {
+  color: #fff !important;
+  font-size: 16px !important;
+}
+
+.scanner-next-step p {
+  grid-column: 2 !important;
+  margin: -4px 0 0 !important;
+  color: rgba(255, 255, 255, .74) !important;
+}
+
+@media (max-width: 980px) {
+  .diagnostic-pair,
+  .mini-proof-grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  .compact-filter-row {
+    flex-direction: column !important;
+  }
+
+  .executive-hero .hero-copy h2,
+  .scanner-import-hero .hero-copy h2 {
+    font-size: clamp(42px, 13vw, 72px) !important;
+  }
+}
+
+/* SkillSet branded fallback mark for white-label demo states */
+.brand-mark.skillset-mark {
+  width: 64px !important;
+  min-width: 64px !important;
+  height: 64px !important;
+  padding: 0 !important;
+  border: 0 !important;
+  border-radius: 18px !important;
+  background:
+    radial-gradient(circle at 50% 76%, rgba(255, 204, 0, .16), transparent 42%),
+    linear-gradient(145deg, rgba(255, 255, 255, .10), rgba(255, 255, 255, .03)) !important;
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, .12) !important;
+  overflow: hidden !important;
+}
+
+.skillset-fallback-mark {
+  position: relative;
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.skillset-leaf,
+.skillset-trunk {
+  position: absolute;
+  display: block;
+}
+
+.skillset-leaf {
+  width: 26px;
+  height: 22px;
+  border-radius: 88% 12% 88% 18%;
+  transform-origin: 50% 100%;
+  filter: drop-shadow(0 4px 7px rgba(0, 0, 0, .22));
+}
+
+.skillset-leaf.leaf-a {
+  left: 17px;
+  top: 8px;
+  background: linear-gradient(135deg, #b7d600, #1f9d50 62%, #00735f);
+  transform: rotate(-6deg);
+}
+
+.skillset-leaf.leaf-b {
+  left: 7px;
+  top: 22px;
+  background: linear-gradient(135deg, #8ed03b, #107c41 58%, #005f55);
+  transform: rotate(-36deg);
+}
+
+.skillset-leaf.leaf-c {
+  right: 7px;
+  top: 22px;
+  background: linear-gradient(135deg, #9fd843, #0e7a45 58%, #00605b);
+  transform: scaleX(-1) rotate(-36deg);
+}
+
+.skillset-leaf.leaf-d {
+  left: 20px;
+  top: 27px;
+  background: linear-gradient(135deg, #19b66a, #00735f 70%, #004c43);
+  transform: rotate(45deg) scale(.88);
+}
+
+.skillset-trunk {
+  left: 29px;
+  top: 30px;
+  width: 7px;
+  height: 27px;
+  background: linear-gradient(180deg, #fff 0 35%, #f2f6ef 36% 100%);
+  clip-path: polygon(42% 0, 58% 0, 72% 100%, 20% 100%);
+}
+
+.skillset-trunk::before,
+.skillset-trunk::after {
+  content: "";
+  position: absolute;
+  top: 6px;
+  width: 20px;
+  height: 4px;
+  background: #fff;
+}
+
+.skillset-trunk::before {
+  right: 2px;
+  transform: rotate(-38deg);
+  transform-origin: right center;
+}
+
+.skillset-trunk::after {
+  left: 2px;
+  transform: rotate(38deg);
+  transform-origin: left center;
+}
+
+@media (max-width: 920px) {
+  .brand-mark.skillset-mark {
+    width: 56px !important;
+    min-width: 56px !important;
+    height: 56px !important;
+  }
+}
