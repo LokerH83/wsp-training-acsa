@@ -3,9 +3,9 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>SkillSet SA Training Reporting Hub</title>
+  <title>SkillSet SA WSP / ATR Command Centre</title>
   <link rel="icon" href="data:,">
-  <link rel="stylesheet" href="./styles.css?v=20260723-skillset-wsp-95">
+  <link rel="stylesheet" href="./styles.css?v=20260723-skillset-wsp-95b">
   <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
 </head>
 <body>
@@ -22,7 +22,7 @@
             <span class="skillset-trunk"></span>
           </span>
         </div>
-                <div><strong id="clientPreparedFor">SkillSet SA</strong><span id="clientTagline">Reporting · Analytics · Insight</span></div>
+        <div><strong id="clientPreparedFor">SkillSet SA</strong><span id="clientTagline">Reporting · Analytics · Insight</span></div>
       </div>
       <nav class="nav" aria-label="Main navigation">
         <button class="nav-item active" data-view="overview"><span class="ico">C</span>Command Centre</button>
@@ -32,14 +32,14 @@
         <button class="nav-item" data-view="submission"><span class="ico">S</span>Sign-off</button>
         <button class="nav-item" data-view="reports"><span class="ico">R</span>Reports</button>
       </nav>
-      <div class="sidebar-footer"><span class="dataverse-dot"></span><div><strong id="sidebarFooterTitle">White-label ready</strong><span id="sidebarFooterText">Client-specific branding and wording</span></div></div>
+      <div class="sidebar-footer"><span class="dataverse-dot"></span><div><strong id="sidebarFooterTitle">SkillSet pilot pattern</strong><span id="sidebarFooterText">Excel intake · SharePoint control · Power BI reporting</span></div></div>
     </aside>
 
     <main class="main">
       <header class="topbar">
-          <div><h1 id="appTitle">SkillSet SA Training Reporting Hub</h1><p id="appSubtitle">Workbook import · controlled WSP / ATR workflow · Microsoft 365 pilot pattern.</p></div>
+          <div><h1 id="appTitle">SkillSet SA WSP / ATR Command Centre</h1><p id="appSubtitle">Workbook scan · training workflow · reporting control · Microsoft 365 pilot.</p></div>
         <div class="top-actions">
-          <div class="mode-badge"><strong id="environmentLabel">Demo data only</strong><span id="privacyNotice">Synthetic records only. A production client version should run inside the client's Microsoft 365 environment.</span></div>
+          <div class="mode-badge"><strong id="environmentLabel">Static sales demo</strong><span id="privacyNotice">No client data is stored here. Production belongs inside Microsoft 365.</span></div>
           <button class="icon-button" id="resetDemoTop">Reset</button>
         </div>
       </header>
@@ -47,10 +47,10 @@
       <section id="overview" class="view active">
         <div class="executive-hero">
           <div class="hero-copy">
-            <span class="demo-badge" id="heroEyebrow">SkillSet SA · Training reporting diagnostic</span>
-            <h2 id="heroTitle">Find WSP / ATR risk before submission pressure starts.</h2>
-            <p id="heroIntro">Load a workbook, expose planning gaps, evidence weaknesses and reporting actions, then turn the result into a controlled Microsoft 365 pilot.</p>
-            <small id="heroFootnote">Public demo: workbook inspection runs locally in this browser. Production data belongs in SharePoint, Dataverse or the client’s approved Microsoft 365 environment.</small>
+            <span class="demo-badge" id="heroEyebrow">SkillSet SA · WSP / ATR reporting control</span>
+            <h2 id="heroTitle">Turn training spreadsheets into a controlled reporting workflow.</h2>
+            <p id="heroIntro">Load a workbook, find planning and evidence gaps, book training, record ATR proof and export management-ready views.</p>
+            <small id="heroFootnote">Static demo: workbook inspection happens in this browser. A live pilot would write to SharePoint or Dataverse and report through Power BI.</small>
           </div>
           <div class="hero-diagnostic-card">
             <span class="eyebrow">Your first move</span>
@@ -68,6 +68,13 @@
               <select id="overviewProviderFilter" aria-label="Demo provider"><option>All providers</option></select>
             </div>
           </div>
+        </div>
+
+        <div class="product-path-strip" aria-label="SkillSet pilot workflow">
+          <article><span>01</span><strong>Workbook intake</strong><small>Load demand, WSP plan and ATR achievement records.</small></article>
+          <article><span>02</span><strong>Diagnostic control</strong><small>Separate stable signals from evidence and planning risk.</small></article>
+          <article><span>03</span><strong>Operational workflow</strong><small>Book training, assign actions and record review decisions.</small></article>
+          <article><span>04</span><strong>Microsoft 365 pilot</strong><small>Move the proven process into SharePoint, Dataverse and Power BI.</small></article>
         </div>
 
         <div class="kpi-grid relationship-kpis executive-kpis" id="overviewOutcomes"></div>
@@ -171,7 +178,7 @@
           <div class="hero-copy">
             <span class="demo-badge">Local workbook scanner</span>
             <h2>See the training reporting risks hiding inside the workbook.</h2>
-            <p id="workbookIntro">Stage the sample workbook or inspect a safe Excel / CSV file in this browser. The demo does not upload workbook data to a server.</p>
+            <p id="workbookIntro">Load the sample workbook or inspect an Excel / CSV file locally. The scanner turns spreadsheet signals into WSP, ATR and evidence actions.</p>
             <ul class="hero-checks">
               <li>Requested training not yet planned</li>
               <li>Planned activity not yet achieved</li>
@@ -357,8 +364,8 @@
       </section>
     </main>
   </div>
-  <script src="./client-config.js?v=20260722-submission-workspace"></script>
-  <script src="./data/demo-snapshot.js?v=20260722-submission-workspace"></script>
-  <script src="./app.js?v=20260722-submission-workspace"></script>
+  <script src="./client-config.js?v=20260723-skillset-wsp-95b"></script>
+  <script src="./data/demo-snapshot.js?v=20260723-skillset-wsp-95b"></script>
+  <script src="./app.js?v=20260723-skillset-wsp-95b"></script>
 </body>
 </html>
