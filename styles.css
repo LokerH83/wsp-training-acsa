@@ -1,3 +1,5 @@
+@import url("https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800;900&display=swap");
+
 :root {
   --navy: #063c25;
   --blue: #0e7a45;
@@ -15,6 +17,7 @@
   --red: #bd1e45;
   --cyan: #0f8aa0;
 }
+
 
 .readiness-panel {
   display: grid;
@@ -4107,5 +4110,543 @@ body {
   .kpi-grid.relationship-kpis.data-health-kpis,
   .tier-choice-grid {
     grid-template-columns: 1fr;
+  }
+}
+
+/* =========================================================
+   SKILLSET SA SALES-DEMO SHELL
+   Final override layer: aligns the WSP / ATR demo with the
+   SkillSet website and Reporting Rescue Scanner visual system.
+   ========================================================= */
+
+:root {
+  --skillset-green: #063c25;
+  --skillset-green-2: #075331;
+  --skillset-green-3: #0e7a45;
+  --skillset-gold: #ffcc00;
+  --skillset-gold-2: #ffe46b;
+  --skillset-ink: #082d21;
+  --skillset-paper: #f4f7f3;
+  --skillset-line: #d7e2d8;
+  --skillset-muted: #607066;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  background: var(--skillset-paper);
+  color: var(--skillset-ink);
+  font-family: "DM Sans", Arial, Helvetica, sans-serif;
+}
+
+.app {
+  display: block !important;
+  min-height: 100vh;
+  background: var(--skillset-paper);
+}
+
+.sidebar {
+  position: sticky !important;
+  top: 0;
+  z-index: 1000;
+  width: 100% !important;
+  min-height: 92px !important;
+  padding: 18px clamp(24px, 6vw, 112px) !important;
+  display: flex !important;
+  flex-direction: row !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  gap: 28px !important;
+  overflow: visible !important;
+  color: #fff !important;
+  background: var(--skillset-green) !important;
+  border: 0 !important;
+  border-bottom: 1px solid rgba(255, 255, 255, .15) !important;
+  box-shadow: 0 18px 45px rgba(0, 0, 0, .14);
+}
+
+.brand {
+  min-width: 240px;
+  display: flex !important;
+  align-items: center !important;
+  gap: 13px !important;
+}
+
+.brand-mark {
+  width: auto !important;
+  min-width: 0 !important;
+  height: auto !important;
+  padding: 0 !important;
+  display: block !important;
+  background: transparent !important;
+  border: 0 !important;
+  box-shadow: none !important;
+}
+
+.brand-mark img {
+  width: 52px !important;
+  height: 52px !important;
+  object-fit: contain !important;
+}
+
+#clientLogoFallback {
+  display: block !important;
+  color: #fff !important;
+  font-size: 24px !important;
+  font-weight: 900 !important;
+  line-height: .92 !important;
+  letter-spacing: -.05em !important;
+}
+
+.brand strong {
+  display: block !important;
+  margin: 0 !important;
+  color: #fff !important;
+  font-size: 24px !important;
+  line-height: .95 !important;
+  font-weight: 900 !important;
+  letter-spacing: -.055em !important;
+}
+
+.brand strong::first-letter {
+  color: #fff;
+}
+
+.brand span {
+  display: block !important;
+  margin-top: 7px !important;
+  color: var(--skillset-gold) !important;
+  font-size: 10px !important;
+  font-weight: 900 !important;
+  letter-spacing: .32em !important;
+  line-height: 1.25 !important;
+  text-transform: uppercase !important;
+}
+
+.nav {
+  display: flex !important;
+  flex: 1 1 auto !important;
+  align-items: center !important;
+  justify-content: flex-end !important;
+  gap: clamp(6px, 1.2vw, 18px) !important;
+  margin: 0 !important;
+}
+
+.nav-item {
+  position: relative !important;
+  min-height: 48px !important;
+  padding: 0 2px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 0 !important;
+  color: rgba(255, 255, 255, .92) !important;
+  background: transparent !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  font-size: 14px !important;
+  font-weight: 800 !important;
+  letter-spacing: -.02em !important;
+}
+
+.nav-item .ico {
+  display: none !important;
+}
+
+.nav-item::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 1px;
+  height: 3px;
+  background: var(--skillset-gold);
+  transform: scaleX(0);
+  transform-origin: center;
+  transition: transform .18s ease;
+  box-shadow: 0 0 18px rgba(255, 204, 0, .48);
+}
+
+.nav-item:hover,
+.nav-item.active {
+  color: var(--skillset-gold) !important;
+}
+
+.nav-item:hover::after,
+.nav-item.active::after {
+  transform: scaleX(1);
+}
+
+.sidebar-footer {
+  display: none !important;
+}
+
+.main {
+  min-height: calc(100vh - 92px) !important;
+  margin: 0 !important;
+  background: var(--skillset-paper) !important;
+}
+
+.topbar {
+  display: none !important;
+}
+
+.view {
+  max-width: none !important;
+  padding: clamp(26px, 4vw, 58px) clamp(20px, 5vw, 72px) !important;
+}
+
+#overview.view {
+  padding-top: 0 !important;
+}
+
+.executive-hero,
+.workbook-hero,
+.page-hero {
+  position: relative !important;
+  margin: 0 calc(-1 * clamp(20px, 5vw, 72px)) clamp(26px, 4vw, 46px) !important;
+  padding: clamp(72px, 9vw, 128px) clamp(28px, 8vw, 132px) !important;
+  display: grid !important;
+  grid-template-columns: minmax(320px, .92fr) minmax(360px, .72fr) !important;
+  gap: clamp(34px, 6vw, 88px) !important;
+  align-items: center !important;
+  color: #fff !important;
+  overflow: hidden !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background:
+    linear-gradient(90deg, rgba(3, 44, 26, .99) 0%, rgba(3, 44, 26, .93) 46%, rgba(14, 122, 69, .83) 100%),
+    radial-gradient(circle at 92% 82%, rgba(255, 204, 0, .20) 0 16%, transparent 17% 100%),
+    repeating-linear-gradient(0deg, rgba(255, 255, 255, .045) 0 1px, transparent 1px 56px),
+    repeating-linear-gradient(90deg, rgba(255, 255, 255, .045) 0 1px, transparent 1px 56px);
+}
+
+.executive-hero::before,
+.workbook-hero::before,
+.page-hero::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(circle at 77% 22%, rgba(255, 255, 255, .08), transparent 25%),
+    linear-gradient(120deg, transparent 0 58%, rgba(255, 255, 255, .035) 58% 100%);
+}
+
+.executive-hero > *,
+.workbook-hero > *,
+.page-hero > * {
+  position: relative;
+  z-index: 1;
+}
+
+.demo-badge,
+.section-label,
+.panel-eyebrow {
+  position: relative !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 14px !important;
+  margin-bottom: 18px !important;
+  color: var(--skillset-gold) !important;
+  background: transparent !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  padding: 0 !important;
+  font-size: 12px !important;
+  font-weight: 900 !important;
+  letter-spacing: .24em !important;
+  text-transform: uppercase !important;
+}
+
+.demo-badge::before,
+.section-label::before,
+.panel-eyebrow::before {
+  content: "";
+  width: 42px;
+  height: 3px;
+  background: var(--skillset-gold);
+}
+
+.executive-hero h2,
+.workbook-hero h2,
+.page-hero h2 {
+  max-width: 760px !important;
+  margin: 0 0 22px !important;
+  color: #fff !important;
+  font-size: clamp(46px, 6.3vw, 96px) !important;
+  font-weight: 500 !important;
+  line-height: .95 !important;
+  letter-spacing: -.075em !important;
+}
+
+.hero-copy p,
+.executive-hero p,
+.workbook-hero p,
+.page-hero p {
+  max-width: 760px !important;
+  color: rgba(255, 255, 255, .88) !important;
+  font-size: clamp(16px, 1.3vw, 20px) !important;
+  line-height: 1.62 !important;
+}
+
+.hero-footnote {
+  color: rgba(255, 255, 255, .78) !important;
+}
+
+button,
+.primary,
+.secondary,
+.ghost,
+.link-button {
+  font-family: "DM Sans", Arial, Helvetica, sans-serif !important;
+}
+
+button.primary,
+.primary,
+.hero-actions .primary {
+  color: #052d1f !important;
+  background: var(--skillset-gold) !important;
+  border: 1px solid var(--skillset-gold) !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  font-weight: 900 !important;
+  letter-spacing: .04em !important;
+  text-transform: uppercase !important;
+}
+
+button.secondary,
+.secondary,
+.ghost,
+.hero-actions .secondary {
+  color: #fff !important;
+  background: transparent !important;
+  border: 1px solid rgba(255, 255, 255, .78) !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  font-weight: 900 !important;
+  letter-spacing: .04em !important;
+  text-transform: uppercase !important;
+}
+
+button.primary:hover,
+.primary:hover {
+  background: var(--skillset-gold-2) !important;
+}
+
+button.secondary:hover,
+.secondary:hover,
+.ghost:hover {
+  background: rgba(255, 255, 255, .08) !important;
+}
+
+.dashboard-filters,
+.hero-card,
+.analytics-card,
+.readiness-panel {
+  color: #fff !important;
+  background: rgba(3, 44, 26, .82) !important;
+  border: 1px solid rgba(255, 255, 255, .18) !important;
+  border-top: 5px solid var(--skillset-gold) !important;
+  border-radius: 0 !important;
+  box-shadow: 0 25px 75px rgba(0, 0, 0, .18) !important;
+}
+
+.dashboard-filters label,
+.hero-card label,
+.analytics-card label {
+  color: var(--skillset-gold) !important;
+}
+
+.dashboard-filters select,
+select,
+input,
+textarea {
+  border-radius: 0 !important;
+  border-color: var(--skillset-line) !important;
+  font-family: "DM Sans", Arial, Helvetica, sans-serif !important;
+}
+
+.kpi-grid,
+.overview-dashboard,
+.executive-priority-grid,
+.priority-dashboard,
+.content-grid {
+  gap: 22px !important;
+}
+
+.kpi-card,
+.panel,
+.table-panel,
+.quality-list article,
+.focus-card-grid article,
+.review-kpi,
+.action-panel,
+.next-step-panel {
+  background: #fff !important;
+  border: 1px solid var(--skillset-line) !important;
+  border-top: 4px solid var(--skillset-gold) !important;
+  border-radius: 0 !important;
+  box-shadow: 0 24px 70px rgba(8, 45, 33, .08) !important;
+}
+
+.kpi-card strong,
+.review-kpi strong,
+.summary-number,
+.big-number {
+  color: var(--skillset-ink) !important;
+  font-weight: 700 !important;
+  letter-spacing: -.05em !important;
+}
+
+.panel h2,
+.panel h3,
+.table-panel h2,
+.table-panel h3,
+.section-heading h2 {
+  color: var(--skillset-ink) !important;
+  font-weight: 600 !important;
+  letter-spacing: -.055em !important;
+}
+
+.workbook-file-drop,
+.connector-row,
+.drop-zone {
+  background: #fff !important;
+  border: 2px dashed rgba(6, 60, 37, .34) !important;
+  border-radius: 0 !important;
+  color: var(--skillset-ink) !important;
+  box-shadow: 0 25px 70px rgba(8, 45, 33, .08) !important;
+}
+
+.workbook-file-drop:hover,
+.connector-row:hover,
+.drop-zone:hover,
+.drop-zone.dragover {
+  border-color: var(--skillset-gold) !important;
+  background: #fffdf0 !important;
+}
+
+.connector-icon {
+  background: var(--skillset-green-3) !important;
+  color: #fff !important;
+  border: 0 !important;
+}
+
+.import-summary,
+.warning,
+.status-card.warning,
+.quality-list article.warn,
+.quality-list article.attention {
+  border-left: 5px solid #d63b3b !important;
+  background: #fff7f7 !important;
+}
+
+.status-card.ok,
+.quality-list article.ok {
+  border-left: 5px solid var(--skillset-green-3) !important;
+  background: #f2fbf5 !important;
+}
+
+.badge,
+.pill,
+.mode-badge {
+  border-radius: 999px !important;
+  background: #fff9d8 !important;
+  border-color: #ffe08a !important;
+  color: #684c00 !important;
+  font-weight: 800 !important;
+}
+
+table {
+  border-collapse: collapse !important;
+}
+
+thead th {
+  background: #f4f8f5 !important;
+  color: var(--skillset-green) !important;
+  font-weight: 900 !important;
+  letter-spacing: .08em !important;
+  text-transform: uppercase !important;
+}
+
+tbody tr:hover {
+  background: #fffdf0 !important;
+}
+
+@media (max-width: 1100px) {
+  .sidebar {
+    position: relative !important;
+    flex-direction: column !important;
+    align-items: flex-start !important;
+  }
+
+  .nav {
+    width: 100% !important;
+    justify-content: flex-start !important;
+    overflow-x: auto !important;
+    padding-bottom: 4px !important;
+  }
+
+  .nav-item {
+    flex: 0 0 auto !important;
+  }
+
+  .executive-hero,
+  .workbook-hero,
+  .page-hero {
+    grid-template-columns: 1fr !important;
+  }
+}
+
+@media (max-width: 760px) {
+  .sidebar {
+    min-height: auto !important;
+    padding: 16px 18px !important;
+  }
+
+  .brand {
+    min-width: 0;
+  }
+
+  .brand strong,
+  #clientLogoFallback {
+    font-size: 20px !important;
+  }
+
+  .brand span {
+    font-size: 8px !important;
+    letter-spacing: .22em !important;
+  }
+
+  .nav {
+    gap: 14px !important;
+  }
+
+  .nav-item {
+    min-height: 38px !important;
+    font-size: 12px !important;
+  }
+
+  .view {
+    padding: 22px 18px !important;
+  }
+
+  .executive-hero,
+  .workbook-hero,
+  .page-hero {
+    margin-left: -18px !important;
+    margin-right: -18px !important;
+    padding: 48px 22px !important;
+  }
+
+  .executive-hero h2,
+  .workbook-hero h2,
+  .page-hero h2 {
+    font-size: clamp(38px, 15vw, 58px) !important;
   }
 }

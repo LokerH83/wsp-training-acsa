@@ -5,14 +5,15 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>SkillSet SA Training Reporting Hub</title>
   <link rel="icon" href="data:,">
-  <link rel="stylesheet" href="./styles.css?v=20260722-submission-workspace">
+  <link rel="stylesheet" href="./styles.css?v=20260723-skillset-workbook-loader">
+  <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
 </head>
 <body>
   <div class="app">
     <aside class="sidebar">
       <div class="brand">
         <div class="brand-mark"><img id="clientLogo" src="" alt="" hidden><span id="clientLogoFallback">SS</span></div>
-        <div><strong id="clientPreparedFor">White-label WSP / ATR pilot</strong><span id="clientTagline">Training bookings · WSP · ATR reporting</span></div>
+                <div><strong id="clientPreparedFor">SkillSet SA</strong><span id="clientTagline">Reporting · Analytics · Insight</span></div>
       </div>
       <nav class="nav" aria-label="Main navigation">
         <button class="nav-item active" data-view="overview"><span class="ico">O</span>Overview</button>
@@ -27,7 +28,7 @@
 
     <main class="main">
       <header class="topbar">
-        <div><h1 id="appTitle">SkillSet SA Training Reporting Hub</h1><p id="appSubtitle">White-label training reporting workspace · Synthetic data only · Not official SETA or B-BBEE output.</p></div>
+          <div><h1 id="appTitle">SkillSet SA Training Reporting Hub</h1><p id="appSubtitle">Workbook import · controlled WSP / ATR workflow · Microsoft 365 pilot pattern.</p></div>
         <div class="top-actions">
           <div class="mode-badge"><strong id="environmentLabel">Demo data only</strong><span id="privacyNotice">Synthetic records only. A production client version should run inside the client's Microsoft 365 environment.</span></div>
           <button class="icon-button" id="resetDemoTop">Reset</button>
@@ -150,14 +151,14 @@
         </div>
         <div class="import-grid import-workbench">
           <section class="panel import-drop">
-            <div><span class="eyebrow">Workbook bridge</span><h3>Bring workbook data in</h3><p>Use the sample workbook or upload a safe CSV export.</p></div>
+            <div><span class="eyebrow">Workbook bridge</span><h3>Bring workbook data in</h3><p>Use the sample workbook, upload a CSV export, or load a safe Excel workbook directly in your browser.</p></div>
             <div class="workbook-steps" id="workbookSteps" aria-label="Workbook loading steps"></div>
             <div class="quick-actions">
               <button class="primary" id="loadSampleWorkbook">Load Sample Workbook</button>
-              <label class="connector-row"><input id="csvUpload" type="file" accept=".csv"><span class="connector-icon">CSV</span><span><strong>Upload CSV</strong><small>Use a safe CSV export only</small></span></label>
+              <label class="connector-row workbook-file-drop" id="workbookDropZone"><input id="csvUpload" type="file" accept=".xlsx,.xlsm,.csv"><span class="connector-icon">XLS</span><span><strong>Upload workbook</strong><small>.xlsx, .xlsm or .csv · processed locally</small></span></label>
               <button id="applyStaging">Apply To Staging</button>
             </div>
-            <p class="security-note" id="workbookMessage">No workbook staged yet.</p>
+            <p class="security-note" id="workbookMessage">No workbook staged yet. Excel files are inspected in this browser and are not uploaded by the demo.</p>
           </section>
           <section class="panel"><div class="panel-head"><h3>Import Impact Summary</h3></div><div id="importImpact" class="issue-list"></div></section>
         </div>

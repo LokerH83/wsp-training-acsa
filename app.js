@@ -8,6 +8,7 @@ let reportFilterState = {};
 let overviewFilterState = { quarter: "All", provider: "All" };
 let submissionFilterState = { category: "All", severity: "All", status: "Open actions" };
 let workbookStageState = "empty";
+let workbookMeta = null;
 
 const currency = new Intl.NumberFormat("en-ZA", { style: "currency", currency: "ZAR", maximumFractionDigits: 0 });
 const requiredColumns = ["Employee Number","Employee Name","ID Number","Region / Cluster","Division","Department","Sex / Gender","Race","Age","Age Band","Disability","Course / Intervention","Requested / Suggested","Planned WSP","Achieved ATR","Provider","Quarter / Date","Planned Cost","Actual Cost","Evidence Status","Review Status"];
@@ -77,6 +78,7 @@ function resetDemo() {
   state = initialiseState(cloneData());
   stagedRows = [];
   workbookStageState = "empty";
+  workbookMeta = null;
   selectedEmployeeNumber = state.employees[0]?.employeeNumber || "";
   overviewFilterState = { quarter: "All", provider: "All" };
   resetReportFiltersState();
@@ -484,6 +486,8 @@ function renderOverview() {
 function renderWorkbook() {
   const hasRows = stagedRows.length > 0;
   const isApplied = workbookStageState === "applied";
+  const detectedColumns = workbookMeta?.columns?.length ? workbookMeta.columns : (stagedRows[0] ? Object.keys(stagedRows[0]) : requiredColumns);
+  const detectedColumnSet = new Set(detectedColumns);
   const currentCounts = {
     requested: state.requests.length,
     planned: state.plans.length,
@@ -502,14 +506,21 @@ function renderWorkbook() {
     ["2", "Review preview", hasRows && !isApplied ? "active" : isApplied ? "complete" : ""],
     ["3", "Apply to staging", isApplied ? "complete" : hasRows ? "ready" : ""]
   ].map(([number, label, status]) => `<div class="workbook-step ${status}"><span>${number}</span><strong>${label}</strong></div>`).join("");
-  document.getElementById("detectedColumns").innerHTML = (stagedRows[0] ? Object.keys(stagedRows[0]) : requiredColumns).map(col => `<div><span>${col}</span><strong>${requiredColumns.includes(col) ? "Mapped" : "Extra"}</strong></div>`).join("");
-  document.getElementById("fieldChecklist").innerHTML = requiredColumns.map(col => `<div class="check-row complete"><span>OK</span><div><strong>${col}</strong><small>mapping ready</small></div></div>`).join("");
+  document.getElementById("detectedColumns").innerHTML = detectedColumns.map(col => `<div><span>${col}</span><strong>${requiredColumns.includes(col) ? "Mapped" : "Extra"}</strong></div>`).join("");
+  document.getElementById("fieldChecklist").innerHTML = requiredColumns.map(col => {
+    const complete = !hasRows || detectedColumnSet.has(col);
+    return `<div class="check-row ${complete ? "complete" : "warn"}"><span>${complete ? "OK" : "CHECK"}</span><div><strong>${col}</strong><small>${complete ? "mapping ready" : "not found in workbook; demo fallback used"}</small></div></div>`;
+  }).join("");
+  const workbookSource = workbookMeta
+    ? `<div class="issue ${workbookMeta.ignoredRows ? "warn" : "good"}"><strong>${escapeHtml(workbookMeta.fileName)}</strong><span>${workbookMeta.usedRows.toLocaleString("en-ZA")} rows mapped from ${workbookMeta.sheetCount} sheet${workbookMeta.sheetCount === 1 ? "" : "s"}. ${workbookMeta.ignoredRows ? `${workbookMeta.ignoredRows.toLocaleString("en-ZA")} rows were ignored because they had no usable employee, course or provider signal.` : "No unusable rows detected."}</span></div>`
+    : "";
   document.getElementById("importImpact").innerHTML = [
+    workbookSource,
     `<div class="issue good"><strong>Active dashboard source</strong><span>${isApplied ? "Loaded workbook" : "Baseline sample"}: ${currentCounts.total.toLocaleString("en-ZA")} included report records (${currentCounts.requested} requested, ${currentCounts.planned} planned, ${currentCounts.achieved} achieved).</span></div>`,
     hasRows && !isApplied
       ? `<div class="issue warn"><strong>Workbook staged for refresh</strong><span>${stagedRows.length.toLocaleString("en-ZA")} workbook rows will refresh the dashboard to ${stagedCounts.total.toLocaleString("en-ZA")} included report records (${stagedCounts.requested} requested, ${stagedCounts.planned} planned, ${stagedCounts.achieved} achieved).</span></div>`
-      : `<div class="issue good"><strong>Workbook loader</strong><span>Load the sample workbook or upload CSV to preview new rows before applying them to the dashboard.</span></div>`
-  ].join("");
+      : `<div class="issue good"><strong>Workbook loader</strong><span>Load the sample workbook, upload Excel or upload CSV to preview new rows before applying them to the dashboard.</span></div>`
+  ].filter(Boolean).join("");
   document.getElementById("importPreview").innerHTML = (stagedRows.length ? stagedRows : sampleWorkbookRows()).slice(0, 8).map(row => `<tr><td>${row["Employee Name"]}</td><td>${row["Course / Intervention"]}</td><td>${row["Requested / Suggested"]}</td><td>${row["Planned WSP"]}</td><td>${row["Achieved ATR"]}</td><td>${row["Review Status"]}</td></tr>`).join("");
   ["applyStaging", "applyStagingPreview"].forEach(id => {
     const button = document.getElementById(id);
@@ -1008,17 +1019,31 @@ function sampleWorkbookRows() {
 
 function stageSampleWorkbook() {
   stagedRows = sampleWorkbookRows();
+  workbookMeta = {
+    fileName: "SkillSet sample WSP / ATR workbook",
+    sheetCount: 1,
+    usedRows: stagedRows.length,
+    ignoredRows: 0,
+    columns: [...requiredColumns]
+  };
   workbookStageState = "loaded";
   renderWorkbook();
   document.getElementById("workbookMessage").textContent = `Sample workbook loaded: ${stagedRows.length.toLocaleString("en-ZA")} rows are staged. Review the preview below, then click Apply To Staging.`;
   revealImportPreview();
 }
 
-function stageUploadedWorkbook(rows) {
+function stageUploadedWorkbook(rows, meta = {}) {
   stagedRows = rows;
+  workbookMeta = {
+    fileName: meta.fileName || "Uploaded workbook",
+    sheetCount: meta.sheetCount || 1,
+    usedRows: meta.usedRows ?? rows.length,
+    ignoredRows: meta.ignoredRows || 0,
+    columns: meta.columns?.length ? meta.columns : Object.keys(rows[0] || {})
+  };
   workbookStageState = "loaded";
   renderWorkbook();
-  document.getElementById("workbookMessage").textContent = `${stagedRows.length.toLocaleString("en-ZA")} uploaded rows are staged. Review the preview below, then click Apply To Staging.`;
+  document.getElementById("workbookMessage").textContent = `${workbookMeta.fileName}: ${stagedRows.length.toLocaleString("en-ZA")} usable rows are staged from ${workbookMeta.sheetCount} sheet${workbookMeta.sheetCount === 1 ? "" : "s"}. Review the preview below, then click Apply To Staging.`;
   revealImportPreview();
 }
 
@@ -1084,9 +1109,198 @@ function parseCsv(text) {
   return rows.map(values => Object.fromEntries(headers.map((header, index) => [header.trim(), values[index] || ""])));
 }
 
+function normaliseImportKey(value) {
+  return String(value || "").toLowerCase().replace(/&/g, "and").replace(/[^a-z0-9]+/g, " ").trim();
+}
+
+const importAliases = {
+  "Employee Number": ["employee number", "employee no", "emp no", "employee id", "staff number", "learner number", "learner id"],
+  "Employee Name": ["employee name", "learner name", "full name", "name"],
+  "ID Number": ["id number", "national id", "rsa id", "identity number"],
+  "Region / Cluster": ["region cluster", "region", "cluster", "site", "location"],
+  "Division": ["division", "business unit", "unit"],
+  "Department": ["department", "dept", "team"],
+  "Sex / Gender": ["sex gender", "gender", "sex"],
+  "Race": ["race", "equity race"],
+  "Age": ["age"],
+  "Age Band": ["age band", "age group"],
+  "Disability": ["disability", "disabled"],
+  "Course / Intervention": ["course intervention", "course", "course name", "intervention", "intervention name", "training", "programme", "program"],
+  "Requested / Suggested": ["requested suggested", "requested", "suggested", "demand", "training demand", "need"],
+  "Planned WSP": ["planned wsp", "wsp", "planned", "plan", "planned training"],
+  "Achieved ATR": ["achieved atr", "atr", "achieved", "completed", "complete", "attendance"],
+  "Provider": ["provider", "supplier", "training provider", "vendor"],
+  "Quarter / Date": ["quarter date", "quarter", "period", "date", "training date", "month"],
+  "Planned Cost": ["planned cost", "estimated cost", "budget", "cost"],
+  "Actual Cost": ["actual cost", "actual spend", "spend", "invoice amount", "paid"],
+  "Evidence Status": ["evidence status", "evidence", "certificate", "attendance register", "proof"],
+  "Review Status": ["review status", "status", "comments", "notes"]
+};
+
+function getImportedValue(raw, field) {
+  const lookup = Object.fromEntries(Object.entries(raw || {}).map(([key, value]) => [normaliseImportKey(key), value]));
+  const keys = [field, ...(importAliases[field] || [])].map(normaliseImportKey);
+  const found = keys.find(key => lookup[key] !== undefined && lookup[key] !== null && String(lookup[key]).trim() !== "");
+  return found ? String(lookup[found]).trim() : "";
+}
+
+function importSheetIntent(sheetName) {
+  const name = normaliseImportKey(sheetName);
+  if (/\b(actual|atr|achievement|completed|complete)\b/.test(name)) return "actual";
+  if (/\b(plan|planned|wsp|booking|booked)\b/.test(name)) return "plan";
+  if (/\b(request|requested|demand|need|suggested)\b/.test(name)) return "request";
+  return "generic";
+}
+
+function importYesNo(value, fallback = false) {
+  const text = normaliseImportKey(value);
+  if (!text) return fallback ? "Yes" : "No";
+  if (["yes", "y", "true", "1", "planned", "requested", "suggested", "achieved", "completed", "complete", "booked"].includes(text)) return "Yes";
+  if (["no", "n", "false", "0", "not planned", "not achieved", "pending", "cancelled", "canceled"].includes(text)) return "No";
+  return fallback ? "Yes" : "No";
+}
+
+function normaliseWorkbookImportRow(raw, index, sheetName = "Workbook") {
+  const intent = importSheetIntent(sheetName);
+  const row = Object.fromEntries(requiredColumns.map(field => [field, getImportedValue(raw, field)]));
+  const hasUsableSignal = row["Employee Number"] || row["Employee Name"] || row["Course / Intervention"] || row.Provider;
+  if (!hasUsableSignal) return null;
+  row["Employee Number"] = row["Employee Number"] || `IMP-${String(index + 1).padStart(4, "0")}`;
+  row["Employee Name"] = row["Employee Name"] || `Imported Employee ${String(index + 1).padStart(3, "0")}`;
+  row["Region / Cluster"] = row["Region / Cluster"] || "Imported";
+  row.Division = row.Division || "Imported";
+  row.Department = row.Department || "Imported";
+  row["Sex / Gender"] = row["Sex / Gender"] || "Not specified";
+  row.Race = row.Race || "Not specified";
+  row.Age = row.Age || "";
+  row["Age Band"] = row["Age Band"] || "Not specified";
+  row.Disability = row.Disability || "Not specified";
+  row["Course / Intervention"] = row["Course / Intervention"] || "Imported training intervention";
+  row.Provider = row.Provider || "Imported provider";
+  row["Quarter / Date"] = row["Quarter / Date"] || "Imported period";
+  row["Requested / Suggested"] = importYesNo(row["Requested / Suggested"], intent === "request" || intent === "plan" || intent === "actual" || intent === "generic");
+  row["Planned WSP"] = importYesNo(row["Planned WSP"], intent === "plan" || intent === "actual");
+  row["Achieved ATR"] = importYesNo(row["Achieved ATR"], intent === "actual");
+  row["Planned Cost"] = String(row["Planned Cost"] || row["Actual Cost"] || "0").replace(/[^\d.-]/g, "");
+  row["Actual Cost"] = String(row["Actual Cost"] || (row["Achieved ATR"] === "Yes" ? row["Planned Cost"] : "0")).replace(/[^\d.-]/g, "");
+  row["Evidence Status"] = row["Evidence Status"] || (row["Achieved ATR"] === "Yes" ? "Evidence to confirm" : "Pending");
+  row["Review Status"] = row["Review Status"] || "Imported for review";
+  return row;
+}
+
+function normaliseWorkbookRows(rawRows, sourceName, sheetName = "Workbook") {
+  let ignoredRows = 0;
+  const rows = rawRows.map((raw, index) => {
+    const mapped = normaliseWorkbookImportRow(raw, index, sheetName);
+    if (!mapped) ignoredRows += 1;
+    return mapped;
+  }).filter(Boolean);
+  return {
+    rows,
+    meta: {
+      fileName: sourceName,
+      sheetCount: 1,
+      usedRows: rows.length,
+      ignoredRows,
+      columns: [...new Set(rows.flatMap(row => Object.keys(row)))]
+    }
+  };
+}
+
+function parseExcelWorkbook(buffer, fileName) {
+  if (!window.XLSX) throw new Error("The Excel parser has not finished loading. Please wait a moment and try again.");
+  const workbook = window.XLSX.read(buffer, { type: "array", cellDates: true });
+  let ignoredRows = 0;
+  const rows = [];
+  const columns = new Set();
+  workbook.SheetNames.forEach(sheetName => {
+    const sheetRows = window.XLSX.utils.sheet_to_json(workbook.Sheets[sheetName], { defval: "", raw: false });
+    sheetRows.forEach((raw, index) => {
+      Object.keys(raw).forEach(col => columns.add(col));
+      const mapped = normaliseWorkbookImportRow(raw, rows.length + index, sheetName);
+      if (mapped) rows.push(mapped);
+      else ignoredRows += 1;
+    });
+  });
+  return {
+    rows,
+    meta: {
+      fileName,
+      sheetCount: workbook.SheetNames.length,
+      usedRows: rows.length,
+      ignoredRows,
+      columns: columns.size ? [...columns] : [...requiredColumns]
+    }
+  };
+}
+
+async function stageWorkbookFile(file) {
+  const message = document.getElementById("workbookMessage");
+  if (!file) return;
+  try {
+    message.textContent = `Reading ${file.name} locally in your browser...`;
+    const lower = file.name.toLowerCase();
+    const result = lower.endsWith(".csv")
+      ? normaliseWorkbookRows(parseCsv(await file.text()), file.name)
+      : parseExcelWorkbook(await file.arrayBuffer(), file.name);
+    if (!result.rows.length) {
+      message.textContent = `${file.name} was read, but no usable employee, course or provider rows could be mapped. Try a workbook with headings such as Employee Name, Course, Provider, Planned WSP or Achieved ATR.`;
+      return;
+    }
+    stageUploadedWorkbook(result.rows, result.meta);
+  } catch (error) {
+    message.textContent = `Could not read the workbook: ${error.message}`;
+  }
+}
+
+function upsertImportedMasterData(rows) {
+  const existingEmployees = new Set(state.employees.map(e => e.employeeNumber));
+  const existingProviders = new Set(state.providers.map(p => normaliseImportKey(p.provider)));
+  const existingCourses = new Set(state.courses.map(c => `${normaliseImportKey(c.provider)}|${normaliseImportKey(c.course)}`));
+  rows.forEach(row => {
+    if (!existingEmployees.has(row["Employee Number"])) {
+      state.employees.push({
+        employeeNumber: row["Employee Number"],
+        employeeName: row["Employee Name"],
+        idNumber: row["ID Number"],
+        regionCluster: row["Region / Cluster"],
+        division: row.Division,
+        department: row.Department,
+        sexGender: row["Sex / Gender"],
+        race: row.Race,
+        age: Number(row.Age || 0) || "",
+        ageBand: row["Age Band"],
+        disability: row.Disability
+      });
+      existingEmployees.add(row["Employee Number"]);
+    }
+    const providerKey = normaliseImportKey(row.Provider);
+    if (providerKey && !existingProviders.has(providerKey)) {
+      state.providers.push({ id: `import-provider-${state.providers.length + 1}`, provider: row.Provider, focus: "Imported" });
+      existingProviders.add(providerKey);
+    }
+    const courseKey = `${providerKey}|${normaliseImportKey(row["Course / Intervention"])}`;
+    if (providerKey && !existingCourses.has(courseKey)) {
+      state.courses.push({
+        id: `import-course-${state.courses.length + 1}`,
+        provider: row.Provider,
+        course: row["Course / Intervention"],
+        category: "Imported",
+        duration: "To confirm",
+        deliveryMode: "To confirm",
+        estimatedCost: Number(row["Planned Cost"] || 0),
+        evidenceRequired: "Evidence to confirm",
+        setaBbbeeRelevance: "WSP / ATR"
+      });
+      existingCourses.add(courseKey);
+    }
+  });
+}
+
 function applyWorkbookRows() {
   if (!stagedRows.length || workbookStageState === "applied") return;
   const rows = stagedRows.length ? stagedRows : sampleWorkbookRows();
+  upsertImportedMasterData(rows);
   state.requests = [];
   state.plans = [];
   state.actuals = [];
@@ -1353,7 +1567,11 @@ document.getElementById("overviewProviderFilter").addEventListener("change", eve
 document.getElementById("peopleSearch").addEventListener("input", renderPeople);
 document.getElementById("loadSampleWorkbook").addEventListener("click", stageSampleWorkbook);
 document.getElementById("overviewLoadSample").addEventListener("click", stageSampleWorkbook);
-document.getElementById("csvUpload").addEventListener("change", async event => { const file = event.target.files[0]; if (file) stageUploadedWorkbook(parseCsv(await file.text())); });
+document.getElementById("csvUpload").addEventListener("change", async event => {
+  const file = event.target.files[0];
+  if (file) await stageWorkbookFile(file);
+  event.target.value = "";
+});
 document.getElementById("applyStaging").addEventListener("click", applyWorkbookRows);
 document.getElementById("applyStagingPreview").addEventListener("click", applyWorkbookRows);
 document.getElementById("resetDemoTop").addEventListener("click", resetDemo);
