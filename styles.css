@@ -5527,3 +5527,255 @@ button:not(.nav-item):not(.primary):not(.icon-button),
     font-size: clamp(42px, 13vw, 68px) !important;
   }
 }
+
+/* =========================================================
+   2026-07-23 — product command pass
+   Purpose: make the WSP demo feel like the SkillSet scanner,
+   not a dressed-up spreadsheet dashboard.
+   ========================================================= */
+
+.product-command-hero {
+  grid-template-columns: minmax(520px, .9fr) minmax(560px, .78fr) !important;
+  gap: clamp(56px, 7vw, 128px) !important;
+  align-items: center !important;
+  min-height: clamp(720px, 82vh, 880px) !important;
+  padding-top: clamp(78px, 9vh, 122px) !important;
+  padding-bottom: clamp(92px, 10vh, 142px) !important;
+  background:
+    linear-gradient(90deg, rgba(3, 30, 19, .98) 0%, rgba(4, 47, 29, .96) 46%, rgba(28, 90, 42, .94) 100%),
+    radial-gradient(circle at 72% 52%, rgba(255, 204, 0, .12), transparent 34%) !important;
+}
+
+.product-command-hero::before {
+  opacity: .54 !important;
+  background-image:
+    linear-gradient(rgba(255,255,255,.045) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,.045) 1px, transparent 1px),
+    radial-gradient(circle at 78% 58%, rgba(42, 147, 79, .34), transparent 35%) !important;
+  background-size: 72px 72px, 72px 72px, cover !important;
+}
+
+.product-command-hero::after {
+  right: -210px !important;
+  bottom: -240px !important;
+  width: 620px !important;
+  height: 620px !important;
+  border-color: rgba(255, 204, 0, .34) !important;
+  opacity: .76 !important;
+}
+
+.product-command-hero .hero-copy {
+  max-width: 780px !important;
+}
+
+.product-command-hero .hero-copy h2 {
+  max-width: 800px !important;
+  font-size: clamp(64px, 6.8vw, 112px) !important;
+  font-weight: 490 !important;
+  line-height: .91 !important;
+  letter-spacing: -.085em !important;
+}
+
+.product-command-hero .hero-copy p {
+  max-width: 720px !important;
+  margin-top: 28px !important;
+}
+
+.hero-action-row {
+  display: flex !important;
+  align-items: center !important;
+  gap: 14px !important;
+  flex-wrap: wrap !important;
+  margin-top: 34px !important;
+}
+
+.secondary-hero-action {
+  min-height: 52px !important;
+  padding: 0 24px !important;
+  background: rgba(255,255,255,.03) !important;
+  color: #fff !important;
+  border: 1px solid rgba(255,255,255,.78) !important;
+  font-weight: 900 !important;
+  letter-spacing: .04em !important;
+  text-transform: uppercase !important;
+}
+
+.secondary-hero-action:hover,
+.secondary-hero-action:focus-visible {
+  background: rgba(255,255,255,.12) !important;
+  border-color: var(--skillset-gold) !important;
+}
+
+.command-diagnostic-card {
+  max-width: 650px !important;
+  width: 100% !important;
+  padding: 0 !important;
+  align-self: center !important;
+  overflow: hidden !important;
+  background:
+    linear-gradient(180deg, rgba(3, 43, 26, .96), rgba(2, 32, 20, .98)) !important;
+  border-top-width: 6px !important;
+  box-shadow: 0 44px 96px rgba(0,0,0,.34) !important;
+}
+
+.command-card-head {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  gap: 18px !important;
+  padding: 26px 30px 0 !important;
+}
+
+.command-card-head strong {
+  color: rgba(255,255,255,.68) !important;
+  font-size: 11px !important;
+  font-weight: 900 !important;
+  letter-spacing: .16em !important;
+  text-transform: uppercase !important;
+}
+
+.command-diagnostic-card h3 {
+  padding: 16px 30px 24px !important;
+  max-width: 560px !important;
+  font-size: clamp(32px, 2.8vw, 48px) !important;
+  font-weight: 480 !important;
+  line-height: .98 !important;
+  letter-spacing: -.07em !important;
+}
+
+.triage-signal-grid {
+  display: grid !important;
+  grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+  border-top: 1px solid rgba(255,255,255,.16) !important;
+  border-bottom: 1px solid rgba(255,255,255,.16) !important;
+}
+
+.triage-signal-grid article {
+  min-height: 164px !important;
+  padding: 22px 20px !important;
+  border-right: 1px solid rgba(255,255,255,.13) !important;
+  border-top: 5px solid var(--signal, var(--skillset-gold)) !important;
+  background: rgba(255,255,255,.035) !important;
+}
+
+.triage-signal-grid article:last-child {
+  border-right: 0 !important;
+}
+
+.signal-risk { --signal: #cf2e2e; }
+.signal-watch { --signal: #ffcc00; }
+.signal-stable { --signal: #2faf5b; }
+
+.triage-signal-grid article span {
+  display: inline-block !important;
+  margin-bottom: 12px !important;
+  color: var(--signal) !important;
+  font-size: 11px !important;
+  font-weight: 950 !important;
+  letter-spacing: .18em !important;
+  text-transform: uppercase !important;
+}
+
+.triage-signal-grid article strong {
+  display: block !important;
+  margin-bottom: 10px !important;
+  color: #fff !important;
+  font-size: 24px !important;
+  font-weight: 650 !important;
+  letter-spacing: -.05em !important;
+}
+
+.triage-signal-grid article small {
+  color: rgba(255,255,255,.72) !important;
+  font-size: 13px !important;
+  line-height: 1.48 !important;
+}
+
+.command-flow-preview {
+  display: grid !important;
+  grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+  background: rgba(255,255,255,.045) !important;
+}
+
+.command-flow-preview span {
+  min-height: 76px !important;
+  padding: 18px 20px !important;
+  color: rgba(255,255,255,.78) !important;
+  border-right: 1px solid rgba(255,255,255,.13) !important;
+  font-size: 14px !important;
+  line-height: 1.3 !important;
+}
+
+.command-flow-preview span:last-child {
+  border-right: 0 !important;
+}
+
+.command-flow-preview strong {
+  display: block !important;
+  margin-bottom: 6px !important;
+  color: var(--skillset-gold) !important;
+  font-size: 12px !important;
+  letter-spacing: .14em !important;
+}
+
+.command-filter-row {
+  display: grid !important;
+  grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  gap: 10px !important;
+  margin: 0 !important;
+  padding: 18px 22px 22px !important;
+  background: rgba(2, 28, 18, .82) !important;
+  border: 0 !important;
+}
+
+.command-filter-row select {
+  min-height: 54px !important;
+  background: rgba(255,255,255,.04) !important;
+  border: 1px solid rgba(255,255,255,.24) !important;
+  color: #fff !important;
+  border-radius: 0 !important;
+}
+
+.product-command-hero + .product-path-strip {
+  max-width: 1260px !important;
+  margin-top: -46px !important;
+  border-bottom-width: 6px !important;
+}
+
+.product-command-hero + .product-path-strip article:first-child {
+  box-shadow: inset 0 -6px 0 var(--skillset-gold) !important;
+}
+
+@media (max-width: 1320px) {
+  .product-command-hero {
+    grid-template-columns: 1fr !important;
+    gap: 44px !important;
+  }
+
+  .command-diagnostic-card {
+    max-width: 860px !important;
+  }
+}
+
+@media (max-width: 760px) {
+  .product-command-hero {
+    padding-top: 54px !important;
+    padding-bottom: 84px !important;
+  }
+
+  .product-command-hero .hero-copy h2 {
+    font-size: clamp(48px, 15vw, 72px) !important;
+  }
+
+  .triage-signal-grid,
+  .command-flow-preview,
+  .command-filter-row {
+    grid-template-columns: 1fr !important;
+  }
+
+  .triage-signal-grid article,
+  .command-flow-preview span {
+    border-right: 0 !important;
+    border-bottom: 1px solid rgba(255,255,255,.13) !important;
+  }
+}

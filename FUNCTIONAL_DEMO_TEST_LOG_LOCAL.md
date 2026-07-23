@@ -1,6 +1,6 @@
 # Functional Demo Test Log
 
-Tested: 2026-07-23T15:48:35.097Z
+Tested: 2026-07-23T16:11:07.523Z
 Live URL: not supplied
 
 | Feature | Expected result | Actual result | Pass/Fail | Fix made |

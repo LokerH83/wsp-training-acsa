@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>SkillSet SA WSP / ATR Command Centre</title>
   <link rel="icon" href="data:,">
-  <link rel="stylesheet" href="./styles.css?v=20260723-skillset-wsp-95b">
+  <link rel="stylesheet" href="./styles.css?v=20260723-skillset-wsp-95c">
   <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
 </head>
 <body>
@@ -45,25 +45,46 @@
       </header>
 
       <section id="overview" class="view active">
-        <div class="executive-hero">
+        <div class="executive-hero product-command-hero">
           <div class="hero-copy">
             <span class="demo-badge" id="heroEyebrow">SkillSet SA · WSP / ATR reporting control</span>
             <h2 id="heroTitle">Turn training spreadsheets into a controlled reporting workflow.</h2>
             <p id="heroIntro">Load a workbook, find planning and evidence gaps, book training, record ATR proof and export management-ready views.</p>
+            <div class="hero-action-row">
+              <button class="primary" data-view-target="workbook">Scan a workbook →</button>
+              <button class="secondary-hero-action" data-view-target="reports">View reporting control ↓</button>
+            </div>
             <small id="heroFootnote">Static demo: workbook inspection happens in this browser. A live pilot would write to SharePoint or Dataverse and report through Power BI.</small>
           </div>
-          <div class="hero-diagnostic-card">
-            <span class="eyebrow">Your first move</span>
-            <h3>Start with the workbook.</h3>
-            <p>The demo should immediately show what is planned, what is achieved, what is missing and what needs management attention.</p>
-            <button class="primary" data-view-target="workbook">Open workbook scanner →</button>
-            <div class="mini-proof-grid" aria-label="Diagnostic signals">
-              <span><strong>01</strong> Demand</span>
-              <span><strong>02</strong> WSP plan</span>
-              <span><strong>03</strong> ATR proof</span>
-              <span><strong>04</strong> Sign-off</span>
+          <div class="hero-diagnostic-card command-diagnostic-card">
+            <div class="command-card-head">
+              <span class="eyebrow">Live workbook triage</span>
+              <strong>Demo control surface</strong>
             </div>
-            <div class="filters dashboard-filters compact-filter-row">
+            <h3>What would management need to trust before submission?</h3>
+            <div class="triage-signal-grid" aria-label="WSP ATR diagnostic signals">
+              <article class="signal-risk">
+                <span>Red</span>
+                <strong>Gaps</strong>
+                <small>Requested but not planned. Achieved without evidence.</small>
+              </article>
+              <article class="signal-watch">
+                <span>Amber</span>
+                <strong>Review</strong>
+                <small>Provider, period, cost or ownership needs confirmation.</small>
+              </article>
+              <article class="signal-stable">
+                <span>Green</span>
+                <strong>Ready</strong>
+                <small>Clean demand, planned activity and ATR proof align.</small>
+              </article>
+            </div>
+            <div class="command-flow-preview" aria-label="Microsoft 365 pilot path">
+              <span><strong>01</strong> Excel intake</span>
+              <span><strong>02</strong> SharePoint control</span>
+              <span><strong>03</strong> Power BI view</span>
+            </div>
+            <div class="filters dashboard-filters compact-filter-row command-filter-row">
               <select id="overviewQuarterFilter" aria-label="Demo quarter"><option>All quarters</option><option>Q1</option><option>Q2</option><option>Q3</option><option>Q4</option></select>
               <select id="overviewProviderFilter" aria-label="Demo provider"><option>All providers</option></select>
             </div>
@@ -366,6 +387,6 @@
   </div>
   <script src="./client-config.js?v=20260723-skillset-wsp-95b"></script>
   <script src="./data/demo-snapshot.js?v=20260723-skillset-wsp-95b"></script>
-  <script src="./app.js?v=20260723-skillset-wsp-95b"></script>
+  <script src="./app.js?v=20260723-skillset-wsp-95c"></script>
 </body>
 </html>
