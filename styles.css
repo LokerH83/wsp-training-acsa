@@ -1,8 +1,8 @@
 :root {
-  --navy: #003f5c;
-  --blue: #006d8f;
-  --purple: #0078a6;
-  --accent: #f5a400;
+  --navy: #063c25;
+  --blue: #0e7a45;
+  --purple: #107c41;
+  --accent: #ffcc00;
   --azure: #0078d4;
   --sunset: #f5a400;
   --ink: #102a3a;
@@ -72,8 +72,9 @@ button { cursor: pointer; }
 .sidebar {
   width: 260px;
   background:
-    linear-gradient(135deg, rgba(245, 164, 0, .9) 0 3px, transparent 3px 100%),
-    linear-gradient(180deg, #004f6f 0%, #003348 100%);
+    linear-gradient(135deg, rgba(255, 204, 0, .9) 0 3px, transparent 3px 100%),
+    radial-gradient(circle at 80% 10%, rgba(14, 122, 69, .45), transparent 34%),
+    linear-gradient(180deg, #063c25 0%, #032b1a 100%);
   color: #fff;
   padding: 18px 14px;
   display: flex;
@@ -97,6 +98,10 @@ button { cursor: pointer; }
   place-items: center;
   overflow: hidden;
   padding: 9px 12px;
+  color: var(--accent);
+  font-weight: 900;
+  font-size: 24px;
+  letter-spacing: -1px;
 }
 .brand-mark img {
   width: 100%;

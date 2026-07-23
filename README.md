@@ -1,4 +1,12 @@
-# ACSA WSP / ATR Reporting Concept Demo
+# SkillSet SA Training Reporting Hub
+
+White-label WSP / ATR reporting concept app for training bookings, submission readiness, action tracking and management reporting.
+
+For the latest white-label configuration notes, see [`WHITE_LABEL_README.md`](WHITE_LABEL_README.md).
+
+For the demo hardening checklist and production conversion roadmap, see [`DEMO_FINISH_AND_PRODUCTION_ROADMAP.md`](DEMO_FINISH_AND_PRODUCTION_ROADMAP.md).
+
+For the release-candidate freeze rule and functional demo test log process, see [`DEMO_RELEASE_FREEZE.md`](DEMO_RELEASE_FREEZE.md).
 
 [![Power Platform Import](https://github.com/LokerH83/wsp-training-acsa/actions/workflows/pack_and_inject.yml/badge.svg)](https://github.com/LokerH83/wsp-training-acsa/actions/workflows/pack_and_inject.yml)
 [![Validation Workflow](https://github.com/LokerH83/wsp-training-acsa/actions/workflows/validate_powerplatform_export.yml/badge.svg)](https://github.com/LokerH83/wsp-training-acsa/actions/workflows/validate_powerplatform_export.yml)

@@ -1,6 +1,6 @@
-const STORAGE_KEY = "acsa-sdf-demo-state-v8";
 const DEMO_DATA = window.ACSA_DEMO_DATA || { employees: [], providers: [], courses: [], requests: [], plans: [], actuals: [], bookings: [] };
 const CLIENT_CONFIG = window.WSP_CLIENT_CONFIG || {};
+const STORAGE_KEY = CLIENT_CONFIG.storageKey || "skillset-wsp-training-hub-v1";
 let state = loadState();
 let stagedRows = [];
 let selectedEmployeeNumber = state.employees[0]?.employeeNumber || "";
@@ -116,23 +116,68 @@ function applyClientBranding() {
   const text = {
     clientPreparedFor: config.preparedFor, clientTagline: config.tagline,
     appTitle: `${config.clientName} ${config.appName}`,
-    appSubtitle: `${config.financialYear} reporting cycle · Synthetic data only · Not official SETA or B-BBEE output.`,
+    appSubtitle: config.subtitle,
     environmentLabel: config.environmentLabel, privacyNotice: config.privacyNotice,
-    heroTitle: `${config.clientName} ${config.appName}`
+    heroEyebrow: config.heroEyebrow,
+    heroTitle: config.heroTitle,
+    heroIntro: config.heroIntro,
+    heroFootnote: config.heroFootnote,
+    sidebarFooterTitle: config.sidebarFooterTitle,
+    sidebarFooterText: config.sidebarFooterText,
+    budgetEstimateNote: config.budgetEstimateNote,
+    workbookIntro: config.workbookIntro
   };
   Object.entries(text).forEach(([id, value]) => { const node = document.getElementById(id); if (node) node.textContent = value; });
   const logo = document.getElementById("clientLogo");
-  if (logo && config.logo) { logo.src = config.logo; logo.alt = config.logoAlt; }
+  const logoFallback = document.getElementById("clientLogoFallback");
+  if (logo && config.logo) {
+    logo.src = config.logo;
+    logo.alt = config.logoAlt;
+    logo.hidden = false;
+    if (logoFallback) logoFallback.hidden = true;
+  } else if (logo) {
+    logo.hidden = true;
+    if (logoFallback) {
+      logoFallback.hidden = false;
+      logoFallback.textContent = config.logoInitials || initialsFrom(config.clientName);
+    }
+  }
 }
 
 function activeClientConfig() {
   return {
-    clientName: "Client", appName: "WSP / ATR Reporting", preparedFor: "Prepared for Client",
-    tagline: "Workforce Skills Planning", logo: "", logoAlt: "Client logo",
-    primaryColor: "#003f5c", secondaryColor: "#006d8f", accentColor: "#f5a400",
+    clientName: "Client",
+    appName: "Training Reporting Hub",
+    preparedFor: "White-label WSP / ATR pilot",
+    tagline: "Training bookings · WSP · ATR reporting",
+    logo: "",
+    logoAlt: "Client logo",
+    logoInitials: "",
+    primaryColor: "#063c25",
+    secondaryColor: "#0e7a45",
+    accentColor: "#ffcc00",
     financialYear: "Current cycle", environmentLabel: "Demo data only",
-    privacyNotice: "This environment contains synthetic records only.", ...CLIENT_CONFIG
+    privacyNotice: "Synthetic records only. A production client version should run inside the client's Microsoft 365 environment.",
+    subtitle: "White-label training reporting workspace · Synthetic data only · Not official SETA or B-BBEE output.",
+    heroEyebrow: "White-label reporting system",
+    heroTitle: "Turn training records into a controlled reporting workflow.",
+    heroIntro: "A configurable WSP / ATR reporting hub for organisations that still depend on spreadsheets, manual bookings and scattered evidence.",
+    heroFootnote: "Use this public demo for walkthroughs only. Production data belongs in a client-controlled Microsoft 365 tenant.",
+    sidebarFooterTitle: "White-label ready",
+    sidebarFooterText: "Client-specific branding and wording",
+    budgetEstimateNote: "Demo planning estimate only. Final financial, SETA or compliance values must be confirmed through the client's approved process.",
+    workbookIntro: "Stage the sample workbook or upload a safe CSV export. Do not upload private or client-identifiable records into this public demo.",
+    ...CLIENT_CONFIG
   };
+}
+
+function initialsFrom(value) {
+  return String(value || "Client")
+    .split(/\s+/)
+    .filter(Boolean)
+    .slice(0, 2)
+    .map(part => part[0]?.toUpperCase())
+    .join("") || "C";
 }
 
 function issueId(...parts) {
@@ -831,7 +876,7 @@ function exportFilteredReport() {
   const blob = new Blob([reportRowsAsCsv(rows)], { type: "text/csv;charset=utf-8" });
   const link = document.createElement("a");
   link.href = URL.createObjectURL(blob);
-  link.download = `acsa-wsp-atr-report-${date}.csv`;
+  link.download = `wsp-atr-report-${date}.csv`;
   document.body.appendChild(link);
   link.click();
   URL.revokeObjectURL(link.href);

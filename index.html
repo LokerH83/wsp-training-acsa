@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>WSP / ATR Reporting</title>
+  <title>SkillSet SA Training Reporting Hub</title>
   <link rel="icon" href="data:,">
   <link rel="stylesheet" href="./styles.css?v=20260722-submission-workspace">
 </head>
@@ -11,8 +11,8 @@
   <div class="app">
     <aside class="sidebar">
       <div class="brand">
-        <div class="brand-mark acsa-mark"><img id="clientLogo" src="./assets/acsa-cropped.png" alt="Client logo"></div>
-        <div><strong id="clientPreparedFor">Prepared for ACSA</strong><span id="clientTagline">Workforce Skills Planning</span></div>
+        <div class="brand-mark"><img id="clientLogo" src="" alt="" hidden><span id="clientLogoFallback">SS</span></div>
+        <div><strong id="clientPreparedFor">White-label WSP / ATR pilot</strong><span id="clientTagline">Training bookings · WSP · ATR reporting</span></div>
       </div>
       <nav class="nav" aria-label="Main navigation">
         <button class="nav-item active" data-view="overview"><span class="ico">O</span>Overview</button>
@@ -22,14 +22,14 @@
         <button class="nav-item" data-view="submission"><span class="ico">S</span>Submission Workspace</button>
         <button class="nav-item" data-view="reports"><span class="ico">R</span>Reports</button>
       </nav>
-      <div class="sidebar-footer"><span class="dataverse-dot"></span><div><strong>Demo only</strong><span>No private records</span></div></div>
+      <div class="sidebar-footer"><span class="dataverse-dot"></span><div><strong id="sidebarFooterTitle">White-label ready</strong><span id="sidebarFooterText">Client-specific branding and wording</span></div></div>
     </aside>
 
     <main class="main">
       <header class="topbar">
-        <div><h1 id="appTitle">ACSA WSP / ATR Reporting Concept Demo</h1><p id="appSubtitle">Synthetic data only. Not production. Not official SETA or B-BBEE output.</p></div>
+        <div><h1 id="appTitle">SkillSet SA Training Reporting Hub</h1><p id="appSubtitle">White-label training reporting workspace · Synthetic data only · Not official SETA or B-BBEE output.</p></div>
         <div class="top-actions">
-          <div class="mode-badge"><strong id="environmentLabel">Demo data only</strong><span id="privacyNotice">This environment demonstrates the SDF process and contains synthetic records only.</span></div>
+          <div class="mode-badge"><strong id="environmentLabel">Demo data only</strong><span id="privacyNotice">Synthetic records only. A production client version should run inside the client's Microsoft 365 environment.</span></div>
           <button class="icon-button" id="resetDemoTop">Reset</button>
         </div>
       </header>
@@ -37,10 +37,10 @@
       <section id="overview" class="view active">
         <div class="executive-hero">
           <div class="hero-copy">
-            <span class="demo-badge">Demo data only</span>
-            <h2 id="heroTitle">ACSA WSP / ATR Reporting Concept Demo</h2>
-            <p>A demo-safe view of how workbook-based training data can support WSP planning, ATR tracking and management reporting.</p>
-            <small>Synthetic records only. No private ACSA employee data is used.</small>
+            <span class="demo-badge" id="heroEyebrow">White-label reporting system</span>
+            <h2 id="heroTitle">Turn training records into a controlled reporting workflow.</h2>
+            <p id="heroIntro">A configurable WSP / ATR reporting hub for organisations that still depend on spreadsheets, manual bookings and scattered evidence.</p>
+            <small id="heroFootnote">Use this public demo for walkthroughs only. Production data belongs in a client-controlled Microsoft 365 tenant.</small>
           </div>
           <div class="filters dashboard-filters">
             <select id="overviewQuarterFilter" aria-label="Demo quarter"><option>All quarters</option><option>Q1</option><option>Q2</option><option>Q3</option><option>Q4</option></select>
@@ -97,7 +97,7 @@
         <div class="dashboard-grid overview-dashboard priority-dashboard">
           <section class="panel financial-impact">
             <div class="panel-head">
-              <div><h3>Budget / Reporting Estimate</h3><p>Demo planning estimate only. Final financial, SETA or compliance values must be confirmed through ACSA's approved process.</p></div>
+              <div><h3>Budget / Reporting Estimate</h3><p id="budgetEstimateNote">Demo planning estimate only. Final financial, SETA or compliance values must be confirmed through the client's approved process.</p></div>
             </div>
             <div class="kpi-grid relationship-kpis financial-kpis" id="financialExposure"></div>
           </section>
@@ -146,7 +146,7 @@
 
       <section id="workbook" class="view">
         <div class="toolbar">
-          <div><h2>Load Workbook</h2><p>Stage the sample workbook or upload a safe CSV export. Do not upload private ACSA records into this public view.</p></div>
+          <div><h2>Load Workbook</h2><p id="workbookIntro">Stage the sample workbook or upload a safe CSV export. Do not upload private or client-identifiable records into this public demo.</p></div>
         </div>
         <div class="import-grid import-workbench">
           <section class="panel import-drop">

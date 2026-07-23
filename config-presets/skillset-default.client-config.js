@@ -1,4 +1,5 @@
-// White-label settings. Copy this file per deployment and change only these values.
+// SkillSet SA default white-label preset.
+// To use: copy this file over ../client-config.js for a neutral SkillSet demo.
 window.WSP_CLIENT_CONFIG = {
   clientName: "SkillSet SA",
   appName: "Training Reporting Hub",
