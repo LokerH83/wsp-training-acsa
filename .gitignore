@@ -18,6 +18,9 @@ _OLD_DO_NOT_PUBLISH/
 *.xls
 dataverse-snapshot.js
 
+# Local workbook / Power BI build assets. Keep these outside the public static demo.
+Excel Demo/
+
 !sample-workbooks/ACSA_SDF_Demo_Workbook.csv
 !exports/
 !exports/README.md
