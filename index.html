@@ -207,15 +207,25 @@
               <li>Workbook structure ready for Microsoft 365</li>
             </ul>
           </div>
-          <section class="panel import-drop scanner-drop-card">
-            <div><span class="eyebrow">Workbook bridge</span><h3>Drop the workbook here</h3><p>Use the sample workbook, upload CSV, or load a safe Excel workbook directly in your browser.</p></div>
-            <div class="workbook-steps" id="workbookSteps" aria-label="Workbook loading steps"></div>
-            <div class="quick-actions">
-              <button class="primary" id="loadSampleWorkbook">Load Sample Workbook</button>
-              <label class="connector-row workbook-file-drop" id="workbookDropZone"><input id="csvUpload" type="file" accept=".xlsx,.xlsm,.csv"><span class="connector-icon">XLS</span><span><strong>Upload workbook</strong><small>.xlsx, .xlsm or .csv · processed locally</small></span></label>
-              <button id="applyStaging">Apply To Staging</button>
+          <section class="panel import-drop scanner-drop-card scanner-grade-loader">
+            <div class="scanner-loader-copy">
+              <span class="eyebrow">Workbook scanner</span>
+              <h3>Start with the file.</h3>
+              <p>Drop a training workbook here and the demo immediately surfaces planning, ATR, evidence and reporting-control risks before anything is applied to the dashboard.</p>
             </div>
-            <p class="security-note" id="workbookMessage">No workbook staged yet. Excel files are inspected in this browser and are not uploaded by the demo.</p>
+            <label class="workbook-file-drop scanner-upload-zone" id="workbookDropZone">
+              <input id="csvUpload" type="file" accept=".xlsx,.xlsm,.csv">
+              <span class="excel-sheet-icon" aria-hidden="true">X</span>
+              <strong id="workbookDropTitle">Drop a workbook here</strong>
+              <small id="workbookDropSub">or choose an .xlsx, .xlsm or .csv file</small>
+              <em id="workbookDropMeta">Processed locally in this browser · not uploaded to a server</em>
+            </label>
+            <div class="loader-actions">
+              <button class="sample-action" id="loadSampleWorkbook">Use sample workbook</button>
+              <button id="applyStaging">Apply scanned workbook to demo</button>
+            </div>
+            <div class="workbook-steps" id="workbookSteps" aria-label="Workbook loading steps"></div>
+            <p class="security-note" id="workbookMessage">No workbook staged yet. Choose a workbook to see instant findings, then apply it when you are ready to refresh the demo.</p>
           </section>
         </div>
         <div class="import-grid import-workbench import-findings-grid">

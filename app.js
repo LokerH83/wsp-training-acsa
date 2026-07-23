@@ -536,6 +536,10 @@ function workbookDiagnosticHtml(rows = []) {
 function renderWorkbook() {
   const hasRows = stagedRows.length > 0;
   const isApplied = workbookStageState === "applied";
+  const dropZone = document.getElementById("workbookDropZone");
+  const dropTitle = document.getElementById("workbookDropTitle");
+  const dropSub = document.getElementById("workbookDropSub");
+  const dropMeta = document.getElementById("workbookDropMeta");
   const detectedColumns = workbookMeta?.columns?.length ? workbookMeta.columns : (stagedRows[0] ? Object.keys(stagedRows[0]) : requiredColumns);
   const detectedColumnSet = new Set(detectedColumns);
   const currentCounts = {
@@ -551,6 +555,23 @@ function renderWorkbook() {
     return acc;
   }, { requested: 0, planned: 0, achieved: 0 }) : null;
   if (stagedCounts) stagedCounts.total = stagedCounts.requested + stagedCounts.planned + stagedCounts.achieved;
+  if (dropZone) {
+    dropZone.classList.toggle("has-workbook", hasRows);
+    dropZone.classList.toggle("is-applied", isApplied);
+  }
+  if (dropTitle) dropTitle.textContent = hasRows ? (workbookMeta?.fileName || "Workbook scanned") : "Drop a workbook here";
+  if (dropSub) {
+    dropSub.textContent = hasRows
+      ? `${stagedRows.length.toLocaleString("en-ZA")} rows inspected locally · findings visible below`
+      : "or choose an .xlsx, .xlsm or .csv file";
+  }
+  if (dropMeta) {
+    dropMeta.textContent = isApplied
+      ? "Applied to the demo dashboard · choose another workbook to inspect again"
+      : hasRows
+        ? "Not applied yet · review the findings, then refresh the demo dashboard"
+        : "Processed locally in this browser · not uploaded to a server";
+  }
   document.getElementById("workbookSteps").innerHTML = [
     ["1", "Load workbook", hasRows || isApplied ? "complete" : "active"],
     ["2", "Expose findings", hasRows && !isApplied ? "active" : isApplied ? "complete" : ""],
@@ -579,7 +600,7 @@ function renderWorkbook() {
     if (!button) return;
     button.disabled = !hasRows || isApplied;
     button.classList.toggle("primary", hasRows && !isApplied);
-    button.textContent = isApplied ? "Applied To Staging" : "Apply To Staging";
+    button.textContent = isApplied ? "Applied To Demo" : "Apply scanned workbook to demo";
   });
 }
 
@@ -1290,6 +1311,8 @@ async function stageWorkbookFile(file) {
   const message = document.getElementById("workbookMessage");
   if (!file) return;
   try {
+    workbookStageState = "loading";
+    renderWorkbook();
     message.textContent = `Reading ${file.name} locally in your browser...`;
     const lower = file.name.toLowerCase();
     const result = lower.endsWith(".csv")
@@ -1624,6 +1647,25 @@ document.getElementById("csvUpload").addEventListener("change", async event => {
   if (file) await stageWorkbookFile(file);
   event.target.value = "";
 });
+const workbookDropZone = document.getElementById("workbookDropZone");
+if (workbookDropZone) {
+  ["dragenter", "dragover"].forEach(eventName => {
+    workbookDropZone.addEventListener(eventName, event => {
+      event.preventDefault();
+      workbookDropZone.classList.add("dragover");
+    });
+  });
+  ["dragleave", "drop"].forEach(eventName => {
+    workbookDropZone.addEventListener(eventName, event => {
+      event.preventDefault();
+      workbookDropZone.classList.remove("dragover");
+    });
+  });
+  workbookDropZone.addEventListener("drop", async event => {
+    const file = event.dataTransfer?.files?.[0];
+    if (file) await stageWorkbookFile(file);
+  });
+}
 document.getElementById("applyStaging").addEventListener("click", applyWorkbookRows);
 document.getElementById("applyStagingPreview").addEventListener("click", applyWorkbookRows);
 document.getElementById("resetDemoTop").addEventListener("click", resetDemo);

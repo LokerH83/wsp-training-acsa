@@ -4803,6 +4803,105 @@ tbody tr:hover {
   margin-top: 20px !important;
 }
 
+.scanner-grade-loader {
+  display: grid !important;
+  gap: 18px !important;
+}
+
+.scanner-loader-copy {
+  max-width: 560px !important;
+}
+
+.scanner-upload-zone {
+  min-height: 280px !important;
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 11px !important;
+  padding: 34px !important;
+  border: 2px dashed rgba(255, 255, 255, .38) !important;
+  background:
+    radial-gradient(circle at 50% 28%, rgba(255, 255, 255, .1), transparent 34%),
+    rgba(255, 255, 255, .055) !important;
+  color: #fff !important;
+  text-align: center !important;
+  cursor: pointer !important;
+  transition: transform .18s ease, border-color .18s ease, background .18s ease, box-shadow .18s ease !important;
+}
+
+.scanner-upload-zone input {
+  display: none !important;
+}
+
+.scanner-upload-zone:hover,
+.scanner-upload-zone.dragover {
+  transform: translateY(-2px) !important;
+  border-color: var(--skillset-gold) !important;
+  background:
+    radial-gradient(circle at 50% 28%, rgba(255, 230, 70, .14), transparent 34%),
+    rgba(255, 255, 255, .08) !important;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, .22) !important;
+}
+
+.scanner-upload-zone.has-workbook {
+  border-style: solid !important;
+  border-color: rgba(78, 213, 126, .72) !important;
+}
+
+.scanner-upload-zone.is-applied {
+  border-color: var(--skillset-gold) !important;
+}
+
+.excel-sheet-icon {
+  width: 74px !important;
+  height: 86px !important;
+  display: grid !important;
+  place-items: center !important;
+  background: linear-gradient(135deg, #2d8c4a, #176f38) !important;
+  color: #fff !important;
+  font-size: 38px !important;
+  font-weight: 900 !important;
+  line-height: 1 !important;
+  clip-path: polygon(0 0, 72% 0, 100% 25%, 100% 100%, 0 100%) !important;
+  box-shadow: 0 16px 32px rgba(0, 0, 0, .25) !important;
+}
+
+.scanner-upload-zone strong {
+  color: #fff !important;
+  font-size: clamp(24px, 2vw, 34px) !important;
+  font-weight: 700 !important;
+  letter-spacing: -.04em !important;
+}
+
+.scanner-upload-zone small {
+  color: rgba(255, 255, 255, .82) !important;
+  font-size: 14px !important;
+}
+
+.scanner-upload-zone em {
+  margin-top: 4px !important;
+  color: rgba(255, 255, 255, .62) !important;
+  font-size: 12px !important;
+  font-style: normal !important;
+}
+
+.loader-actions {
+  display: grid !important;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.25fr) !important;
+  gap: 12px !important;
+}
+
+.loader-actions button {
+  min-height: 48px !important;
+}
+
+.sample-action {
+  background: rgba(255, 255, 255, .08) !important;
+  border: 1px solid rgba(255, 255, 255, .22) !important;
+  color: #fff !important;
+}
+
 .scanner-drop-card .workbook-file-drop {
   border: 1px dashed rgba(255, 255, 255, .35) !important;
   background: rgba(255, 255, 255, .06) !important;
@@ -5436,6 +5535,37 @@ button:not(.nav-item):not(.primary):not(.icon-button),
 .connector-row small,
 .security-note {
   color: rgba(255,255,255,.68) !important;
+}
+
+.scanner-drop-card .scanner-upload-zone {
+  min-height: 280px !important;
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 11px !important;
+  padding: 34px !important;
+  border: 2px dashed rgba(255,255,255,.38) !important;
+  background:
+    radial-gradient(circle at 50% 28%, rgba(255,255,255,.1), transparent 34%),
+    rgba(255,255,255,.055) !important;
+}
+
+.scanner-drop-card .scanner-upload-zone:hover,
+.scanner-drop-card .scanner-upload-zone.dragover {
+  border-color: var(--skillset-gold) !important;
+  background:
+    radial-gradient(circle at 50% 28%, rgba(255, 230, 70, .14), transparent 34%),
+    rgba(255,255,255,.08) !important;
+}
+
+.scanner-drop-card .scanner-upload-zone.has-workbook {
+  border-style: solid !important;
+  border-color: rgba(78, 213, 126, .72) !important;
+}
+
+.scanner-drop-card .scanner-upload-zone.is-applied {
+  border-color: var(--skillset-gold) !important;
 }
 
 .import-impact-panel {
