@@ -14,7 +14,7 @@ Note: the script will prompt for secret values if missing. Secrets are sent to G
 #>
 
 param(
-  [string]$Repo = 'LokerH83/wsp-training-acsa',
+  [string]$Repo = 'LokerH83/skillset-wsp-demo',
   [string]$Branch = 'add-unpacked-solution',
   [int]$PollSeconds = 10,
   [int]$TimeoutMinutes = 20

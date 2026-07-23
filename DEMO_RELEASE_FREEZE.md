@@ -53,7 +53,7 @@ Run:
 node --check app.js
 node --check client-config.js
 node scripts/static-smoke.mjs
-node scripts/functional-demo-test.mjs https://lokerh83.github.io/wsp-training-acsa
+node scripts/functional-demo-test.mjs https://lokerh83.github.io/skillset-wsp-demo
 ```
 
 The generated test log is:

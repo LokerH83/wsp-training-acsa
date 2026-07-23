@@ -42,7 +42,7 @@ It can inspect local files in the browser and demonstrate the workflow, but a pr
 Run these checks after changes:
 
 ```powershell
-$repo = "C:\Users\ThinkPad P1\OneDrive\Documents\GitHub\wsp-training-acsa"
+$repo = "C:\Users\ThinkPad P1\OneDrive\Documents\GitHub\skillset-wsp-demo"
 $node = "C:\Users\ThinkPad P1\.cache\codex-runtimes\codex-primary-runtime\dependencies\node\bin\node.exe"
 $git = "C:\Users\ThinkPad P1\AppData\Local\GitHubDesktop\app-3.6.2\resources\app\git\cmd\git.exe"
 Set-Location $repo

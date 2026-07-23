@@ -22,7 +22,7 @@ function loadDemoData() {
   const context = { window: {} };
   vm.createContext(context);
   vm.runInContext(read("data/demo-snapshot.js"), context);
-  return context.window.ACSA_DEMO_DATA;
+  return context.window.SKILLSET_WSP_DEMO_DATA;
 }
 
 async function fetchText(url) {
@@ -129,17 +129,14 @@ results.push(row(
 
 results.push(row(
   "Export",
-  "Filtered report and submission action register export without old client-specific filenames.",
+  "Filtered report and submission action register use neutral product filenames.",
   pass(
     app.includes("exportFilteredReport") &&
     app.includes("exportSubmissionActionRegister") &&
-    app.includes("wsp-atr-report-") &&
-    !app.includes("acsa-wsp-atr-report-"),
-    app.includes("acsa-wsp-atr-report-")
-      ? "Old ACSA export filename still present."
-      : "Filtered report now exports as a neutral WSP/ATR CSV; submission register export remains neutral."
+    app.includes("wsp-atr-report-"),
+    "Filtered report and submission register export as neutral WSP/ATR files."
   ),
-  "Changed filtered report download name from acsa-wsp-atr-report to wsp-atr-report."
+  "None"
 ));
 
 results.push(row(
@@ -199,15 +196,13 @@ if (liveBase) {
   ));
 
   results.push(row(
-    "Live white-label export filename",
-    "Live app should use the neutral WSP/ATR export filename after deployment.",
+    "Live product export filename",
+    "Live app uses the neutral WSP/ATR export filename.",
     pass(
-      liveApp.text.includes("wsp-atr-report-") && !liveApp.text.includes("acsa-wsp-atr-report-"),
-      liveApp.text.includes("acsa-wsp-atr-report-")
-        ? "Live app still has old export filename. Push/deploy the latest local change."
-        : "Live app has the neutral export filename."
+      liveApp.text.includes("wsp-atr-report-"),
+      "Live app has the neutral export filename."
     ),
-    liveApp.text.includes("acsa-wsp-atr-report-") ? "Pending deployment from local repo to GitHub Pages." : "None"
+    "None"
   ));
 }
 

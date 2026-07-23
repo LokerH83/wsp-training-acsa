@@ -31,7 +31,7 @@ Use this checklist before publishing or presenting the demo.
   - GitHub Pages is configured to serve from the `main` branch/root folder.
 - Confirm the live site publishes successfully.
 - Confirm the public URL works:
-  - `https://lokerh83.github.io/wsp-training-acsa/`
+  - `https://lokerh83.github.io/skillset-wsp-demo/`
 
 ## 4. Confirm the Power Platform import (if needed)
 

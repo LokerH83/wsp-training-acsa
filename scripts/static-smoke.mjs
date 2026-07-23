@@ -1,8 +1,11 @@
-import { readFileSync } from "node:fs";
+import { existsSync, readFileSync } from "node:fs";
 
 const index = readFileSync(new URL("../index.html", import.meta.url), "utf8");
 const app = readFileSync(new URL("../app.js", import.meta.url), "utf8");
 const styles = readFileSync(new URL("../styles.css", import.meta.url), "utf8");
+const alignmentStyles = readFileSync(new URL("../scanner-alignment.css", import.meta.url), "utf8");
+const config = readFileSync(new URL("../client-config.js", import.meta.url), "utf8");
+const officialLogo = new URL("../assets/skillset-sa-tree.png", import.meta.url);
 
 const requiredIds = [
   "submissionDecisionCard",
@@ -27,6 +30,19 @@ for (const marker of ["function dataQualityIssues", "function renderSubmission",
 
 for (const marker of [".submission-status-grid", ".submission-register", ".submission-signoff"]) {
   if (!styles.includes(marker)) failures.push(`Missing workspace style: ${marker}`);
+}
+
+if (!config.includes('logo: "./assets/skillset-sa-tree.png"')) {
+  failures.push("SkillSet configuration must use the official tree logo asset.");
+}
+if (!existsSync(officialLogo)) failures.push("Official SkillSet tree logo asset is missing.");
+if (index.includes("skillset-leaf")) failures.push("Invented SkillSet logo artwork must not appear in the public shell.");
+for (const marker of ["ecosystem-links", "ecosystemNextStep", "Free Risk Scanner", "Reporting Rescue Review"]) {
+  if (!index.includes(marker)) failures.push(`Missing SkillSet ecosystem marker: ${marker}`);
+}
+if (!index.includes("scanner-alignment.css")) failures.push("Scanner alignment stylesheet is not loaded.");
+for (const marker of [".ecosystem-row", ".workbook-mapping-layout", ".ecosystem-handoff"]) {
+  if (!alignmentStyles.includes(marker)) failures.push(`Missing scanner alignment style: ${marker}`);
 }
 
 const ids = [...index.matchAll(/\sid="([^"]+)"/g)].map(match => match[1]);

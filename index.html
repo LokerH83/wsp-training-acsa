@@ -3,28 +3,30 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>SkillSet SA WSP / ATR Command Centre</title>
+  <title>SkillSet WSP / ATR Demo</title>
   <link rel="icon" href="data:,">
   <link rel="stylesheet" href="./styles.css?v=20260723-skillset-wsp-95c">
+  <link rel="stylesheet" href="./scanner-alignment.css?v=20260723-skillset-final">
   <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
 </head>
 <body>
   <div class="app">
     <aside class="sidebar">
-      <div class="brand">
+      <div class="ecosystem-row">
+      <a class="brand" href="https://www.skillsetsa.com/" target="_blank" rel="noopener" aria-label="Visit SkillSet SA">
         <div class="brand-mark skillset-mark">
           <img id="clientLogo" src="" alt="" hidden>
-          <span id="clientLogoFallback" class="skillset-fallback-mark" aria-label="SkillSet SA">
-            <span class="skillset-leaf leaf-a"></span>
-            <span class="skillset-leaf leaf-b"></span>
-            <span class="skillset-leaf leaf-c"></span>
-            <span class="skillset-leaf leaf-d"></span>
-            <span class="skillset-trunk"></span>
-          </span>
+          <span id="clientLogoFallback" class="skillset-fallback-mark" aria-label="SkillSet SA">SkillSet SA</span>
         </div>
         <div><strong id="clientPreparedFor">SkillSet SA</strong><span id="clientTagline">Reporting · Analytics · Insight</span></div>
+      </a>
+      <nav class="ecosystem-links" aria-label="SkillSet SA ecosystem">
+        <a href="https://www.skillsetsa.com/" target="_blank" rel="noopener">SkillSet SA</a>
+        <a href="https://scanner.skillsetsa.com/" target="_blank" rel="noopener">Free Risk Scanner</a>
+        <a class="ecosystem-review-link" href="https://www.skillsetsa.com/reporting-rescue-review/" target="_blank" rel="noopener">Book a Discussion</a>
+      </nav>
       </div>
-      <nav class="nav" aria-label="Main navigation">
+      <nav class="nav app-nav" aria-label="Demo navigation">
         <button class="nav-item active" data-view="overview"><span class="ico">C</span>Command Centre</button>
         <button class="nav-item" data-view="workbook"><span class="ico">W</span>Workbook Scanner</button>
         <button class="nav-item" data-view="training"><span class="ico">T</span>Training Workflow</button>
@@ -37,7 +39,7 @@
 
     <main class="main">
       <header class="topbar">
-          <div><h1 id="appTitle">SkillSet SA WSP / ATR Command Centre</h1><p id="appSubtitle">Workbook scan · training workflow · reporting control · Microsoft 365 pilot.</p></div>
+          <div><h1 id="appTitle">SkillSet WSP / ATR Demo</h1><p id="appSubtitle">Workbook scan · training workflow · reporting control · Microsoft 365 pilot.</p></div>
         <div class="top-actions">
           <div class="mode-badge"><strong id="environmentLabel">Static sales demo</strong><span id="privacyNotice">No client data is stored here. Production belongs inside Microsoft 365.</span></div>
           <button class="icon-button" id="resetDemoTop">Reset</button>
@@ -232,15 +234,30 @@
           <section class="panel import-impact-panel"><div class="panel-head"><h3>Instant Workbook Findings</h3><p>What the file says before anyone starts manually rebuilding reports.</p></div><div id="importImpact" class="issue-list"></div></section>
           <section class="panel import-next-step-panel"><div class="panel-head"><h3>What happens next</h3></div><div class="scanner-next-step"><span>01</span><strong>Scan the workbook</strong><p>Map rows into requested, planned and achieved activity.</p></div><div class="scanner-next-step"><span>02</span><strong>Repair the process</strong><p>Turn workbook findings into actions, ownership and sign-off.</p></div><div class="scanner-next-step"><span>03</span><strong>Move to Microsoft 365</strong><p>Replace fragile workbook dependency with governed SharePoint / Dataverse workflow.</p></div></section>
         </div>
-        <div class="report-grid report-grid-2">
-          <section class="panel"><div class="panel-head"><h3>Detected Columns</h3></div><div id="detectedColumns" class="mapping-preview"></div></section>
-          <section class="panel"><div class="panel-head"><h3>Required Field Checklist</h3></div><div id="fieldChecklist" class="checklist"></div></section>
-        </div>
+        <section class="panel workbook-mapping-panel">
+          <div class="panel-head">
+            <div>
+              <span class="eyebrow">Workbook structure</span>
+              <h3>Column mapping summary</h3>
+              <p>Review the mapped structure first. Open the detailed checklist only when a field needs investigation.</p>
+            </div>
+          </div>
+          <div class="workbook-mapping-layout">
+            <div>
+              <h4>Detected and mapped columns</h4>
+              <div id="detectedColumns" class="mapping-preview"></div>
+            </div>
+            <details class="field-checklist-details">
+              <summary>View required field checklist</summary>
+              <div id="fieldChecklist" class="checklist"></div>
+            </details>
+          </div>
+        </section>
         <section class="panel table-panel" id="importPreviewPanel"><div class="panel-head"><h3>Clean Import Preview</h3><button id="applyStagingPreview">Apply To Staging</button></div><div class="table-wrap"><table><thead><tr><th>Employee</th><th>Course</th><th>Requested</th><th>Planned</th><th>Achieved</th><th>Review</th></tr></thead><tbody id="importPreview"></tbody></table></div></section>
       </section>
 
       <section id="training" class="view">
-        <div class="toolbar"><div><h2>Manage Training</h2><p>Add requested training, planned WSP and achieved ATR activity.</p></div></div>
+        <div class="toolbar editorial-toolbar"><div><span class="section-label">Operational workflow</span><h2>Manage Training</h2><p>Move from demand to WSP planning and ATR evidence without rebuilding the workbook every cycle.</p></div></div>
         <div class="form-layout">
           <form id="trainingForm" class="panel form-panel">
             <label>Action<select name="recordType"><option value="request">Add Requested / Suggested Training</option><option value="plan">Add Planned WSP Intervention</option><option value="actual">Record Achieved ATR Activity</option></select></label>
@@ -392,6 +409,19 @@
           <div class="panel-head"><div><h3>Management Matrix</h3><p>Exports use demo data only and reflect the currently selected filters.</p></div><div class="report-actions"><button id="resetReportFilters">Reset Filters</button><button id="copyExecutiveSummaryReports">Copy Executive Summary</button><button id="copyFilteredReport">Copy Filtered Table</button><button id="exportFilteredReport">Export Filtered Report</button></div></div>
           <div class="table-wrap"><table><thead><tr><th>Region / Cluster</th><th>Division</th><th>Department</th><th>Provider</th><th>Course / Intervention</th><th>Sex / Gender</th><th>Race</th><th>Age Band</th><th>Disability</th><th>Requested / Suggested</th><th>Planned WSP</th><th>Achieved ATR</th><th>Requested Not Planned</th><th>Planned Not Achieved</th><th>Achieved Not Planned</th><th>Completion %</th><th>Review Items</th><th>Status</th><th>Booking Status</th></tr></thead><tbody id="reportRows"></tbody></table></div>
         </section>
+      </section>
+
+      <section class="ecosystem-handoff" aria-labelledby="ecosystemNextStep">
+        <div>
+          <span class="section-label">Choose the smallest useful next step</span>
+          <h2 id="ecosystemNextStep">Turn the demo into an evidence-led reporting conversation.</h2>
+          <p>Use the free scanner for an immediate risk view, or book a Reporting Rescue Review when the workbook, workflow and management reporting need deeper investigation.</p>
+        </div>
+        <div class="ecosystem-handoff-actions">
+          <a class="handoff-primary" href="https://scanner.skillsetsa.com/" target="_blank" rel="noopener">Open Free Risk Scanner ↗</a>
+          <a class="handoff-secondary" href="https://www.skillsetsa.com/reporting-rescue-review/" target="_blank" rel="noopener">Book a Reporting Rescue Review ↗</a>
+        </div>
+        <small>Static demonstration only. A production implementation would use Microsoft 365 authentication, SharePoint or Dataverse, governed workflows and Power BI.</small>
       </section>
     </main>
   </div>

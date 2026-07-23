@@ -37,7 +37,7 @@ Rationale: Prove the reporting logic and data structure before investing in the 
 
 ## 6. Pricing
 
-Use the latest approved pricing from `docs/ACSA_THREE_TIER_PROPOSAL.md` or the signed quote.
+Use the latest SkillSet SA approved pricing schedule or the signed quote.
 
 ## 7. Support
 

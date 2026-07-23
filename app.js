@@ -1,4 +1,4 @@
-const DEMO_DATA = window.ACSA_DEMO_DATA || { employees: [], providers: [], courses: [], requests: [], plans: [], actuals: [], bookings: [] };
+const DEMO_DATA = window.SKILLSET_WSP_DEMO_DATA || { employees: [], providers: [], courses: [], requests: [], plans: [], actuals: [], bookings: [] };
 const CLIENT_CONFIG = window.WSP_CLIENT_CONFIG || {};
 const STORAGE_KEY = CLIENT_CONFIG.storageKey || "skillset-wsp-training-hub-v1";
 let state = loadState();
@@ -114,10 +114,10 @@ function applyClientBranding() {
   document.documentElement.style.setProperty("--navy", config.primaryColor);
   document.documentElement.style.setProperty("--blue", config.secondaryColor);
   document.documentElement.style.setProperty("--accent", config.accentColor);
-  document.title = `${config.clientName} ${config.appName}`;
+  document.title = config.appName;
   const text = {
     clientPreparedFor: config.preparedFor, clientTagline: config.tagline,
-    appTitle: `${config.clientName} ${config.appName}`,
+    appTitle: config.appName,
     appSubtitle: config.subtitle,
     environmentLabel: config.environmentLabel, privacyNotice: config.privacyNotice,
     heroEyebrow: config.heroEyebrow,
@@ -152,7 +152,7 @@ function applyClientBranding() {
 function activeClientConfig() {
   return {
     clientName: "Client",
-    appName: "Training Reporting Hub",
+    appName: "SkillSet WSP / ATR Demo",
     preparedFor: "White-label WSP / ATR pilot",
     tagline: "Training bookings · WSP · ATR reporting",
     logo: "",
@@ -725,7 +725,7 @@ function hydrateProviderFilters() {
 function relevantCategoriesForEmployee(person) {
   const text = [person.department, person.division, person.regionCluster, person.jobTitle].join(" ").toLowerCase();
   if (text.includes("passenger") || text.includes("customer")) return ["Service", "Operations", "Safety", "Digital"];
-  if (text.includes("airside") || text.includes("airport") || text.includes("operations")) return ["Operations", "Safety", "Technical", "Service"];
+  if (text.includes("operational") || text.includes("operations")) return ["Operations", "Safety", "Technical", "Service"];
   if (text.includes("corporate") || text.includes("finance") || text.includes("admin")) return ["Digital", "Leadership", "Service"];
   if (text.includes("human") || text.includes("hr") || text.includes("people")) return ["Leadership", "Digital", "Service"];
   if (text.includes("technical") || text.includes("maintenance") || text.includes("rescue") || text.includes("fire")) return ["Technical", "Safety", "Operations"];

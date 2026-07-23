@@ -4,7 +4,7 @@
 
 Purpose: Clean and stabilise the workbook process before dashboards or apps.
 
-Indicative investment: See `docs/ACSA_THREE_TIER_PROPOSAL.md`.
+Indicative investment: Use the current SkillSet SA approved pricing schedule.
 
 ## Tier 2: Excel + Power BI Reporting
 
@@ -14,13 +14,13 @@ Status: [Needs Review]
 
 Recommendation: Tier 2 is the recommended starting point because it proves the reporting logic before the client invests in full workflow automation.
 
-Indicative investment: See `docs/ACSA_THREE_TIER_PROPOSAL.md`.
+Indicative investment: Use the current SkillSet SA approved pricing schedule.
 
 ## Tier 3: Full Microsoft App Build
 
 Purpose: Build the production Power Apps / Dataverse workflow for capture, review, planning, bookings, evidence and reporting.
 
-Indicative investment: See `docs/ACSA_THREE_TIER_PROPOSAL.md`.
+Indicative investment: Use the current SkillSet SA approved pricing schedule.
 
 ## Monthly Support
 
@@ -28,7 +28,7 @@ Indicative investment: See `docs/ACSA_THREE_TIER_PROPOSAL.md`.
 - Managed reporting support
 - App support / change requests
 
-Support ranges are listed in `docs/ACSA_THREE_TIER_PROPOSAL.md` and should be confirmed before sending a formal quote.
+Support ranges must be confirmed against the current approved pricing schedule before sending a formal quote.
 
 ## Client Responsibilities
 

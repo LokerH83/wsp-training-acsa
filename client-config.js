@@ -1,10 +1,10 @@
 // White-label settings. Copy this file per deployment and change only these values.
 window.WSP_CLIENT_CONFIG = {
   clientName: "SkillSet SA",
-  appName: "WSP / ATR Command Centre",
+  appName: "SkillSet WSP / ATR Demo",
   preparedFor: "SkillSet SA",
   tagline: "Reporting · Analytics · Insight",
-  logo: "",
+  logo: "./assets/skillset-sa-tree.png",
   logoAlt: "SkillSet SA",
   logoInitials: "SkillSet SA",
   primaryColor: "#063c25",
@@ -22,5 +22,5 @@ window.WSP_CLIENT_CONFIG = {
   sidebarFooterText: "Excel intake · SharePoint control · Power BI reporting",
   budgetEstimateNote: "Demo planning estimate only. Final financial, SETA or compliance values must be confirmed through the client's approved process.",
   workbookIntro: "Load the sample workbook or inspect an Excel / CSV file locally. The scanner turns spreadsheet signals into WSP, ATR and evidence actions.",
-  storageKey: "skillset-wsp-training-hub-v1"
+  storageKey: "skillset-wsp-demo-v1"
 };

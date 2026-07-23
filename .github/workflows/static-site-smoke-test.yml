@@ -31,7 +31,7 @@ jobs:
             echo "Expected HTTP 200, got $HTTP_CODE"
             exit 1
           fi
-          curl -s http://127.0.0.1:8092/index.html | grep -q "ACSA WSP / ATR Reporting Concept Demo"
+          curl -s http://127.0.0.1:8092/index.html | grep -q "SkillSet WSP / ATR Demo"
 
       - name: Stop local server
         if: always()

@@ -6,7 +6,7 @@ Open the GitHub Pages link provided by Hayden.
 
 Expected format:
 
-https://<github-username>.github.io/wsp-training-acsa/
+https://<github-username>.github.io/skillset-wsp-demo/
 
 ## Option B: Open Locally
 
@@ -55,4 +55,4 @@ http://localhost:8092
 
 Use only synthetic/demo data.
 
-Do not upload private ACSA workbooks or real employee data into the public demo.
+Do not upload private client workbooks or real employee data into the public demo.

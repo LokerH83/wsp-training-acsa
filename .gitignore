@@ -18,10 +18,21 @@ _OLD_DO_NOT_PUBLISH/
 *.xls
 dataverse-snapshot.js
 
+# Preserve the explicit in-repository legacy archive used for historical client material.
+!legacy/
+!legacy/archive/
+!legacy/archive/**
+
+# Keep local-only historical Power Platform export debris out of the public demo.
+legacy/archive/acsa/power-platform/exports/**
+!legacy/archive/acsa/power-platform/exports/README.md
+!legacy/archive/acsa/power-platform/exports/WSPTrainingManagementSystem_complete_solution.zip
+!legacy/archive/acsa/power-platform/exports/WSPTrainingManagementSystem_with_entities_20260707075243.zip
+
 # Local workbook / Power BI build assets. Keep these outside the public static demo.
 Excel Demo/
 
-!sample-workbooks/ACSA_SDF_Demo_Workbook.csv
+!sample-workbooks/SkillSet_WSP_ATR_Demo_Workbook.csv
 !exports/
 !exports/README.md
 !exports/WSPTrainingManagementSystem_complete_solution.zip

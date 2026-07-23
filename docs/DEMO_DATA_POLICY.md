@@ -2,7 +2,7 @@
 
 This folder is demo-safe and uses synthetic data only.
 
-- No private ACSA employee records are included.
+- No private client employee records are included.
 - No real ID numbers are included.
 - Names are generic demo names.
 - The data is for workflow demonstration only.

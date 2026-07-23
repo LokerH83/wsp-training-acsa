@@ -1,6 +1,6 @@
 # Folder Map
 
-This repository is the public-shareable ACSA demo repository.
+This repository is the public SkillSet WSP / ATR Demo.
 
 ## Public demo root
 
@@ -9,18 +9,12 @@ This repository is the public-shareable ACSA demo repository.
 - `app.js`
 - `assets/`
 - `data/demo-snapshot.js`
-- `sample-workbooks/ACSA_SDF_Demo_Workbook.csv`
-
-## Demo pack
-
-- `demo/README.md`
-- `demo/DEMO_RUNBOOK.md`
-- `demo/FILES_FOR_DEMO.md`
-- `demo/files/`
+- `sample-workbooks/SkillSet_WSP_ATR_Demo_Workbook.csv`
 
 ## Documentation
 
 - `docs/`
+- `legacy/archive/acsa/` for historical client-specific material only
 
 ## Notes
 

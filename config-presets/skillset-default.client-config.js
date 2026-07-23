@@ -2,10 +2,10 @@
 // To use: copy this file over ../client-config.js for a neutral SkillSet demo.
 window.WSP_CLIENT_CONFIG = {
   clientName: "SkillSet SA",
-  appName: "Training Reporting Hub",
-  preparedFor: "White-label WSP / ATR pilot",
-  tagline: "Training bookings · WSP · ATR reporting",
-  logo: "",
+  appName: "SkillSet WSP / ATR Demo",
+  preparedFor: "SkillSet SA",
+  tagline: "Reporting · Analytics · Insight",
+  logo: "./assets/skillset-sa-tree.png",
   logoAlt: "SkillSet SA",
   primaryColor: "#063c25",
   secondaryColor: "#0e7a45",
@@ -22,5 +22,5 @@ window.WSP_CLIENT_CONFIG = {
   sidebarFooterText: "Client-specific branding and wording",
   budgetEstimateNote: "Demo planning estimate only. Final financial, SETA or compliance values must be confirmed through the client's approved process.",
   workbookIntro: "Stage the sample workbook or upload a safe CSV export. Do not upload private or client-identifiable records into this public demo.",
-  storageKey: "skillset-wsp-training-hub-v1"
+  storageKey: "skillset-wsp-demo-v1"
 };

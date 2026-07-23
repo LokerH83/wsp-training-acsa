@@ -1,6 +1,6 @@
 # Functional Demo Test Log
 
-Tested: 2026-07-23T19:08:04.825Z
+Tested: 2026-07-23T17:00:05.726Z
 Live URL: not supplied
 
 | Feature | Expected result | Actual result | Pass/Fail | Fix made |
@@ -11,7 +11,7 @@ Live URL: not supplied
 | Book training | Booking form captures employee/group, provider, course, preferred window, date, evidence and status. | All required controls and handlers are present. | Pass | None |
 | Record ATR | Completed training can be recorded as achieved ATR activity with evidence context. | All required controls and handlers are present. | Pass | None |
 | View reports | Reports page renders filter controls, coverage, KPIs and requested/planned/achieved matrix. | All required controls and handlers are present. | Pass | None |
-| Export | Filtered report and submission action register use neutral product filenames. | Filtered report and submission register export as neutral WSP/ATR files. | Pass | None |
+| Export | Filtered report and submission action register export without old client-specific filenames. | Filtered report now exports as a neutral WSP/ATR CSV; submission register export remains neutral. | Pass | Changed filtered report download name from acsa-wsp-atr-report to wsp-atr-report. |
 | Reset demo | Top and overview reset buttons restore baseline data and filters. | All required controls and handlers are present. | Pass | None |
 | White-label configuration | Branding remains isolated in client-config.js rather than hardcoded into app logic. | client-config.js is loaded and app.js applies configuration at startup. | Pass | None |
 

@@ -1,6 +1,6 @@
 const demoRegions = ["Western Cluster", "Central Cluster", "Northern Cluster", "Coastal Cluster", "National Support"];
-const demoDivisions = ["Airport Operations", "Corporate Services", "Commercial", "Technical Services", "Safety and Compliance"];
-const demoDepartments = ["Airside Operations", "Passenger Services", "Finance", "Human Capital", "Engineering", "Security", "IT Services", "Procurement"];
+const demoDivisions = ["Operations", "Corporate Services", "Commercial", "Technical Services", "Risk and Compliance"];
+const demoDepartments = ["Service Operations", "Customer Services", "Finance", "Human Capital", "Engineering", "Security", "IT Services", "Procurement"];
 const demoRace = ["African", "Coloured", "Indian", "White"];
 const demoGender = ["Female", "Male"];
 const demoAgeBands = ["18-35", "36-45", "46-55", "56+"];
@@ -16,7 +16,7 @@ const demoNames = [
 ];
 
 const demoProviders = [
-  ["ACSA Aviation Academy", "Aviation"],
+  ["Operations Skills Academy", "Operations"],
   ["Safety Skills Academy", "Safety"],
   ["Digital Skills Institute", "Digital"],
   ["Leadership Development Partner", "Leadership"],
@@ -27,22 +27,22 @@ const demoProviders = [
 ].map(([provider, focus], index) => ({ id: `provider-${index + 1}`, provider, focus }));
 
 const demoCourseRows = [
-  ["ACSA Aviation Academy", "Airport Operations Fundamentals", "Operations", "2 days", "Classroom", 2800, "Attendance register", "WSP / ATR"],
-  ["ACSA Aviation Academy", "Airside Safety Refresher", "Safety", "1 day", "Blended", 1800, "Assessment result", "ATR"],
-  ["ACSA Aviation Academy", "Terminal Operations Workshop", "Operations", "1 day", "Workshop", 2100, "Facilitator report", "WSP"],
-  ["ACSA Aviation Academy", "Aviation Customer Flow Basics", "Service", "1 day", "Classroom", 1600, "Attendance register", "WSP / ATR"],
+  ["Operations Skills Academy", "Operational Excellence Fundamentals", "Operations", "2 days", "Classroom", 2800, "Attendance register", "WSP / ATR"],
+  ["Operations Skills Academy", "Workplace Safety Refresher", "Safety", "1 day", "Blended", 1800, "Assessment result", "ATR"],
+  ["Operations Skills Academy", "Service Operations Workshop", "Operations", "1 day", "Workshop", 2100, "Facilitator report", "WSP"],
+  ["Operations Skills Academy", "Customer Flow Basics", "Service", "1 day", "Classroom", 1600, "Attendance register", "WSP / ATR"],
   ["Safety Skills Academy", "Occupational Health and Safety", "Safety", "2 days", "Classroom", 2500, "Certificate", "ATR"],
   ["Safety Skills Academy", "Emergency Response Coordination", "Safety", "3 days", "Simulation", 4200, "Simulation checklist", "ATR"],
   ["Safety Skills Academy", "Incident Investigation", "Safety", "2 days", "Classroom", 3300, "Case assessment", "WSP / ATR"],
   ["Digital Skills Institute", "Excel Reporting for SDF Staff", "Digital", "1 day", "Virtual", 1200, "Practical workbook", "WSP"],
   ["Digital Skills Institute", "Power BI Overview Basics", "Digital", "2 days", "Virtual", 3600, "Overview file", "WSP / ATR"],
   ["Digital Skills Institute", "Data Quality for Training Records", "Digital", "1 day", "Workshop", 1700, "Data checklist", "WSP / ATR"],
-  ["Digital Skills Institute", "Cyber Awareness for Airport Staff", "Digital", "Half day", "Online", 850, "Completion record", "ATR"],
+  ["Digital Skills Institute", "Cyber Awareness for Operational Teams", "Digital", "Half day", "Online", 850, "Completion record", "ATR"],
   ["Leadership Development Partner", "Frontline Leadership Essentials", "Leadership", "2 days", "Classroom", 3900, "Attendance register", "WSP / ATR"],
   ["Leadership Development Partner", "Coaching Conversations", "Leadership", "1 day", "Workshop", 2100, "Reflection log", "WSP"],
   ["Leadership Development Partner", "Performance Management Basics", "Leadership", "1 day", "Blended", 1900, "Manager sign-off", "WSP"],
   ["Technical Training Centre", "Electrical Maintenance Safety", "Technical", "3 days", "Classroom", 5400, "Certificate", "ATR"],
-  ["Technical Training Centre", "Baggage Systems Maintenance", "Technical", "2 days", "Practical", 4800, "Practical assessment", "WSP / ATR"],
+  ["Technical Training Centre", "Equipment Systems Maintenance", "Technical", "2 days", "Practical", 4800, "Practical assessment", "WSP / ATR"],
   ["Technical Training Centre", "Facilities Inspection Routine", "Technical", "1 day", "Practical", 2300, "Inspection checklist", "WSP"],
   ["Compliance Learning Partner", "POPIA Awareness", "Compliance", "Half day", "Online", 700, "Completion record", "ATR"],
   ["Compliance Learning Partner", "Procurement Compliance", "Compliance", "1 day", "Classroom", 1600, "Assessment result", "WSP / ATR"],
@@ -153,10 +153,10 @@ const demoBookings = [
   demoBooking(8, "Booked", "2026-09-03", "13:00", "16:00", "Online", "Reminder scheduled", "Online meeting link"),
   demoBooking(11, "Completed", "2026-07-15", "09:00", "16:00", "Classroom", "Reminder sent", "Leadership Room A"),
   demoBooking(15, "Booked", "2026-08-27", "09:00", "15:00", "Blended", "Not sent", "Technical Training Centre"),
-  demoBooking(23, "Proposed", "2026-09-10", "10:00", "12:00", "Classroom", "Not sent", "Operations Skills Academy", "Airport Operations Supervisors cohort")
+  demoBooking(23, "Proposed", "2026-09-10", "10:00", "12:00", "Classroom", "Not sent", "Operations Skills Academy", "Operations supervisors cohort")
 ];
 
-window.ACSA_DEMO_DATA = {
+window.SKILLSET_WSP_DEMO_DATA = {
   employees: demoEmployees,
   providers: demoProviders,
   courses: demoCourses,

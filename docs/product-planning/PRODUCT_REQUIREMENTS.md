@@ -50,7 +50,7 @@ The SkillSet SDF / WSP / ATR app helps an SDF stage workbook-based training data
 ## Non-Functional Requirements
 
 - [Done] Static GitHub Pages demo.
-- [Done] No private ACSA data in public demo.
+- [Done] No private client data in the public demo.
 - [Done] No server-side code in public demo.
 - [Done] Relative paths for GitHub Pages.
 - [Future Phase] Production security role model.

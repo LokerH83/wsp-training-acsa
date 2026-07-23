@@ -8,7 +8,7 @@ This repository uses GitHub Actions to support the demo and deployment process.
 
 - The public static demo is served from the `main` branch/root folder.
 - No custom Pages deployment workflow is required for the current demo.
-- The live URL is https://lokerh83.github.io/wsp-training-acsa/
+- The live URL is https://lokerh83.github.io/skillset-wsp-demo/
 
 ### `.github/workflows/preview-pages-build.yml`
 
@@ -60,7 +60,7 @@ The following repository secrets must be configured for the import workflows:
 
 ## Demo status
 
-- Public static demo: https://lokerh83.github.io/wsp-training-acsa/
+- Public static demo: https://lokerh83.github.io/skillset-wsp-demo/
 - Workflow status badges for import, validation and smoke testing are displayed on the repository `README.md`.
 - The live workflow runs can be viewed under `Actions`.
 

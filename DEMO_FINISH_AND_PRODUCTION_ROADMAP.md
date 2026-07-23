@@ -33,7 +33,7 @@ These should not be confused. The first is sales/demo readiness. The second is p
 - Confirmed the active app now uses the white-label SkillSet SA configuration rather than requiring application-logic edits for each client.
 - Added reusable client config presets:
   - `config-presets/skillset-default.client-config.js`
-  - `config-presets/acsa-demo.client-config.js`
+  - Historical client presets are retained only under `legacy/archive/`.
   - `config-presets/generic-client-template.client-config.js`
 - Added `WHITE_LABEL_README.md` to explain how a client-specific version should be created.
 - Ran JavaScript syntax checks against:

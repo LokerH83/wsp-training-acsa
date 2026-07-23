@@ -111,11 +111,11 @@ button { cursor: pointer; }
   height: 100%;
   object-fit: contain;
 }
-.brand-mark.acsa-mark {
+.brand-mark.client-mark {
   height: 86px;
   padding: 7px 8px;
 }
-.brand-mark.acsa-mark img {
+.brand-mark.client-mark img {
   width: 100%;
   height: 100%;
   object-fit: contain;
@@ -1512,7 +1512,7 @@ body {
   box-shadow: 0 10px 24px rgba(0, 25, 42, .16);
 }
 
-.brand-mark.acsa-mark {
+.brand-mark.client-mark {
   height: 58px;
   padding: 7px 9px;
   border-radius: 7px;
@@ -2693,7 +2693,7 @@ select:focus {
     padding: 14px;
   }
 
-  .brand-mark.acsa-mark {
+  .brand-mark.client-mark {
     height: 52px;
   }
 
@@ -2745,7 +2745,7 @@ body {
   box-shadow: none;
 }
 
-.brand-mark.acsa-mark {
+.brand-mark.client-mark {
   height: 86px;
   padding: 7px 8px;
   border-radius: 6px;
@@ -3031,7 +3031,7 @@ select {
     width: auto;
   }
 
-  .brand-mark.acsa-mark {
+  .brand-mark.client-mark {
     height: 64px;
   }
 
@@ -3331,7 +3331,7 @@ input {
     grid-template-columns: 1fr;
   }
 
-  .brand-mark.acsa-mark {
+.brand-mark.client-mark {
     height: 86px;
   }
 

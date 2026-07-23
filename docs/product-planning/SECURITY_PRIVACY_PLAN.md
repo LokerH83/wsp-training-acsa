@@ -4,7 +4,7 @@
 
 - [Done] Use synthetic data only.
 - [Done] Mask employee numbers and ID numbers in profile views.
-- [Done] Do not upload private ACSA data into the public demo.
+- [Done] Do not upload private client data into the public demo.
 - [Done] Do not connect to Dataverse, Graph, Outlook or production services.
 - [Done] Do not expose API keys, secrets or connection strings.
 
