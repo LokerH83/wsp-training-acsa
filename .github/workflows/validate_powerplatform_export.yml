@@ -2,9 +2,6 @@ name: Validate Power Platform export artifact
 
 on:
   workflow_dispatch:
-  push:
-    branches:
-      - main
 
 jobs:
   validate:
@@ -33,7 +30,7 @@ jobs:
             throw "Missing required Power Platform secrets: $($missing -join ', ')"
           }
 
-          $solution = Join-Path $env:GITHUB_WORKSPACE 'exports\WSPTrainingManagementSystem_complete_solution.zip'
+          $solution = Join-Path $env:GITHUB_WORKSPACE 'legacy\archive\acsa\power-platform\exports\WSPTrainingManagementSystem_complete_solution.zip'
           if(-not (Test-Path $solution)) {
             throw "Expected solution export not found at: $solution"
           }
