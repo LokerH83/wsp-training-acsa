@@ -6,7 +6,7 @@
   <title>SkillSet WSP / ATR Demo</title>
   <link rel="icon" href="data:,">
   <link rel="stylesheet" href="./styles.css?v=20260723-skillset-wsp-95c">
-  <link rel="stylesheet" href="./scanner-alignment.css?v=20260724-final-sales-polish-2">
+  <link rel="stylesheet" href="./scanner-alignment.css?v=20260724-workbook-scanner-rebuild">
   <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
 </head>
 <body>
@@ -200,34 +200,35 @@
         <div class="workbook-hero scanner-import-hero">
           <div class="hero-copy">
             <span class="demo-badge">Local workbook scanner</span>
-            <h2>See the training reporting risks hiding inside the workbook.</h2>
-            <p id="workbookIntro">Load the sample workbook or inspect an Excel / CSV file locally. The scanner turns spreadsheet signals into WSP, ATR and evidence actions.</p>
+            <h2>See the structural risks hiding inside the training file.</h2>
+            <p id="workbookIntro">Your workbook is inspected on this device. It is not sent to SkillSet SA or stored online.</p>
             <ul class="hero-checks">
               <li>Requested training not yet planned</li>
               <li>Planned activity not yet achieved</li>
-              <li>Evidence, review and sign-off gaps</li>
-              <li>Workbook structure ready for Microsoft 365</li>
+              <li>Evidence and sign-off gaps</li>
+              <li>Structure ready for Microsoft 365</li>
             </ul>
           </div>
           <section class="panel import-drop scanner-drop-card scanner-grade-loader">
             <div class="scanner-loader-copy">
               <span class="eyebrow">Workbook scanner</span>
-              <h3>Start with the file.</h3>
-              <p>Drop a training workbook here and the demo immediately surfaces planning, ATR, evidence and reporting-control risks before anything is applied to the dashboard.</p>
+              <h3>Inspect the workbook locally.</h3>
+              <p>Surface planning, ATR, evidence and reporting-control risks before anything is applied to the demo.</p>
             </div>
             <label class="workbook-file-drop scanner-upload-zone" id="workbookDropZone">
               <input id="csvUpload" type="file" accept=".xlsx,.xlsm,.csv">
               <span class="excel-sheet-icon" aria-hidden="true">X</span>
               <strong id="workbookDropTitle">Drop a workbook here</strong>
               <small id="workbookDropSub">or choose an .xlsx, .xlsm or .csv file</small>
-              <em id="workbookDropMeta">Processed locally in this browser · not uploaded to a server</em>
+              <span class="choose-workbook-button">Choose workbook</span>
             </label>
             <div class="loader-actions">
               <button class="sample-action" id="loadSampleWorkbook">Use sample workbook</button>
-              <button id="applyStaging">Apply scanned workbook to demo</button>
+              <button id="applyStaging" hidden>Apply scanned workbook to demo</button>
             </div>
+            <p class="scanner-privacy-note"><strong>Privacy:</strong> processing happens in your browser memory. Close or refresh the page to clear the result. Use a copied or anonymised workbook when client policy requires it.</p>
             <div class="workbook-steps" id="workbookSteps" aria-label="Workbook loading steps"></div>
-            <p class="security-note" id="workbookMessage">No workbook staged yet. Choose a workbook to see instant findings, then apply it when you are ready to refresh the demo.</p>
+            <p class="security-note" id="workbookMessage" aria-live="polite">No workbook staged yet. Choose a workbook to see instant findings, then apply it when you are ready to refresh the demo.</p>
           </section>
         </div>
         <div class="import-grid import-workbench import-findings-grid">
@@ -428,8 +429,8 @@
       </section>
     </main>
   </div>
-  <script src="./client-config.js?v=20260723-skillset-wsp-95b"></script>
+  <script src="./client-config.js?v=20260724-workbook-scanner-rebuild"></script>
   <script src="./data/demo-snapshot.js?v=20260723-skillset-wsp-95b"></script>
-  <script src="./app.js?v=20260724-final-sales-polish-2"></script>
+  <script src="./app.js?v=20260724-workbook-scanner-rebuild"></script>
 </body>
 </html>

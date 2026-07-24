@@ -877,3 +877,387 @@ textarea:focus-visible {
     max-height: 520px;
   }
 }
+
+/* =========================================================
+   2026-07-24 — workbook scanner rebuild
+   The public Reporting Rescue Scanner is the visual source of
+   truth: quiet canvas, constrained composition, explicit drop
+   target, one clear primary action and local-processing trust.
+   ========================================================= */
+
+#workbook.view {
+  padding: clamp(42px, 6vw, 82px) clamp(20px, 5vw, 72px) clamp(54px, 7vw, 96px) !important;
+  background:
+    radial-gradient(circle at 86% 12%, rgba(16, 124, 65, .045), transparent 28%),
+    #f5f7f5 !important;
+}
+
+#workbook .workbook-hero.scanner-import-hero {
+  width: min(100%, 1180px) !important;
+  min-height: 0 !important;
+  margin: 0 auto clamp(38px, 5vw, 64px) !important;
+  padding: 0 !important;
+  display: grid !important;
+  grid-template-columns: minmax(0, .9fr) minmax(520px, 1.1fr) !important;
+  gap: clamp(48px, 6vw, 82px) !important;
+  align-items: center !important;
+  overflow: visible !important;
+  color: var(--skillset-ink) !important;
+  background: transparent !important;
+  border: 0 !important;
+  box-shadow: none !important;
+}
+
+#workbook .workbook-hero.scanner-import-hero::before,
+#workbook .workbook-hero.scanner-import-hero::after {
+  display: none !important;
+  content: none !important;
+}
+
+#workbook .scanner-import-hero > * {
+  position: relative !important;
+  z-index: auto !important;
+}
+
+#workbook .scanner-import-hero .hero-copy {
+  max-width: 510px !important;
+  padding: clamp(10px, 2vw, 24px) 0 !important;
+}
+
+#workbook .scanner-import-hero .demo-badge {
+  margin-bottom: 24px !important;
+  color: var(--skillset-green-3) !important;
+  font-size: 11px !important;
+  letter-spacing: .21em !important;
+}
+
+#workbook .scanner-import-hero .demo-badge::before {
+  width: 40px !important;
+  height: 3px !important;
+  background: var(--skillset-gold) !important;
+}
+
+#workbook .scanner-import-hero .hero-copy h2 {
+  max-width: 510px !important;
+  margin: 0 0 24px !important;
+  color: var(--skillset-ink) !important;
+  font-size: clamp(48px, 4.8vw, 68px) !important;
+  font-weight: 500 !important;
+  line-height: .94 !important;
+  letter-spacing: -.07em !important;
+}
+
+#workbook .scanner-import-hero .hero-copy p {
+  max-width: 500px !important;
+  margin: 0 !important;
+  color: #526c61 !important;
+  font-size: 17px !important;
+  line-height: 1.65 !important;
+}
+
+#workbook .hero-checks {
+  max-width: 500px !important;
+  margin: 28px 0 0 !important;
+  border-top: 1px solid rgba(8, 45, 33, .14) !important;
+}
+
+#workbook .hero-checks li {
+  padding: 15px 0 15px 26px !important;
+  color: #294a3e !important;
+  border-bottom: 1px solid rgba(8, 45, 33, .14) !important;
+  font-size: 14px !important;
+  line-height: 1.4 !important;
+}
+
+#workbook .hero-checks li::before {
+  top: 16px !important;
+  color: var(--skillset-green-3) !important;
+}
+
+#workbook .scanner-drop-card {
+  min-width: 0 !important;
+  padding: clamp(26px, 3vw, 38px) !important;
+  display: grid !important;
+  gap: 18px !important;
+  color: var(--skillset-ink) !important;
+  background: #ffffff !important;
+  border: 1px solid rgba(8, 45, 33, .15) !important;
+  border-top: 1px solid rgba(8, 45, 33, .15) !important;
+  box-shadow: 0 26px 68px rgba(8, 45, 33, .10) !important;
+}
+
+#workbook .scanner-loader-copy {
+  max-width: 510px !important;
+}
+
+#workbook .scanner-loader-copy .eyebrow {
+  margin-bottom: 12px !important;
+  color: #d49f00 !important;
+  font-size: 10px !important;
+  letter-spacing: .22em !important;
+}
+
+#workbook .scanner-loader-copy h3 {
+  margin: 0 0 8px !important;
+  color: var(--skillset-ink) !important;
+  font-size: clamp(25px, 2.1vw, 32px) !important;
+  font-weight: 600 !important;
+  line-height: 1.08 !important;
+  letter-spacing: -.045em !important;
+}
+
+#workbook .scanner-loader-copy p {
+  max-width: 500px !important;
+  margin: 0 !important;
+  color: #60766b !important;
+  font-size: 13px !important;
+  line-height: 1.55 !important;
+}
+
+#workbook .scanner-drop-card .scanner-upload-zone,
+#workbook .scanner-drop-card .workbook-file-drop {
+  min-height: 320px !important;
+  padding: clamp(30px, 4vw, 48px) !important;
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 11px !important;
+  color: var(--skillset-ink) !important;
+  text-align: center !important;
+  background: #f8faf8 !important;
+  border: 2px dashed #b6c9bd !important;
+  box-shadow: none !important;
+  cursor: pointer !important;
+}
+
+#workbook .scanner-drop-card .scanner-upload-zone:hover,
+#workbook .scanner-drop-card .scanner-upload-zone.dragover {
+  transform: none !important;
+  color: var(--skillset-ink) !important;
+  background: #fffdf0 !important;
+  border-color: #d8aa00 !important;
+  box-shadow: inset 0 0 0 1px rgba(255, 204, 0, .15) !important;
+}
+
+#workbook .scanner-drop-card .scanner-upload-zone.has-workbook {
+  background: #f2faf5 !important;
+  border-style: solid !important;
+  border-color: #55a873 !important;
+}
+
+#workbook .scanner-drop-card .scanner-upload-zone.is-applied {
+  background: #fffbea !important;
+  border-color: #d8aa00 !important;
+}
+
+#workbook .excel-sheet-icon {
+  width: 66px !important;
+  height: 76px !important;
+  margin-bottom: 8px !important;
+  color: #ffffff !important;
+  background: #2f8742 !important;
+  font-size: 32px !important;
+  box-shadow: none !important;
+}
+
+#workbook .scanner-upload-zone strong {
+  color: var(--skillset-ink) !important;
+  font-size: clamp(22px, 2vw, 28px) !important;
+  font-weight: 700 !important;
+  letter-spacing: -.04em !important;
+}
+
+#workbook .scanner-upload-zone small {
+  color: #6a7f75 !important;
+  font-size: 13px !important;
+}
+
+#workbook .choose-workbook-button {
+  min-height: 44px !important;
+  margin-top: 12px !important;
+  padding: 0 20px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  color: #062819 !important;
+  background: var(--skillset-gold) !important;
+  border: 1px solid var(--skillset-gold) !important;
+  font-size: 10px !important;
+  font-weight: 900 !important;
+  letter-spacing: .08em !important;
+  text-transform: uppercase !important;
+}
+
+#workbook .scanner-upload-zone:hover .choose-workbook-button,
+#workbook .scanner-upload-zone:focus-within .choose-workbook-button {
+  background: #ffe147 !important;
+  border-color: #ffe147 !important;
+}
+
+#workbook .loader-actions {
+  margin: 0 !important;
+  display: flex !important;
+  align-items: stretch !important;
+  justify-content: flex-start !important;
+  gap: 10px !important;
+}
+
+#workbook .loader-actions button {
+  min-height: 46px !important;
+  padding: 0 18px !important;
+  border-radius: 0 !important;
+  font-size: 11px !important;
+  font-weight: 850 !important;
+}
+
+#workbook .loader-actions .sample-action {
+  color: var(--skillset-green) !important;
+  background: #ffffff !important;
+  border: 1px solid rgba(8, 45, 33, .24) !important;
+}
+
+#workbook .loader-actions .sample-action:hover {
+  color: #062819 !important;
+  background: #f0f6f2 !important;
+  border-color: var(--skillset-green-3) !important;
+}
+
+#workbook .loader-actions #applyStaging {
+  color: #062819 !important;
+  background: var(--skillset-gold) !important;
+  border: 1px solid var(--skillset-gold) !important;
+}
+
+#workbook [hidden] {
+  display: none !important;
+}
+
+#workbook .scanner-privacy-note {
+  margin: -2px 4px 0 !important;
+  color: #667a70 !important;
+  font-size: 10px !important;
+  line-height: 1.5 !important;
+}
+
+#workbook .scanner-privacy-note strong {
+  color: var(--skillset-ink) !important;
+}
+
+#workbook .workbook-steps {
+  margin: 2px 0 0 !important;
+  padding-top: 16px !important;
+  display: grid !important;
+  grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+  gap: 8px !important;
+  border-top: 1px solid rgba(8, 45, 33, .12) !important;
+}
+
+#workbook .scanner-drop-card .workbook-step {
+  min-width: 0 !important;
+  padding: 8px !important;
+  display: flex !important;
+  gap: 7px !important;
+  color: #657a70 !important;
+  background: transparent !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+}
+
+#workbook .scanner-drop-card .workbook-step span {
+  width: 24px !important;
+  height: 24px !important;
+  flex: 0 0 24px !important;
+  color: #8a6c00 !important;
+  background: #edf2ef !important;
+  border-radius: 50% !important;
+  font-size: 10px !important;
+}
+
+#workbook .scanner-drop-card .workbook-step strong {
+  overflow: hidden !important;
+  color: #657a70 !important;
+  font-size: 11px !important;
+  font-weight: 750 !important;
+  line-height: 1.25 !important;
+  text-overflow: ellipsis !important;
+  white-space: nowrap !important;
+}
+
+#workbook .scanner-drop-card .workbook-step.active strong,
+#workbook .scanner-drop-card .workbook-step.ready strong,
+#workbook .scanner-drop-card .workbook-step.complete strong {
+  color: var(--skillset-ink) !important;
+}
+
+#workbook .scanner-drop-card .workbook-step.active span,
+#workbook .scanner-drop-card .workbook-step.ready span {
+  color: #062819 !important;
+  background: var(--skillset-gold) !important;
+}
+
+#workbook .scanner-drop-card .workbook-step.complete span {
+  color: #ffffff !important;
+  background: var(--skillset-green-3) !important;
+}
+
+#workbook .scanner-drop-card .security-note {
+  min-height: 36px !important;
+  margin: 0 !important;
+  padding: 10px 12px !important;
+  color: #526c61 !important;
+  background: #f3f7f4 !important;
+  border-left: 3px solid var(--skillset-green-3) !important;
+  font-size: 11px !important;
+  line-height: 1.45 !important;
+}
+
+@media (max-width: 1080px) {
+  #workbook .workbook-hero.scanner-import-hero {
+    grid-template-columns: 1fr !important;
+    gap: 42px !important;
+  }
+
+  #workbook .scanner-import-hero .hero-copy,
+  #workbook .scanner-import-hero .hero-copy h2,
+  #workbook .scanner-import-hero .hero-copy p,
+  #workbook .hero-checks {
+    max-width: 720px !important;
+  }
+}
+
+@media (max-width: 620px) {
+  #workbook.view {
+    padding: 34px 16px 54px !important;
+  }
+
+  #workbook .scanner-import-hero .hero-copy h2 {
+    font-size: clamp(42px, 13vw, 58px) !important;
+  }
+
+  #workbook .scanner-drop-card {
+    padding: 20px !important;
+  }
+
+  #workbook .scanner-drop-card .scanner-upload-zone,
+  #workbook .scanner-drop-card .workbook-file-drop {
+    min-height: 285px !important;
+    padding: 28px 18px !important;
+  }
+
+  #workbook .loader-actions {
+    flex-direction: column !important;
+  }
+
+  #workbook .loader-actions button {
+    width: 100% !important;
+  }
+
+  #workbook .workbook-steps {
+    grid-template-columns: 1fr !important;
+  }
+
+  #workbook .scanner-drop-card .workbook-step strong {
+    white-space: normal !important;
+  }
+}

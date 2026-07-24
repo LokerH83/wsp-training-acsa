@@ -604,13 +604,19 @@ function renderWorkbook() {
       : `<div class="issue good"><strong>Workbook loader</strong><span>Load the sample workbook, upload Excel or upload CSV to preview new rows before applying them to the dashboard.</span></div>`
   ].filter(Boolean).join("");
   document.getElementById("importPreview").innerHTML = (stagedRows.length ? stagedRows : sampleWorkbookRows()).slice(0, 8).map(row => `<tr><td>${row["Employee Name"]}</td><td>${row["Course / Intervention"]}</td><td>${row["Requested / Suggested"]}</td><td>${row["Planned WSP"]}</td><td>${row["Achieved ATR"]}</td><td>${row["Review Status"]}</td></tr>`).join("");
-  ["applyStaging", "applyStagingPreview"].forEach(id => {
-    const button = document.getElementById(id);
-    if (!button) return;
-    button.disabled = !hasRows || isApplied;
-    button.classList.toggle("primary", hasRows && !isApplied);
-    button.textContent = isApplied ? "Applied To Demo" : "Apply scanned workbook to demo";
-  });
+  const scannerApplyButton = document.getElementById("applyStaging");
+  if (scannerApplyButton) {
+    scannerApplyButton.hidden = !hasRows || isApplied;
+    scannerApplyButton.disabled = !hasRows || isApplied;
+    scannerApplyButton.classList.toggle("primary", hasRows && !isApplied);
+    scannerApplyButton.textContent = "Apply scanned workbook to demo";
+  }
+  const previewApplyButton = document.getElementById("applyStagingPreview");
+  if (previewApplyButton) {
+    previewApplyButton.disabled = !hasRows || isApplied;
+    previewApplyButton.classList.toggle("primary", hasRows && !isApplied);
+    previewApplyButton.textContent = isApplied ? "Applied To Demo" : "Apply scanned workbook to demo";
+  }
 }
 
 function renderTraining() {

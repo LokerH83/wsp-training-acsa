@@ -21,6 +21,6 @@ window.WSP_CLIENT_CONFIG = {
   sidebarFooterTitle: "SkillSet pilot pattern",
   sidebarFooterText: "Excel intake · SharePoint control · Power BI reporting",
   budgetEstimateNote: "Demo planning estimate only. Final financial, SETA or compliance values must be confirmed through the client's approved process.",
-  workbookIntro: "Load the sample workbook or inspect an Excel / CSV file locally. The scanner turns spreadsheet signals into WSP, ATR and evidence actions.",
+  workbookIntro: "Your workbook is inspected on this device. It is not sent to SkillSet SA or stored online.",
   storageKey: "skillset-wsp-demo-v1"
 };
