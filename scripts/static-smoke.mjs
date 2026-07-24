@@ -41,6 +41,11 @@ for (const marker of ["ecosystem-links", "ecosystemNextStep", "Free Risk Scanner
   if (!index.includes(marker)) failures.push(`Missing SkillSet ecosystem marker: ${marker}`);
 }
 if (!index.includes("scanner-alignment.css")) failures.push("Scanner alignment stylesheet is not loaded.");
+const alignmentVersion = index.match(/scanner-alignment\.css\?v=([^"]+)/)?.[1];
+const appVersion = index.match(/app\.js\?v=([^"]+)/)?.[1];
+if (!alignmentVersion || alignmentVersion !== appVersion) {
+  failures.push("The app and final visual layer must share a release cache key.");
+}
 for (const marker of [".ecosystem-row", ".workbook-mapping-layout", ".ecosystem-handoff"]) {
   if (!alignmentStyles.includes(marker)) failures.push(`Missing scanner alignment style: ${marker}`);
 }
