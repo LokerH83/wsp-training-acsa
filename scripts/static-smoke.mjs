@@ -47,8 +47,11 @@ for (const marker of [".ecosystem-row", ".workbook-mapping-layout", ".ecosystem-
 for (const marker of [".report-filter-panel", "#reports .relationship-kpis", "#people .employee-list", "#submission .submission-status-grid"]) {
   if (!alignmentStyles.includes(marker)) failures.push(`Missing final sales-polish style: ${marker}`);
 }
-for (const marker of ["Profile-linked evidence", "Management reporting", "mobile-list-hint", "report-filter-panel"]) {
+for (const marker of ["Profile-linked evidence", "Management reporting", "mobile-list-hint", "report-filter-panel", "toggleAdvancedFilters"]) {
   if (!index.includes(marker)) failures.push(`Missing final sales-polish markup: ${marker}`);
+}
+for (const marker of ["report-filter-primary", "report-filter-advanced", "show-advanced"]) {
+  if (!app.includes(marker)) failures.push(`Missing progressive report-filter behavior: ${marker}`);
 }
 if (!app.includes("window.scrollTo(0, 0)") || !app.includes('activeNavItem?.closest(".app-nav")')) {
   failures.push("View changes must return to the top and keep the active mobile navigation item visible.");

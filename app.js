@@ -904,9 +904,9 @@ function resetReportFiltersState() {
 
 function hydrateReportFilters() {
   const current = currentFilters();
-  document.getElementById("reportFilters").innerHTML = filterDefs.map(([field,label]) => {
+  document.getElementById("reportFilters").innerHTML = filterDefs.map(([field,label], index) => {
     const values = Array.from(new Set(state.reportRows.flatMap(r => String(r[field] || "").split(", ")).filter(Boolean))).sort();
-    return `<label>${label}<select id="filter-${field}"><option value="All">All</option>${values.map(v => `<option ${current[field] === v ? "selected" : ""}>${v}</option>`).join("")}</select></label>`;
+    return `<label class="${index < 4 ? "report-filter-primary" : "report-filter-advanced"}">${label}<select id="filter-${field}"><option value="All">All</option>${values.map(v => `<option ${current[field] === v ? "selected" : ""}>${v}</option>`).join("")}</select></label>`;
   }).join("");
   filterDefs.forEach(([field]) => document.getElementById(`filter-${field}`).addEventListener("change", event => {
     reportFilterState[field] = event.target.value || "All";
@@ -1682,6 +1682,12 @@ document.getElementById("resetDemoOverview").addEventListener("click", resetDemo
 document.getElementById("resetReportFilters").addEventListener("click", () => {
   resetReportFiltersState();
   renderReports();
+});
+document.getElementById("toggleAdvancedFilters").addEventListener("click", event => {
+  const filters = document.getElementById("reportFilters");
+  const expanded = filters.classList.toggle("show-advanced");
+  event.currentTarget.setAttribute("aria-expanded", String(expanded));
+  event.currentTarget.textContent = expanded ? "Show fewer filters" : `Show ${filterDefs.length - 4} more filters`;
 });
 document.getElementById("copyExecutiveSummaryOverview").addEventListener("click", copyExecutiveSummary);
 document.getElementById("copyExecutiveSummaryReports").addEventListener("click", copyExecutiveSummary);

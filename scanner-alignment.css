@@ -666,6 +666,10 @@ textarea:focus-visible {
   margin-bottom: 14px;
 }
 
+#reports .report-filter-toggle {
+  display: none;
+}
+
 #reports .report-filter-panel .compact-head strong,
 #reports .report-filter-panel .compact-head span {
   display: block;
@@ -819,6 +823,29 @@ textarea:focus-visible {
 
   #reports .report-filter-panel {
     padding: 14px;
+  }
+
+  #reports .report-filter-panel .compact-head {
+    align-items: flex-start;
+    gap: 12px;
+  }
+
+  #reports .report-filter-toggle {
+    min-height: 38px;
+    padding: 8px 12px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--skillset-green);
+    background: #ffffff;
+    border: 1px solid rgba(8, 45, 33, .20);
+    font-size: 11px;
+    font-weight: 850;
+    letter-spacing: .03em;
+  }
+
+  #reports .cluster-filters:not(.show-advanced) .report-filter-advanced {
+    display: none !important;
   }
 
   #reports .cluster-filters,
