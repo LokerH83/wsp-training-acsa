@@ -47,7 +47,7 @@ for (const marker of [".ecosystem-row", ".workbook-mapping-layout", ".ecosystem-
 if (!/\.workflow-strip span\s*\{[^}]*color:\s*#ffffff\s*!important;/s.test(alignmentStyles)) {
   failures.push("Workflow strip labels must stay white on the SkillSet green surface.");
 }
-if (!/\.workflow-strip span:not\(:last-child\)::after\s*\{[^}]*color:\s*var\(--skillset-yellow\)\s*!important;/s.test(alignmentStyles)) {
+if (!/\.workflow-strip span:not\(:last-child\)::after\s*\{[^}]*color:\s*var\(--skillset-gold\)\s*!important;/s.test(alignmentStyles)) {
   failures.push("Workflow strip arrows must use SkillSet yellow.");
 }
 

@@ -636,5 +636,5 @@ textarea:focus-visible {
 }
 
 .workflow-strip span:not(:last-child)::after {
-  color: var(--skillset-yellow) !important;
+  color: var(--skillset-gold) !important;
 }
