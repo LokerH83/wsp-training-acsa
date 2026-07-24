@@ -417,6 +417,15 @@ function hydrateOverviewFilters() {
 function setView(id) {
   document.querySelectorAll(".view").forEach(v => v.classList.toggle("active", v.id === id));
   document.querySelectorAll(".nav-item").forEach(n => n.classList.toggle("active", n.dataset.view === id));
+  window.scrollTo(0, 0);
+  const activeNavItem = document.querySelector(`.nav-item[data-view="${id}"]`);
+  const nav = activeNavItem?.closest(".app-nav");
+  if (activeNavItem && nav) {
+    nav.scrollTo({
+      left: Math.max(0, activeNavItem.offsetLeft - (nav.clientWidth - activeNavItem.offsetWidth) / 2),
+      behavior: "auto"
+    });
+  }
 }
 
 function kpiHtml(s) {

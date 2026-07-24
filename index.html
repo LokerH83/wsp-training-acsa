@@ -6,7 +6,7 @@
   <title>SkillSet WSP / ATR Demo</title>
   <link rel="icon" href="data:,">
   <link rel="stylesheet" href="./styles.css?v=20260723-skillset-wsp-95c">
-  <link rel="stylesheet" href="./scanner-alignment.css?v=20260724-workflow-contrast-2">
+  <link rel="stylesheet" href="./scanner-alignment.css?v=20260724-final-sales-polish">
   <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
 </head>
 <body>
@@ -332,8 +332,8 @@
       </section>
 
       <section id="people" class="view">
-        <div class="toolbar"><div><h2>People Profiles</h2><p>Search a person and see requested, planned and achieved training.</p></div><label class="search"><span>Search</span><input id="peopleSearch" type="search" placeholder="name or employee number"></label></div>
-        <div class="employee-layout"><section class="panel list-panel"><div id="peopleList" class="employee-list"></div></section><section class="panel profile-panel" id="personProfile"></section></div>
+        <div class="toolbar"><div><span class="section-label">Profile-linked evidence</span><h2>People Profiles</h2><p>Search a person and see requested, planned and achieved training.</p></div><label class="search"><span>Search</span><input id="peopleSearch" type="search" placeholder="name or employee number"></label></div>
+        <div class="employee-layout"><section class="panel list-panel"><p class="mobile-list-hint">Swipe to choose a profile →</p><div id="peopleList" class="employee-list"></div></section><section class="panel profile-panel" id="personProfile"></section></div>
       </section>
 
       <section id="submission" class="view">
@@ -399,9 +399,12 @@
 
       <section id="reports" class="view">
         <div class="toolbar">
-          <div><h2>Reports</h2><p>Requested / Suggested vs Planned WSP vs Achieved ATR.</p></div>
+          <div><span class="section-label">Management reporting</span><h2>Reports</h2><p>Requested / Suggested vs Planned WSP vs Achieved ATR.</p></div>
         </div>
-        <div class="filters cluster-filters" id="reportFilters"></div>
+        <section class="report-filter-panel">
+          <div class="compact-head"><div><strong>Filter the management view</strong><span>Start broad, then narrow the reporting population only when needed.</span></div></div>
+          <div class="filters cluster-filters" id="reportFilters"></div>
+        </section>
         <div class="report-export-summary" id="reportFilterSummary"></div>
         <div class="report-coverage" id="reportCoverage"></div>
         <div class="kpi-grid relationship-kpis" id="reportKpis"></div>

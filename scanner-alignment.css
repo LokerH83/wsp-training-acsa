@@ -638,3 +638,215 @@ textarea:focus-visible {
 .workflow-strip span:not(:last-child)::after {
   color: var(--skillset-gold) !important;
 }
+
+/* Final sales-demo polish: tighter hierarchy, faster mobile scanning. */
+.mobile-list-hint {
+  display: none;
+}
+
+.employee-interventions-panel {
+  min-height: 0 !important;
+}
+
+.employee-interventions-panel .table-wrap {
+  max-height: 430px;
+  overscroll-behavior: contain;
+}
+
+#reports .report-filter-panel {
+  margin: 0 0 12px;
+  padding: 18px;
+  background: #ffffff;
+  border: 1px solid rgba(8, 45, 33, .13);
+  border-top: 4px solid var(--skillset-gold);
+  box-shadow: 0 12px 34px rgba(8, 45, 33, .055);
+}
+
+#reports .report-filter-panel .compact-head {
+  margin-bottom: 14px;
+}
+
+#reports .report-filter-panel .compact-head strong,
+#reports .report-filter-panel .compact-head span {
+  display: block;
+}
+
+#reports .report-filter-panel .compact-head strong {
+  color: var(--skillset-ink);
+  font-size: 16px;
+}
+
+#reports .report-filter-panel .compact-head span {
+  margin-top: 3px;
+  color: var(--skillset-muted);
+  font-size: 12px;
+}
+
+#reports .cluster-filters {
+  width: 100%;
+  display: grid !important;
+  grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+  gap: 12px !important;
+}
+
+#reports .cluster-filters label {
+  min-width: 0 !important;
+  display: grid !important;
+  gap: 7px !important;
+  color: #48665a !important;
+  font-size: 10px !important;
+  font-weight: 850 !important;
+  letter-spacing: .04em !important;
+  text-transform: uppercase !important;
+}
+
+#reports .cluster-filters select {
+  width: 100% !important;
+  min-width: 0 !important;
+  min-height: 44px !important;
+  color: var(--skillset-ink) !important;
+  background: #ffffff !important;
+  border-color: rgba(8, 45, 33, .17) !important;
+  font-size: 13px !important;
+  font-weight: 650 !important;
+}
+
+#reports .report-export-summary {
+  border-left: 4px solid var(--skillset-green-3);
+  background: #f3f7f4;
+}
+
+#reports .report-coverage {
+  border-color: rgba(8, 45, 33, .13);
+  box-shadow: 0 8px 24px rgba(8, 45, 33, .04);
+}
+
+#reports .relationship-kpis {
+  grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+  gap: 12px !important;
+}
+
+#reports .relationship-kpis .kpi {
+  min-height: 98px !important;
+  padding: 15px 16px !important;
+}
+
+#reports .table-panel {
+  border-top: 4px solid var(--skillset-gold) !important;
+}
+
+#reports .table-panel .panel-head {
+  align-items: flex-end;
+}
+
+#reports .table-wrap {
+  max-height: 640px;
+  overscroll-behavior: contain;
+  scrollbar-color: var(--skillset-green-3) #e7efe9;
+}
+
+#reports .table-wrap th:first-child,
+#reports .table-wrap td:first-child {
+  position: sticky;
+  left: 0;
+}
+
+#reports .table-wrap th:first-child {
+  z-index: 4;
+  background: #eaf2ec !important;
+}
+
+#reports .table-wrap td:first-child {
+  z-index: 2;
+  background: #ffffff;
+  box-shadow: 8px 0 14px rgba(8, 45, 33, .07);
+}
+
+@media (max-width: 1100px) {
+  #reports .cluster-filters {
+    grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+  }
+}
+
+@media (max-width: 760px) {
+  .view:not(#overview):not(#workbook) {
+    padding-top: 34px !important;
+  }
+
+  .toolbar,
+  .editorial-toolbar {
+    margin-bottom: 22px !important;
+    padding-bottom: 20px !important;
+  }
+
+  .toolbar h2 {
+    font-size: 42px !important;
+  }
+
+  #trainingForm .profile-context-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  }
+
+  #people .list-panel {
+    padding: 12px !important;
+    overflow-x: auto !important;
+    overscroll-behavior-x: contain;
+    scrollbar-color: var(--skillset-green-3) #e7efe9;
+  }
+
+  #people .mobile-list-hint {
+    display: block;
+    margin: 0 0 10px;
+    color: var(--skillset-green-3);
+    font-size: 11px;
+    font-weight: 850;
+    letter-spacing: .04em;
+    text-transform: uppercase;
+  }
+
+  #people .employee-list {
+    display: flex !important;
+    gap: 8px !important;
+  }
+
+  #people .employee-item {
+    flex: 0 0 224px;
+  }
+
+  #people .employee-item.active {
+    box-shadow: inset 0 3px 0 var(--skillset-green-3) !important;
+  }
+
+  #reports .report-filter-panel {
+    padding: 14px;
+  }
+
+  #reports .cluster-filters,
+  #reports .relationship-kpis,
+  #submission .submission-status-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  }
+
+  #submission .submission-decision-card {
+    grid-column: 1 / -1;
+  }
+
+  #reports .report-coverage {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  #reports .report-actions {
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  #reports .report-actions button {
+    width: 100%;
+    margin: 0 !important;
+  }
+
+  #reports .table-wrap {
+    max-height: 520px;
+  }
+}

@@ -44,6 +44,15 @@ if (!index.includes("scanner-alignment.css")) failures.push("Scanner alignment s
 for (const marker of [".ecosystem-row", ".workbook-mapping-layout", ".ecosystem-handoff"]) {
   if (!alignmentStyles.includes(marker)) failures.push(`Missing scanner alignment style: ${marker}`);
 }
+for (const marker of [".report-filter-panel", "#reports .relationship-kpis", "#people .employee-list", "#submission .submission-status-grid"]) {
+  if (!alignmentStyles.includes(marker)) failures.push(`Missing final sales-polish style: ${marker}`);
+}
+for (const marker of ["Profile-linked evidence", "Management reporting", "mobile-list-hint", "report-filter-panel"]) {
+  if (!index.includes(marker)) failures.push(`Missing final sales-polish markup: ${marker}`);
+}
+if (!app.includes("window.scrollTo(0, 0)") || !app.includes('activeNavItem?.closest(".app-nav")')) {
+  failures.push("View changes must return to the top and keep the active mobile navigation item visible.");
+}
 if (!/\.workflow-strip span\s*\{[^}]*color:\s*#ffffff\s*!important;/s.test(alignmentStyles)) {
   failures.push("Workflow strip labels must stay white on the SkillSet green surface.");
 }
