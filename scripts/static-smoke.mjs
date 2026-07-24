@@ -44,6 +44,12 @@ if (!index.includes("scanner-alignment.css")) failures.push("Scanner alignment s
 for (const marker of [".ecosystem-row", ".workbook-mapping-layout", ".ecosystem-handoff"]) {
   if (!alignmentStyles.includes(marker)) failures.push(`Missing scanner alignment style: ${marker}`);
 }
+if (!/\.workflow-strip span\s*\{[^}]*color:\s*#ffffff\s*!important;/s.test(alignmentStyles)) {
+  failures.push("Workflow strip labels must stay white on the SkillSet green surface.");
+}
+if (!/\.workflow-strip span:not\(:last-child\)::after\s*\{[^}]*color:\s*var\(--skillset-yellow\)\s*!important;/s.test(alignmentStyles)) {
+  failures.push("Workflow strip arrows must use SkillSet yellow.");
+}
 
 const ids = [...index.matchAll(/\sid="([^"]+)"/g)].map(match => match[1]);
 const duplicates = ids.filter((id, position) => ids.indexOf(id) !== position);

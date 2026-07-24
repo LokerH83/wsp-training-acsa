@@ -629,3 +629,12 @@ textarea:focus-visible {
     white-space: nowrap !important;
   }
 }
+
+/* Keep the legacy workflow labels readable on the SkillSet green surface. */
+.workflow-strip span {
+  color: #ffffff !important;
+}
+
+.workflow-strip span:not(:last-child)::after {
+  color: var(--skillset-yellow) !important;
+}
